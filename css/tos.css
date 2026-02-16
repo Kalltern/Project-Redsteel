@@ -954,6 +954,7 @@ prose-mirror {
 .tab.skills {
   text-align: center;
 }
+
 @media (max-height: 1080px) {
   .tab.features,
   .tab.abilities,
@@ -962,7 +963,8 @@ prose-mirror {
   .tab.miracles,
   .tab.spells,
   .tab.config {
-    max-height: 510px !important; /* Height for 1920x1080 resolution */
+    max-height: 70vh;
+    overflow-y: auto;
   }
 }
 

@@ -23,11 +23,6 @@ export async function universalAttackLogic({
   // ─── Custom Bonuses ───
   const customDamage = 0;
   const customAttack = 0;
-  const customBleed = 0;
-  const customStun = 0;
-  const customEffect1 = 0;
-  const customEffect2 = 0;
-  const customEffect3 = 0;
 
   const weaponChoices = weapons.map((weapon, index) => ({
     label: weapon.name,
@@ -36,6 +31,8 @@ export async function universalAttackLogic({
 
   const handleWeaponSelection = async (weaponIndex) => {
     const weapon = weapons[weaponIndex];
+    const resolvedFlavor =
+      typeof flavorLabel === "function" ? flavorLabel(weapon) : flavorLabel;
 
     const resolvedContext =
       preResolvedContext ?? game.tos.resolveWeaponContext(actor, null, weapon);
@@ -124,11 +121,6 @@ export async function universalAttackLogic({
       doctrine.doctrineBleedBonus,
       doctrine.doctrineStunBonus,
       weaponSkillEffect,
-      customBleed,
-      customStun,
-      customEffect1,
-      customEffect2,
-      customEffect3,
       critScore,
       critSuccess,
     );
@@ -199,7 +191,7 @@ ${
       flavor: `
 <span style="display:inline-flex; align-items:center;">
   <img src="${weapon.img}" width="36" height="36" style="margin-right:8px;">
-  <strong style="font-size:20px;">${flavorLabel}</strong>
+  <strong style="font-size:20px;">${resolvedFlavor}</strong>
 </span>
 
 <hr>
@@ -288,7 +280,7 @@ ${weaponChoices
 export async function rangedAttack(options = {}) {
   return universalAttackLogic({
     attackType: "ranged",
-    flavorLabel: "Ranged attack",
+    flavorLabel: (weapon) => `Ranged attack with ${weapon.name}`,
     showBreakthrough: false,
     weaponFilter: (i) =>
       i.type === "weapon" && ["bow", "crossbow"].includes(i.system.class),
@@ -299,7 +291,7 @@ export async function rangedAttack(options = {}) {
 export async function throwingAttack(options = {}) {
   return universalAttackLogic({
     attackType: "throwing",
-    flavorLabel: "Throwing attack",
+    flavorLabel: (weapon) => `Throwing attack with ${weapon.name}`,
     showBreakthrough: true,
     weaponFilter: (i) => i.type === "weapon" && i.system.thrown === true,
     getWeaponSkillData: (actor, weapon) =>
@@ -311,7 +303,7 @@ export async function throwingAttack(options = {}) {
 export async function meleeAttack(options = {}) {
   return universalAttackLogic({
     attackType: "melee",
-    flavorLabel: "Melee attack",
+    flavorLabel: (weapon) => `Melee attack with ${weapon.name}`,
     showBreakthrough: true,
     weaponFilter: (i) =>
       i.type === "weapon" &&

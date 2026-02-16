@@ -338,7 +338,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     if (!item) return false;
     if (item.system.type === "heavy") return true;
     if (item.system.gripMode === "two") return true;
-    if (["crossbow", "box"].includes(item.system.class)) return true;
+    if (["crossbow", "bow"].includes(item.system.class)) return true;
     return false;
   }
 

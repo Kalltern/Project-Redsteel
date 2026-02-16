@@ -110,6 +110,19 @@ export async function combatAbilities() {
   // ====================================================================
 
   async function onAbilityChosen(ability, container, dialog, actor) {
+    const html = $(container);
+
+    const aimValue =
+      parseInt(html.find('input[name="aim"]:checked').val()) || 0;
+
+    const useSneak = html.find("#sneak-attack-checkbox")[0]?.checked;
+    const useFlanking = html.find("#flanking-attack-checkbox")[0]?.checked;
+
+    const intent = {
+      aim: aimValue,
+      sneak: useSneak,
+      flanking: useFlanking,
+    };
     const isDefenseRoll = ability.system.class === "defense";
     const keepOpen = container.querySelector("#keep-open")?.checked;
 
@@ -117,7 +130,7 @@ export async function combatAbilities() {
 
     if (isDefenseRoll || ability.system.weaponAbility) {
       const mode = isDefenseRoll ? "defense" : "attack";
-      await weaponSelectionFlow(actor, ability, mode);
+      await weaponSelectionFlow(actor, ability, mode, intent);
     } else {
       await game.tos.getNonWeaponAbility(actor, ability);
     }
@@ -143,6 +156,29 @@ export async function combatAbilities() {
   ${activeSetPreview}
 
   ${activeSetPreview ? "<hr>" : ""}
+
+  <div class="form-group">
+  <label>Aim:</label><br>
+  <div id="aim-selector">
+    ${[0, 1, 2, 3, 4]
+      .map(
+        (n) => `
+      <input type="radio" name="aim" value="${n}" ${n === 0 ? "checked" : ""}>
+      <label class="aim-dot">${n === 0 ? "–" : n}</label>
+    `,
+      )
+      .join("")}
+  </div>
+</div>
+
+<div class="form-group">
+  <label>
+    Sneak Attack <input type="checkbox" id="sneak-attack-checkbox" />
+    Flanking <input type="checkbox" id="flanking-attack-checkbox" />
+  </label>
+</div>
+
+<hr>
 
   <div id="keep-open-container">
     <label>
@@ -210,7 +246,7 @@ export async function combatAbilities() {
    * @param {object} ability
    * @param {'attack'|'defense'} mode
    */
-  async function weaponSelectionFlow(actor, ability, mode) {
+  async function weaponSelectionFlow(actor, ability, mode, intent) {
     // ==================================================
     // 1. AUTO-RESOLVE VIA ACTIVE WEAPON SET
     // ==================================================
@@ -218,10 +254,14 @@ export async function combatAbilities() {
     const weaponContext = game.tos.resolveWeaponContext(actor, ability);
 
     if (weaponContext) {
-      await updateCombatFlags(actor);
+      await updateCombatFlags(actor, intent);
 
       if (mode === "defense") {
-        return game.tos.defenseRoll({ actor, weapon: weaponContext, ability });
+        return game.tos.defenseRoll({
+          actor,
+          weapon: weaponContext.weapon,
+          ability,
+        });
       }
 
       const abilityDamage = ability.system.roll.diceBonusFormula || 0;
@@ -288,11 +328,15 @@ export async function combatAbilities() {
       );
       if (!weaponContext) return;
 
-      await updateCombatFlags(actor);
+      await updateCombatFlags(actor, intent);
 
       if (mode === "defense") {
         // defenseRoll function
-        await game.tos.defenseRoll({ actor, weapon: weaponContext, ability });
+        await game.tos.defenseRoll({
+          actor,
+          weapon: weaponContext.weapon,
+          ability,
+        });
       } else {
         const abilityDamage = ability.system.roll.diceBonusFormula || 0;
         const halfDamage = ability.system.roll.halfDamage;
@@ -349,8 +393,6 @@ export async function combatAbilities() {
     styleSheet.innerText = css;
     document.head.appendChild(styleSheet);
 
-    const attackOptionsStyle = mode === "defense" ? "display: none;" : "";
-
     const weaponDialog = new Dialog({
       title: `Select Weapon - ${ability.name} (${
         mode === "defense" ? "Defense" : "Attack"
@@ -358,29 +400,7 @@ export async function combatAbilities() {
       content: `
         <form>
             <p>Choose Weapon for ${mode} roll:</p>
-            <div class="form-group" style="${attackOptionsStyle}">
-                <label>Aim:</label><br>
-                <div id="aim-selector">
-                    ${[0, 1, 2, 3, 4]
-                      .map(
-                        (n) => `
-                        <input type="radio" name="aim" id="aim-${n}" value="${n}" ${
-                          n === 0 ? "checked" : ""
-                        }>
-                        <label for="aim-${n}" class="aim-dot">${
-                          n === 0 ? "–" : n
-                        }</label>
-                    `,
-                      )
-                      .join("")}
-                </div>
-            </div>
-            <div class="form-group" style="${attackOptionsStyle}">
-                <label>
-                    Sneak Attack <input type="checkbox" id="sneak-attack-checkbox" />
-                    Flanking <input type="checkbox" id="flanking-attack-checkbox" />
-                </label>
-            </div>
+           
         </form>
 
         <form>
@@ -401,6 +421,9 @@ export async function combatAbilities() {
       render: (html) => {
         html.find(".weapon-choice").click(async (event) => {
           const selectedValue = $(event.currentTarget).data("value");
+
+          await updateCombatFlags(actor, html);
+
           await handleWeaponSelection(selectedValue);
         });
       },
@@ -411,17 +434,10 @@ export async function combatAbilities() {
 
   // runAttackMacro, updateCombatFlags, and deductAbilityCost functions
 
-  async function updateCombatFlags(actor) {
+  async function updateCombatFlags(actor, intent) {
     if (!actor) return;
-    const aimValue = parseInt(
-      document.querySelector('input[name="aim"]:checked')?.value || 0,
-    );
-    const useSneak = document.querySelector("#sneak-attack-checkbox")?.checked;
-    const useFlanking = document.querySelector(
-      "#flanking-attack-checkbox",
-    )?.checked;
 
-    if (useSneak) {
+    if (intent.sneak) {
       await actor.setFlag("tos", "useSneakAttack", true);
       await actor.setFlag("tos", "sneakAccessCounter", 0);
     } else {
@@ -429,23 +445,20 @@ export async function combatAbilities() {
       await actor.unsetFlag("tos", "sneakAccessCounter");
     }
 
-    if (useFlanking) {
+    if (intent.flanking) {
       await actor.setFlag("tos", "useFlankingAttack", true);
     } else {
       await actor.unsetFlag("tos", "useFlankingAttack");
     }
 
-    if (aimValue > 0) {
-      await actor.setFlag("tos", "aimCount", aimValue);
+    if (intent.aim > 0) {
+      await actor.setFlag("tos", "aimCount", intent.aim);
     } else {
       await actor.unsetFlag("tos", "aimCount");
     }
   }
 
   async function deductAbilityCost(actor, ability) {
-    console.log("ABILITY:", ability.name);
-    console.log("RESOURCES RAW:", ability.system.resources);
-    console.log("IS ARRAY:", Array.isArray(ability.system.resources));
     const updates = {};
     const costType = ability.system.costType;
     const costValue = ability.system.cost;
@@ -468,15 +481,10 @@ export async function combatAbilities() {
       ? ability.system.resources
       : Object.values(ability.system.resources ?? {});
     for (const res of resources) {
-      console.log("RESOURCE ENTRY:", res);
       const { type, mode, amount } = res;
-      console.log("PARSED:", { type, mode, amount });
-      // Skip incomplete rows
       if (!type || !mode || !amount) continue;
 
       const statKey = type.toLowerCase();
-      console.log("STAT KEY:", statKey);
-      console.log("STAT EXISTS:", actor.system.stats[statKey]);
       const currentValue = actor.system.stats[statKey]?.value ?? 0;
       let newValue = currentValue;
 
@@ -487,21 +495,12 @@ export async function combatAbilities() {
       if (mode === "add") {
         newValue = currentValue + amount;
       }
-      console.log(
-        "UPDATING",
-        `system.stats.${statKey}.value`,
-        "FROM",
-        currentValue,
-        "TO",
-        newValue,
-      );
+
       updates[`system.stats.${statKey}.value`] = newValue;
     }
 
     if (Object.keys(updates).length) {
-      console.log("FINAL UPDATES:", updates);
       await actor.update(updates);
-      console.log("ACTOR HEALTH AFTER:", actor.system.stats.health.value);
     }
 
     ui.notifications.info(`${ability.name} activated`);
@@ -529,6 +528,7 @@ export async function combatAbilities() {
     criticalSuccessThreshold,
     criticalFailureThreshold,
     halfDamage = 0,
+    concatRollAndDescription,
   }) {
     const attackHTML = await attackRoll.render();
     const damageHTML = await damageRoll.render();
@@ -599,12 +599,15 @@ export async function combatAbilities() {
     ${ability.name} with ${weapon.name}
   </strong>
 </span>
-
 <hr>
-
+<table style="width:100%; text-align:center; font-size:16px;">
+<tr><td>${concatRollAndDescription}</td></tr>
+</table>
+<hr>
 <p style="text-align:center; font-size:20px;">
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
+
 
 ${damageLine}
 
@@ -790,7 +793,6 @@ ${damageLine}
       concatRollAndDescription = ability.system.description;
     }
     rollName = `${ability.name} with ${weapon.name}`;
-    console.log(criticalSuccessThreshold);
     await postUniversalStyleAttackChat({
       actor,
       weapon,
@@ -812,6 +814,7 @@ ${damageLine}
       rollName,
       criticalSuccessThreshold,
       criticalFailureThreshold,
+      concatRollAndDescription,
     });
   }
 }

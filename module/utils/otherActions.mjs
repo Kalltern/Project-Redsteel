@@ -167,7 +167,7 @@ export async function longRest() {
   const toxicity = system.stats.toxicity.value ?? 0;
   const newToxicity = Math.max(
     0,
-    toxicity - 5 - system.attributes.end.total * 2
+    toxicity - 5 - system.attributes.end.total * 2,
   );
 
   // ─── Mind ───
@@ -214,12 +214,13 @@ export async function longRest() {
 }
 
 export async function firstAid() {
-  if (!token || !token.actor) {
-    ui.notifications.error("Please select a token first.");
+  const selectedToken = canvas.tokens.controlled[0];
+  if (!selectedToken) {
+    ui.notifications.warn("Please select a token.");
     return;
   }
 
-  let actor = token.actor.system;
+  let actor = selectedToken.actor.system;
   let firstAidData = actor.skills.firstAid;
 
   const firstAidRoll = new Roll(`@skills.firstAid.rating - 1d100`, actor);
@@ -253,13 +254,20 @@ export async function firstAid() {
     await healRoll.evaluate({ async: true });
   }
 
+  const iconUrl = "icons/magic/life/cross-yellow-green.webp";
+
   ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor: token.actor }),
+    speaker: ChatMessage.getSpeaker({ actor: selectedToken.actor }),
     flavor: `
-    <div>
-      <h2>${critStatus}</h2>
-      <p>Used ${this.name} action</p>
-      </div>
+<div style="display:flex; align-items:center; gap:10px;">
+  <img src="${iconUrl}" width="36" height="36" style="border-radius:50%;" />
+  <div>
+    <p style="color:#007ba9; font-size:1.2em;">
+      <strong>Used first aid action</strong>
+      ${critStatus}
+    </p>
+  </div>
+</div>
   `,
     rolls: healRoll ? [firstAidRoll, healRoll] : [firstAidRoll],
     type: CONST.CHAT_MESSAGE_TYPES.ROLL,

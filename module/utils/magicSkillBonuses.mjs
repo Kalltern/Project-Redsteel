@@ -793,7 +793,6 @@ export async function finalizeRollsAndPostChat(
         </b></p>
             <tr><th>Description:</th></tr>
             <tr><td><br>${renderedDescription}</td></tr>
-            <tr><td>Magic attack: ${attack}</td></tr>
             ${dmgtypes}
         </table>
         <hr>

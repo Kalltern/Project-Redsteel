@@ -44,8 +44,6 @@ export async function attackActions() {
 
   <hr>
 
-  <p>Choose a macro to execute:</p>
-
   <div class="form-group">
     <label>Aim:</label><br>
     <div id="aim-selector">
@@ -211,23 +209,62 @@ function resolveActiveWeaponForAttack(actor, attackType) {
   return { weapon, hasShield };
 }
 
-export async function autoAttack() {
+export async function autoAttack(options = {}) {
   const actor = canvas.tokens.controlled[0]?.actor;
   if (!actor) return;
 
-  const context = game.tos.resolveWeaponContext(actor);
+  // If pre-resolved context exists → respect it
+  if (options.weaponContext?.weapon) {
+    const weapon = options.weaponContext.weapon;
 
-  if (!context?.weapon) {
-    return game.tos.meleeAttack();
+    const isThrown = weapon.system.thrown === true;
+    const isRanged = ["bow", "crossbow"].includes(weapon.system.class);
+
+    if (isThrown) return game.tos.throwingAttack(options);
+    if (isRanged) return game.tos.rangedAttack(options);
+    return game.tos.meleeAttack(options);
   }
 
-  const weapon = context.weapon;
+  // Character smart resolution
+  if (actor.type === "character") {
+    const activeSet = actor.system.combat?.activeWeaponSet;
+    const weaponSets = game.tos.buildWeaponSetView(actor);
+    const ws = weaponSets[activeSet];
 
-  const isThrown = weapon.system.thrown === true;
-  const isRanged = ["bow", "crossbow"].includes(weapon.system.class);
+    if (activeSet) {
+      if (ws?.main) {
+        const weapon = ws.main;
 
-  if (isThrown) return game.tos.throwingAttack({ context });
-  if (isRanged) return game.tos.rangedAttack({ context });
+        const isThrown = weapon.system.thrown === true;
+        const isRanged = ["bow", "crossbow"].includes(weapon.system.class);
 
-  return game.tos.meleeAttack({ context });
+        const context = {
+          weapon,
+          offWeapon: ws.off || null,
+          isDualWield: ws.isDualWield || false,
+          hasShield: ws.offIsShield || false,
+        };
+
+        if (isThrown) return game.tos.throwingAttack({ context });
+        if (isRanged) return game.tos.rangedAttack({ context });
+        return game.tos.meleeAttack({ context });
+      }
+    }
+
+    // 🔥 Fallback if no main weapon
+    if (!ws?.main) {
+      // no active main weapon
+      return game.tos.universalAttackLogic({
+        attackType: "attack",
+        flavorLabel: "Attack",
+        showBreakthrough: true,
+        weaponFilter: (i) => i.type === "weapon",
+        getWeaponSkillData: (actor, weapon) =>
+          game.tos.getWeaponSkillBonuses(actor, weapon),
+      });
+    }
+  }
+
+  // NPC always manual
+  return game.tos.meleeAttack();
 }

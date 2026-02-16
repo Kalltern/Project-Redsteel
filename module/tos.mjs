@@ -328,36 +328,29 @@ Hooks.once("ready", async () => {
       slot: 3,
     },
     {
-      name: "Ranged abilities",
-      command: `game.tos.rangedAbilities();`,
-      img: "icons/skills/ranged/target-bullseye-arrow-glowing.webp",
-      slot: 4,
-    },
-    {
-      name: "Rest",
-      command: `game.tos.restAndRecover();`,
-      img: "icons/consumables/plants/tearthumb-halberd-leaf-green.webp",
-      slot: 5,
-    },
-    {
       name: "Channeling",
       command: `game.tos.castSpell();`,
       img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
-      slot: 6,
+      slot: 4,
     },
     {
       name: "Spell defense",
       command: `game.tos.spellDefense();`,
       img: "icons/magic/defensive/shield-barrier-blades-teal.webp",
-      slot: 7,
+      slot: 5,
     },
     {
       name: "First aid",
       command: `game.tos.firstAid();`,
       img: "icons/magic/life/cross-yellow-green.webp",
+      slot: 7,
+    },
+    {
+      name: "Rest",
+      command: `game.tos.restAndRecover();`,
+      img: "icons/consumables/plants/tearthumb-halberd-leaf-green.webp",
       slot: 8,
     },
-
     {
       name: "Potions",
       command: `game.tos.usePotion();`,
@@ -738,7 +731,7 @@ function openDamageSelectionDialog(message, targets) {
         return `
         <li>
           ${t.name} →
-          <strong>${result.totalHpLoss} HP</strong>
+          <strong>${result.finalDamage} HP</strong>
         </li>`;
       })
       .join("");

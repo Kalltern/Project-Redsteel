@@ -4,16 +4,6 @@ export function resolveWeaponContext(
   selectedWeapon = null,
 ) {
   if (actor.type === "character") {
-    // Manual selection override (dialog mode)
-    if (selectedWeapon) {
-      return {
-        weapon: selectedWeapon,
-        offWeapon: null,
-        isDualWield: false,
-        hasShield: false,
-      };
-    }
-
     // Active set mode
     const activeSet = actor.system.combat?.activeWeaponSet;
     if (!activeSet) return null;
@@ -23,7 +13,16 @@ export function resolveWeaponContext(
     if (!ws?.main) return null;
 
     const weapon = ws.main;
+    // Manual selection override (dialog mode)
 
+    if (selectedWeapon) {
+      return {
+        weapon: selectedWeapon,
+        offWeapon: ws.off || null,
+        isDualWield: ws.off && !ws.mainIsTwoHanded && !ws.offIsShield,
+        hasShield: ws.offIsShield || false,
+      };
+    }
     //  Ability filtering (optional)
     if (ability && ability.system?.type === "melee") {
       if (
@@ -88,12 +87,14 @@ export function buildWeaponSetView(actor) {
       : false;
 
     const offIsShield = !!off?.system?.shield;
+    const isDualWield = !!main && !!off && !mainIsTwoHanded && !offIsShield;
 
     result[setId] = {
       main,
       off,
       mainIsTwoHanded,
       offIsShield,
+      isDualWield,
     };
   }
 

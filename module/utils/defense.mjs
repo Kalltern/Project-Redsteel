@@ -152,26 +152,34 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   /*  MELEE DEFENSE                               */
   /* -------------------------------------------- */
   async function meleeDefense({ ability = null, weapon = null } = {}) {
-    const resolveWithWeapon = async (weapon) => {
+    const resolveWithContext = async (context) => {
+      const weapon = context.weapon;
+      const offProps = getOffhandProps(context);
       const rollName = `Defense with ${weapon.name}`;
+      const mainDefense = Number(weapon.system.defense) || 0;
+      const offDefense = Number(offProps?.defense) || 0;
+      const mainCrit = Number(weapon.system.critDefense) || 0;
+      const offCrit = Number(offProps?.critDefense) || 0;
+      console.log("DEFENSE CONTEXT:", context);
 
       const { doctrineCritDefenseBonus, doctrineDefenseBonus } =
         await game.tos.getDoctrineBonuses(actor, weapon);
 
       const defense = actor.system.combatSkills.meleeDefense;
       const defenseRating = defense.rating;
-      const abilityDefense = ability?.system?.defense ?? 0;
+      const abilityDefense = Number(ability?.system?.defense) || 0;
 
       const criticalSuccessThreshold =
         defense.criticalSuccessThreshold +
-        weapon.system.critDefense +
+        mainCrit +
+        offCrit +
         doctrineCritDefenseBonus;
 
       const criticalFailureThreshold = defense.criticalFailureThreshold;
 
       const rollData = {
         defenseRating,
-        weaponDefense: weapon.system.defense ?? 0,
+        weaponDefense: mainDefense + offDefense,
         doctrineDefenseBonus,
         abilityDefense,
       };
@@ -192,22 +200,19 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       );
     };
 
-    if (!weapon && actor.type === "character") {
-      const set =
-        actor.system.combat.weaponSets?.[actor.system.combat?.activeWeaponSet];
-      if (set?.main) {
-        const activeWeapon = actor.items.get(set.main);
-        if (activeWeapon) {
-          return resolveWithWeapon(activeWeapon);
-        }
+    if (!weapon) {
+      const context = game.tos.resolveWeaponContext(actor, ability);
+      if (context?.weapon) {
+        return resolveWithContext(context);
       }
     }
-
     /* -------------------------------------------- */
     /*  IF WEAPON ALREADY KNOWN → SKIP DIALOG       */
     /* -------------------------------------------- */
     if (weapon) {
-      return resolveWithWeapon(weapon);
+      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      if (!context) return;
+      return resolveWithContext(context);
     }
 
     /* -------------------------------------------- */
@@ -226,23 +231,28 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     }
 
     showWeaponDialog(weapons, async (index) => {
-      await resolveWithWeapon(weapons[index]);
+      const selected = weapons[index];
+      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      if (!context) return;
+      await resolveWithContext(context);
     });
   }
 
   /* -------------------------------------------- */
   /*  RANGED DEFENSE                              */
   /* -------------------------------------------- */
-
   async function rangedDefense({ ability = null, weapon = null } = {}) {
-    const resolveWithWeapon = async (weapon) => {
+    const resolveWithContext = async (context) => {
+      const weapon = context.weapon;
+      const offProps = getOffhandProps(context);
+
       const rollName = `Ranged defense with ${weapon.name}`;
 
       const { doctrineCritDefenseBonus, doctrineRangedDefenseBonus } =
         await game.tos.getDoctrineBonuses(actor, weapon);
 
       const defense = actor.system.combatSkills.rangedDefense;
-      const abilityDefense = ability?.system?.rangedDefense ?? 0;
+      const abilityDefense = Number(ability?.system?.rangedDefense) || 0;
 
       const criticalSuccessThreshold =
         defense.criticalSuccessThreshold + doctrineCritDefenseBonus;
@@ -271,26 +281,17 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       );
     };
 
-    if (!weapon && actor.type === "character") {
-      const set =
-        actor.system.combat.weaponSets?.[actor.system.combat?.activeWeaponSet];
-      if (set?.main) {
-        const activeWeapon = actor.items.get(set.main);
-        if (activeWeapon) {
-          return resolveWithWeapon(activeWeapon);
-        }
-      }
-    }
-    /* -------------------------------------------- */
-    /*  IF WEAPON ALREADY KNOWN → SKIP DIALOG       */
-    /* -------------------------------------------- */
-    if (weapon) {
-      return resolveWithWeapon(weapon);
+    if (!weapon) {
+      const context = game.tos.resolveWeaponContext(actor, ability);
+      if (context?.weapon) return resolveWithContext(context);
     }
 
-    /* -------------------------------------------- */
-    /*  OTHERWISE → ASK PLAYER                     */
-    /* -------------------------------------------- */
+    if (weapon) {
+      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      if (!context) return;
+      return resolveWithContext(context);
+    }
+
     const weapons = actor.items.filter((i) => i.type === "weapon");
 
     if (!weapons.length) {
@@ -299,7 +300,10 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     }
 
     showWeaponDialog(weapons, async (index) => {
-      await resolveWithWeapon(weapons[index]);
+      const selected = weapons[index];
+      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      if (!context) return;
+      await resolveWithContext(context);
     });
   }
 
@@ -308,14 +312,23 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   /* -------------------------------------------- */
 
   async function dodgeDefense({ ability = null, weapon = null } = {}) {
-    const resolveWithWeapon = async (weapon) => {
+    const resolveWithContext = async (context) => {
+      const weapon = context.weapon;
+      const offProps = getOffhandProps(context);
+
       const rollName = `Dodge with ${weapon.name}`;
 
+      const mainDodge = Number(weapon.system.dodge) || 0;
+      const offDodge = Number(offProps?.dodge) || 0;
+      const offCritDodge = Number(offProps?.critDodge) || 0;
+
       const dodge = actor.system.combatSkills.dodge;
-      const abilityDefense = ability?.system?.dodge ?? 0;
+      const abilityDefense = Number(ability?.system?.dodge) || 0;
 
       const criticalSuccessThreshold =
-        dodge.criticalSuccessThreshold + weapon.system.critDodge;
+        dodge.criticalSuccessThreshold +
+        (Number(weapon.system.critDodge) || 0) +
+        offCritDodge;
 
       const criticalFailureThreshold = dodge.criticalFailureThreshold;
 
@@ -333,7 +346,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
       const rollData = {
         dodgeRating: dodge.rating,
-        weaponDodge: weapon.system.dodge ?? 0,
+        weaponDodge: mainDodge + offDodge,
         abilityDefense,
       };
 
@@ -353,27 +366,17 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       );
     };
 
-    if (!weapon && actor.type === "character") {
-      const set =
-        actor.system.combat.weaponSets?.[actor.system.combat?.activeWeaponSet];
-      if (set?.main) {
-        const activeWeapon = actor.items.get(set.main);
-        if (activeWeapon) {
-          return resolveWithWeapon(activeWeapon);
-        }
-      }
+    if (!weapon) {
+      const context = game.tos.resolveWeaponContext(actor, ability);
+      if (context?.weapon) return resolveWithContext(context);
     }
 
-    /* -------------------------------------------- */
-    /*  IF WEAPON ALREADY KNOWN → SKIP DIALOG       */
-    /* -------------------------------------------- */
     if (weapon) {
-      return resolveWithWeapon(weapon);
+      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      if (!context) return;
+      return resolveWithContext(context);
     }
 
-    /* -------------------------------------------- */
-    /*  OTHERWISE → ASK PLAYER                     */
-    /* -------------------------------------------- */
     const weapons = actor.items.filter((i) => i.type === "weapon");
 
     if (!weapons.length) {
@@ -382,7 +385,10 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     }
 
     showWeaponDialog(weapons, async (index) => {
-      await resolveWithWeapon(weapons[index]);
+      const selected = weapons[index];
+      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      if (!context) return;
+      await resolveWithContext(context);
     });
   }
 
@@ -411,7 +417,10 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       ["Frost Armor", armor.frost.total],
       ["Lightning Armor", armor.lightning.total],
       ["Magic Armor", armor.magic.total],
-    ].filter(([, value]) => value > 0);
+    ].filter(([label, value]) => {
+      if (label === "Armor") return true;
+      return value > 0;
+    });
 
     const armorTable = `
       <table style="width:100%;text-align:center;font-size:15px;">
@@ -547,4 +556,11 @@ function renderWeaponLoadoutsDialog(actor) {
 
 </section>
 `;
+}
+
+function getOffhandProps(weaponContext) {
+  if (!weaponContext?.isDualWield || !weaponContext.offWeapon) {
+    return null;
+  }
+  return weaponContext.offWeapon.system.offhandProperties ?? null;
 }

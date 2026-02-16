@@ -302,9 +302,9 @@ export async function getDoctrineBonuses(actor, weapon) {
       }
     }
   }
-  console.log(
+  /* console.log(
     `Doctrine Bonus: ${doctrineBonus}, ${doctrineCritBonus}, ${doctrineCritRangeBonus}, ${doctrineStunBonus}, ${doctrineBleedBonus}`,
-  );
+  );*/
 
   return {
     doctrineBonus,
@@ -360,7 +360,6 @@ export async function getWeaponSkillBonuses(actor, weapon) {
     }
   }
 
-  console.log(`Weapon effect?: ${weaponSkillEffect}`);
   return {
     weaponSkillEffect,
     weaponSkillCrit,
@@ -402,7 +401,6 @@ export async function getAttackRolls(
   const aimValue = actor.getFlag("tos", "aimCount");
   if (aimValue > 0) {
     abilityAttack += aimValue * 10;
-    console.log("Aim value", aimValue, abilityAttack);
     await actor.unsetFlag("tos", "aimCount");
   }
 
@@ -417,7 +415,6 @@ export async function getAttackRolls(
       (weapon.system.critFail || 0) -
       customCritFail;
     // ATTACK ROLL
-    console.log("Aim value", aimValue, abilityAttack);
     attackRollFormula = `@combatSkills.archery.rating + ${totalWeaponAttack} - 1d100`;
     if (abilityAttack) {
       attackRollFormula = `@combatSkills.archery.rating + ${totalWeaponAttack} + ${abilityAttack} - 1d100`;
@@ -645,16 +642,23 @@ export async function getEffectRolls(
   const weaponSystem = weapon.system || {};
   let abilityEffects = {};
   let abilitySystem = {};
-  if (ability) {
+  if (ability?.system) {
     abilityEffects = ability.system.effects || {};
     abilitySystem = ability.system || {};
   }
+  let critBleeds = 0;
   let totalBleeds = 0;
   let regularBleedRolls = [];
   let sharpBleedRolls = [];
   const usedAbilitySlots = { extra1: false, extra2: false, extra3: false };
 
-  console.log("critScore", critScore);
+  if (critScore > 1) {
+    critBleeds += 1;
+
+    if (weapon.system.sharp && weaponEffects.bleed) {
+      critBleeds += 1;
+    }
+  }
   if (critScore > 1 && critSuccess) {
     totalBleeds += 1;
   } // --- 1. Process Fixed Effects (STUN and BLEED) ---
@@ -664,10 +668,7 @@ export async function getEffectRolls(
   for (const effectName of fixedEffectNames) {
     const baseValue = weaponEffects[effectName] || 0;
     const modifier = actorEffects[effectName] || 0;
-    let abilityBonus = 0;
-    if (ability) {
-      abilityBonus = abilityEffects[effectName];
-    }
+    const abilityBonus = abilityEffects[effectName] || 0;
     let shouldProcess = baseValue > 0;
 
     if (shouldProcess) {
@@ -792,11 +793,12 @@ export async function getEffectRolls(
     if (critScore > 1 && critSuccess) {
       totalBleeds += 1;
     }
+    const abilityBleed = abilityEffects["bleed"] || 0;
     const modifier = actorEffects["bleed"] || 0;
     const modifiedBleedValue =
       weaponEffects.bleed +
       modifier +
-      (abilityEffects["bleed"] || 0) +
+      (abilityBleed || 0) +
       weaponSkillEffect +
       doctrineBleedBonus +
       (offProps?.effects?.bleed || 0) +
@@ -830,7 +832,13 @@ export async function getEffectRolls(
       ...regularBleedRolls,
       ...sharpBleedRolls,
     ].join("  Sharp: ")} | < ${bleedChanceDisplay}% 
-    <i class="fa-regular fa-droplet fa-lg" style="color: #bd0000;"></i>  ${totalBleeds}`;
+    <span title="Total Bleed Applied: ${totalBleeds}
+Crit Bonus:(+${critBleeds}) due to Crit score: ${critScore} 
+">
+  ${totalBleeds}
+  <i class="fa-regular fa-droplet fa-lg" style="color: #bd0000;"></i>
+   (+${critBleeds})
+</span>`;
   }
 
   return {
@@ -855,7 +863,6 @@ export function evaluateDmgVsArmor({
     const effective = Math.max(damage - armor, 0);
     finalDamage = effective < penetration ? penetration : effective;
   }
-  console.log("halfDamage", halfDamage);
   if (halfDamage) {
     finalDamage = Math.floor(finalDamage / 2);
   }
@@ -866,6 +873,7 @@ export function evaluateDmgVsArmor({
   const totalHpLoss = hpLoss + tempHpLoss;
 
   return {
+    finalDamage,
     hpLoss,
     tempHpLoss,
     totalHpLoss,
