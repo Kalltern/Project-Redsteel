@@ -640,6 +640,9 @@ export async function getEffectRolls(
   const weaponEffects = weapon.system.effects || {};
   const actorEffects = actor.system.effects || {};
   const weaponSystem = weapon.system || {};
+  console.log("Weapon passed into getEffectRolls:", weapon);
+  console.log("weapon.system:", weapon?.system);
+  console.log("weapon.system.effects:", weapon?.system?.effects);
   let abilityEffects = {};
   let abilitySystem = {};
   if (ability?.system) {
@@ -669,10 +672,11 @@ export async function getEffectRolls(
     const baseValue = weaponEffects[effectName] || 0;
     const modifier = actorEffects[effectName] || 0;
     const abilityBonus = abilityEffects[effectName] || 0;
-    let shouldProcess = baseValue > 0;
+    const offValue = offProps?.effects?.[effectName] || 0;
+    let shouldProcess = baseValue > 0 || offValue > 0;
 
     if (shouldProcess) {
-      let modifiedEffectValue = baseValue + modifier + abilityBonus;
+      let modifiedEffectValue = offValue + baseValue + modifier + abilityBonus;
 
       if (effectName === "stun") {
         modifiedEffectValue =
@@ -734,11 +738,16 @@ export async function getEffectRolls(
       const oKey = `extra${i}`;
       const oValue = offProps.effects[oKey] || 0;
 
-      const oName = getEffectName(
-        weaponContext.offWeapon.system,
-        offProps.effects,
-        i,
-      );
+      const offSystem = weaponContext.offWeapon.system.offhandProperties;
+
+      const effectType = offSystem[`effectType${i}`];
+      let oName = "";
+
+      if (effectType === "custom") {
+        oName = offSystem.effects[`effectName${i}`] || "";
+      } else {
+        oName = effectType || "";
+      }
 
       if (oValue > 0 && oName.trim() !== "") {
         if (customEffectRolls.has(oName)) {
@@ -752,7 +761,7 @@ export async function getEffectRolls(
   }
 
   // 2c. Merge/Add ALL Ability Effects
-  if (ability) {
+  if (ability?.system) {
     for (let j = 1; j <= 3; j++) {
       const aKey = `extra${j}`;
       const aValue = abilityEffects[aKey] || 0;
