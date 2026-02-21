@@ -283,7 +283,7 @@
           "attributeTest": { "label": "Test" },
           "weaponAbility": { "label": "Weapon Ability" },
           "modifiesAttack": { "label": "Modifies Attack" },
-          "standalone": { "label": "Stand alone" },
+          "standalone": { "label": "Standalone" },
           "multiAttack": { "label": "Multiattack" },
           "resourceCost": { "label": "Resource Cost" }
         }

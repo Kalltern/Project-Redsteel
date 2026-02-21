@@ -433,12 +433,12 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     /* ---------------------------------- */
     /* 2️⃣ INVENTORY WEAPON RIGHT-CLICK    */
     /* ---------------------------------- */
-    const icon = event.target.closest(".weapon-icon");
-    if (!icon) return;
+    const itemRow = event.target.closest(".item[data-item-id]");
+    if (!itemRow) return;
 
     event.preventDefault();
 
-    const itemId = icon.dataset.itemId;
+    const itemId = itemRow.dataset.itemId;
     if (!itemId) return;
 
     this._openWeaponEquipMenuFromItem(itemId);

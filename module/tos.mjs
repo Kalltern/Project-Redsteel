@@ -2,10 +2,13 @@
 import { ToSActor } from "./documents/actor.mjs";
 import { ToSItem } from "./documents/item.mjs";
 import { ToSCombat } from "./documents/combat.mjs";
+import { ToSActiveEffect } from "./documents/effects.mjs";
 // Import sheet classes.
 import { ToSActorSheet } from "./sheets/actor-sheet.mjs";
 import { ToSItemSheet } from "./sheets/item-sheet.mjs";
+import { registerEffectSheetExtensions } from "./sheets/effect-sheet.mjs";
 // Import helper/utility classes and constants.
+
 import { TOS } from "./helpers/config.mjs";
 import { usePotion } from "./utils/usePotion.mjs";
 import { defenseRoll } from "./utils/defense.mjs";
@@ -63,6 +66,7 @@ globalThis.tos = {
     ToSActor,
     ToSItem,
     ToSCombat,
+    ToSActiveEffect,
   },
   applications: {
     ToSActorSheet,
@@ -78,6 +82,7 @@ Hooks.once("init", function () {
   CONFIG.TOS = TOS;
 
   game.tos = game.tos || {};
+  game.tos.applyEffect = ToSActiveEffect.applyEffect.bind(ToSActiveEffect);
   game.tos.resolveWeaponContext = resolveWeaponContext;
   game.tos.deductAbilityCost = deductAbilityCost;
   game.tos.buildWeaponSetView = buildWeaponSetView;
@@ -111,6 +116,8 @@ Hooks.once("init", function () {
   game.tos.defenseRoll = defenseRoll;
   game.tos.autoAttack = autoAttack;
   registerDynamicInitiative();
+  registerEffectSheetExtensions();
+
   /**
    * Set an initiative formula for the system
    * @type {String}
@@ -120,7 +127,9 @@ Hooks.once("init", function () {
   CONFIG.Actor.documentClass = ToSActor;
   CONFIG.Item.documentClass = ToSItem;
   CONFIG.Combat.documentClass = ToSCombat;
-
+  CONFIG.ActiveEffect.documentClass = ToSActiveEffect;
+  ToSActiveEffect.registerHooks();
+  CONFIG.statusEffects = TOS.statusEffects;
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
   // if the transfer property on the Active Effect is true.
@@ -142,6 +151,7 @@ Hooks.once("init", function () {
 /* -------------------------------------------- */
 /*  ToS Specific Game settings                  */
 /* -------------------------------------------- */
+
 function registerDynamicInitiative() {
   game.settings.register("tos", "registerDynamicInitiative", {
     config: true,
@@ -290,6 +300,10 @@ Handlebars.registerHelper("healthPercentage", function (current, max) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
+Hooks.once("ready", () => {
+  ui.controls.initialize();
+  ToSActiveEffect.registerStatusCounterIntegration();
+});
 Hooks.once("ready", function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createDocMacro(data, slot));

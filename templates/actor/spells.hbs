@@ -7,23 +7,25 @@
     {{localize "TOS.Actor.Character.schools.spellPower.label"}}
   </h2>
 
-  <div class="grid grid-9col">
+  <div class="grid grid-9col spells">
     {{#if (eq actor.type "character")}}
-      {{#each system.schools as |school key|}}
-        <div class="grid-span-1-spell">
-          <label class="resource-label">
-            {{localize (concat "TOS.Actor.Character.schools." key ".label")}}
-          </label>
-          <input
-            class="spell-value"
-            type="text"
-            name="system.schools.{{key}}.spellPower"
-            value="{{school.spellPower}}"
-            data-dtype="Number"
-            readonly
-          />
-        </div>
-      {{/each}}
+      {{#each (groupBySchool spells) as |group|}}
+  {{#with (lookup ../system.schools group.school) as |school|}}
+    <div class="grid-span-1-spell">
+      <label class="resource-label">
+        {{localize (concat "TOS.Actor.Character.schools." group.school ".label")}}
+      </label>
+      <input
+        class="spell-value"
+        type="text"
+        name="system.schools.{{group.school}}.spellPower"
+        value="{{school.spellPower}}"
+        data-dtype="Number"
+        {{#if (eq ../actor.type "character")}}readonly{{/if}}
+      />
+    </div>
+  {{/with}}
+{{/each}}
     {{/if}}
 
     {{#if (eq actor.type "npc")}}

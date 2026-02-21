@@ -32,6 +32,21 @@
             "value": 0,
             "bonus": 0,
             "total": 0
+          },
+          "dark": {
+            "value": 0,
+            "bonus": 0,
+            "total": 0
+          },
+          "poison": {
+            "value": 0,
+            "bonus": 0,
+            "total": 0
+          },
+          "holy": {
+            "value": 0,
+            "bonus": 0,
+            "total": 0
           }
         }
       }
@@ -840,6 +855,7 @@
       "critRangeMelee": 0,
       "critRangeRanged": 0,
       "critRangeCast": 0,
+      "sneakDamageBonus": 0,
       "stats": {
         "health": {
           "value": 20,
@@ -1171,6 +1187,15 @@
         },
         "magic": {
           "value": 0
+        },
+        "dark": {
+          "value": 0
+        },
+        "poison": {
+          "value": 0
+        },
+        "holy": {
+          "value": 0
         }
       },
       "weight": 0,
@@ -1202,6 +1227,10 @@
     },
     "race": {
       "templates": ["base"]
+    },
+    "item": {
+      "templates": ["base"],
+      "quantity": 1
     },
     "consumable": {
       "templates": ["base"],

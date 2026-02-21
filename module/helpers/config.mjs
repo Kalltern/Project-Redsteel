@@ -43,3 +43,94 @@ TOS.secondaryAttributeAbbreviations = {
   vis: "TOS.Actor.Character.SecondaryAttribute.Vis.abbr",
   ini: "TOS.Actor.Character.SecondaryAttribute.Ini.abbr",
 };
+
+TOS.statusEffects = [
+  {
+    id: "dead",
+    name: "EFFECT.StatusDead",
+    img: "icons/svg/skull.svg",
+  },
+  {
+    id: "bleed",
+    name: "Bleeding",
+    img: "icons/svg/blood.svg",
+    statuses: ["bleed"],
+  },
+  {
+    id: "stun",
+    name: "EFFECT.StatusStunned",
+    img: "icons/svg/daze.svg",
+    statuses: ["stun"],
+  },
+  {
+    id: "burn",
+    name: "Burning",
+    img: "icons/magic/fire/flame-burning-embers-yellow.webp",
+    statuses: ["burn"],
+  },
+];
+
+TOS.effectDefinitions = {
+  stun: {
+    name: "Stunned",
+    img: "icons/svg/daze.svg",
+    statuses: ["stun"],
+    defaultTurns: 1,
+    changes: [
+      {
+        key: "system.globalBonus",
+        mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+        value: -10,
+      },
+    ],
+  },
+
+  bleed: {
+    name: "Bleeding",
+    img: "icons/svg/blood.svg",
+    statuses: ["bleed"],
+    stacking: "stack",
+    maxStacks: 6,
+    triggers: {
+      onApply: {
+        formula: "1d4",
+        target: "system.stats.health.value",
+      },
+      onRoundStart: {
+        formula: "{stacks}d4",
+        target: "system.stats.health.value",
+      },
+    },
+  },
+  burn: {
+    name: "Burning",
+    img: "icons/magic/fire/flame-burning-embers-yellow.webp",
+    statuses: ["burn"],
+    triggers: {
+      onApply: {
+        formula: "3d6",
+        target: "system.stats.health.value",
+        panic: true,
+      },
+      onRoundStart: {
+        formula: "3d6",
+        target: "system.stats.health.value",
+        panic: true,
+      },
+    },
+  },
+
+  panic: {
+    name: "Panicked",
+    img: "icons/svg/daze.svg",
+    statuses: ["panic"],
+    defaultTurns: 2,
+    changes: [
+      {
+        key: "system.globalMod",
+        mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+        value: -10,
+      },
+    ],
+  },
+};

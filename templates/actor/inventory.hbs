@@ -520,9 +520,8 @@
    <ol class="items-list inventory-items">
     <li class="item flexrow items-header">
       <div class="item-name">{{localize "Items"}}</div>
-      <div class="item-formula">{{localize
-          "TOS.Item.Weapon.FIELDS.rollFormula.label"
-        }}</div>
+        <div class="item-quantity">{{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}</div>
+
       <div class="item-controls">
         {{#if @root.editable}}
           <a
@@ -530,7 +529,7 @@
             title="{{localize 'DOCUMENT.Create' type="Item"}}"
             data-action="createDoc"
             data-document-class="Item"
-            data-type="consumable"
+            data-type="item"
           >
             <i class="fas fa-plus"></i>
             {{localize "DOCUMENT.New" type="item"}}
@@ -559,7 +558,7 @@
           </div>
           <div>{{item.name}}</div>
         </div>
-        <div class="item-formula item-prop">{{item.system.formula}}</div>
+         <div class="item-formula item-prop">{{item.system.quantity}}</div>
         <div class="item-controls">
           <a
             class="item-control item-edit"

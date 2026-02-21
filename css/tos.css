@@ -147,6 +147,13 @@ prose-mirror {
   grid-template-columns: repeat(9, minmax(0, 1fr));
 }
 
+.grid-9col.spells {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 .grid-10col {
   grid-column: span 10 / span 10;
   grid-template-columns: repeat(10, minmax(0, 1fr));
