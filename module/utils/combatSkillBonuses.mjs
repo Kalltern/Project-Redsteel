@@ -636,6 +636,9 @@ export async function getEffectRolls(
   selectedModifiers = [],
 ) {
   // --- Initial Setup ---
+  const mechanicalEffects = {};
+  let totalBleedChance = 0;
+  let bleedRollResult = null;
   const ws = weapon?.system ?? {};
   const { sneakEffect } = await getSneakDamageFormula(
     actor,
@@ -644,6 +647,7 @@ export async function getEffectRolls(
   );
   console.log("sneakEffect", sneakEffect);
   let effectsRollResults = "";
+
   const offProps = getOffhandProps(weaponContext);
   const weaponEffects = ws.effects || {};
   const actorEffects = actor.system.effects || {};
@@ -659,7 +663,6 @@ export async function getEffectRolls(
   let totalBleeds = 0;
   let regularBleedRolls = [];
   let sharpBleedRolls = [];
-  const usedAbilitySlots = { extra1: false, extra2: false, extra3: false };
 
   if (critScore > 1) {
     critBleeds += 1;
@@ -693,24 +696,10 @@ export async function getEffectRolls(
             ? `<i class="fa-sharp-duotone fa-solid fa-star-christmas" style="--fa-primary-color: #c4c700; --fa-secondary-color: #5c5400;"></i> SUCCESS`
             : ``;
         effectsRollResults += `<p><b>| Stun: </b>${d100Roll.total} | < ${roundedModifiedValue}% ${successText}</p>`;
-      } else if (effectName === "bleed") {
-        modifiedEffectValue =
-          modifiedEffectValue +
-          doctrineBleedBonus +
-          (offProps?.effects?.bleed || 0) +
-          sneakEffect +
-          weaponSkillEffect;
-
-        const bleedBase = Math.floor(modifiedEffectValue / 100);
-        const bleedChance = modifiedEffectValue % 100;
-        const bleedRoll = new Roll("1d100");
-        await bleedRoll.evaluate();
-        const bleedRollResult = bleedRoll.total;
-
-        let regularStacks = bleedBase;
-        if (bleedRollResult <= bleedChance) regularStacks++;
-        normalBleeds += regularStacks;
-        regularBleedRolls.push(bleedRollResult);
+        mechanicalEffects["stun"] = {
+          chance: roundedModifiedValue,
+          roll: d100Roll.total,
+        };
       }
     }
   }
@@ -765,6 +754,10 @@ export async function getEffectRolls(
 
     // The 'name' variable here will be the user-typed custom name if applicable
     effectsRollResults += `<p><b>${name}:</b> ${d100Roll.total} < ${roundedModifiedValue}% ${successText}</p>`;
+    mechanicalEffects[name] = {
+      chance: roundedModifiedValue,
+      roll: d100Roll.total,
+    };
   }
 
   // --- 4. Sharp Bleed Logic ---
@@ -794,20 +787,45 @@ export async function getEffectRolls(
 
   // --- 5. Combine All Bleed Rolls and Final Return ---
 
-  const abilityBleed = abilityEffects["bleed"] || 0;
-  let bleedChanceDisplay;
-  if (weaponEffects.bleed > 0) {
-    bleedChanceDisplay =
+  let bleedChanceDisplay = 0;
+
+  if (weaponEffects.bleed > 0 || offProps?.effects?.bleed > 0) {
+    const abilityBleed = abilityEffects["bleed"] || 0;
+    const actorBleed = actorEffects["bleed"] || 0;
+    const offBleed = offProps?.effects?.bleed || 0;
+
+    totalBleedChance =
       (weaponEffects.bleed || 0) +
-      (actor.system.effects.bleed || 0) +
-      (abilityBleed || 0) +
-      (weaponSkillEffect || 0) +
-      (sneakEffect || 0) +
-      (offProps?.effects?.bleed || 0) +
-      (doctrineBleedBonus || 0);
+      actorBleed +
+      abilityBleed +
+      weaponSkillEffect +
+      sneakEffect +
+      offBleed +
+      doctrineBleedBonus;
+
+    bleedChanceDisplay = totalBleedChance;
+
+    const bleedRoll = new Roll("1d100");
+    await bleedRoll.evaluate();
+
+    bleedRollResult = bleedRoll.total;
+    regularBleedRolls.push(bleedRollResult);
+    // Stack calculation
+    const bleedBase = Math.floor(totalBleedChance / 100);
+    const bleedChance = totalBleedChance % 100;
+
+    let regularStacks = bleedBase;
+    if (bleedRollResult <= bleedChance) regularStacks++;
+
+    normalBleeds += regularStacks;
+
+    mechanicalEffects["bleed"] = {
+      chance: totalBleedChance,
+      roll: bleedRollResult,
+    };
   }
-  let allBleedRollResults = "";
   totalBleeds = critBleeds + normalBleeds;
+  let allBleedRollResults = "";
   if (totalBleeds > 0 || bleedChanceDisplay > 0) {
     allBleedRollResults = `| Bleed: ${[
       ...regularBleedRolls,
@@ -824,40 +842,122 @@ In total :(${totalBleeds}) due to Crit score: ${critScore}
 
   return {
     allBleedRollResults,
-    bleedChanceDisplay,
     effectsRollResults,
+    mechanicalEffects,
   };
 }
-
 export function evaluateDmgVsArmor({
   damage,
   penetration,
+  damageProfile = { expression: [] },
   armor,
   hp,
   tempHp,
   halfDamage = false,
+  shield = 0,
 }) {
-  let finalDamage;
-  if (damage <= penetration) {
-    finalDamage = damage;
-  } else {
-    const effective = Math.max(damage - armor, 0);
-    finalDamage = effective < penetration ? penetration : effective;
-  }
-  if (halfDamage) {
-    finalDamage = Math.floor(finalDamage / 2);
+  const { expression } = damageProfile;
+  const armorTable = armor ?? {};
+
+  /* 1️⃣ Shields */
+  let baseDamage = damage;
+  const shieldLoss = Math.min(shield, baseDamage);
+  baseDamage -= shieldLoss;
+
+  /* 2️⃣ Normal Armor */
+  const normalArmor = armorTable?.total ?? 0;
+  baseDamage = Math.max(baseDamage - normalArmor, 0);
+
+  /* 3️⃣ Penetration Floor */
+  baseDamage = Math.max(baseDamage, penetration ?? 0);
+
+  /* 4️⃣ Vulnerability Short-Circuit */
+  const hasVulnerability = expression.some(
+    (token) =>
+      token !== "and" && token !== "or" && armorTable?.[token]?.vulnerability,
+  );
+
+  if (hasVulnerability) {
+    let vulnerableDamage = Math.floor(baseDamage * 2);
+
+    if (halfDamage) {
+      vulnerableDamage = Math.floor(vulnerableDamage * 0.5);
+    }
+
+    return {
+      shieldLoss,
+      ...applyToHp(vulnerableDamage, hp, tempHp),
+    };
   }
 
-  const tempHpLoss = Math.floor(Math.min(tempHp, finalDamage));
-  const remainingDamage = finalDamage - tempHpLoss;
-  const hpLoss = Math.floor(Math.min(hp, remainingDamage));
-  const totalHpLoss = hpLoss + tempHpLoss;
+  /* 5️⃣ Evaluate Types */
+  const values = {};
+
+  for (const token of expression) {
+    if (token === "and" || token === "or") continue;
+
+    let value = baseDamage;
+
+    if (armorTable?.[token]?.immunity) {
+      value = 0;
+    } else {
+      const reduction = armorTable?.[token]?.total ?? 0;
+      value = Math.max(value - reduction, 0);
+
+      if (armorTable?.[token]?.resistance) {
+        value = Math.floor(value * 0.5);
+      }
+    }
+
+    values[token] = value;
+  }
+
+  /* 6️⃣ Reduce Expression */
+  let result = null;
+  let currentOp = null;
+
+  for (const token of expression) {
+    if (token === "and" || token === "or") {
+      currentOp = token;
+      continue;
+    }
+
+    const value = values[token];
+
+    if (result === null) {
+      result = value;
+    } else if (currentOp === "and") {
+      result = Math.min(result, value);
+    } else if (currentOp === "or") {
+      result = Math.max(result, value);
+    }
+  }
+
+  let finalDamage = result ?? 0;
+
+  /* 7️⃣ External Half Damage */
+  if (halfDamage) {
+    finalDamage = Math.floor(finalDamage * 0.5);
+  }
+
+  /* 8️⃣ Apply to HP (Single Source of Truth) */
+  return {
+    shieldLoss,
+    ...applyToHp(finalDamage, hp, tempHp),
+  };
+}
+
+function applyToHp(damage, hp, tempHp) {
+  const tempHpLoss = Math.min(tempHp, damage);
+  damage -= tempHpLoss;
+
+  const hpLoss = Math.min(hp, damage);
 
   return {
-    finalDamage,
+    finalDamage: damage,
     hpLoss,
     tempHpLoss,
-    totalHpLoss,
+    totalHpLoss: hpLoss + tempHpLoss,
     newHp: Math.max(hp - hpLoss, 0),
     newTempHp: tempHp - tempHpLoss,
   };

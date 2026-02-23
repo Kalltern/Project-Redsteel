@@ -46,6 +46,21 @@ export class ToSItem extends Item {
         "Wet",
       ];
 
+      this.system.dmgTypes = [
+        "blunt",
+        "piercing",
+        "slash",
+        "physical",
+        "acid",
+        "dark",
+        "fire",
+        "frost",
+        "lightning",
+        "magic",
+        "poison",
+        "psychic",
+      ];
+
       if (this.type === "spell" || this.type === "ability") {
         this.system.resourceOptions = {
           modes: ["add", "drain"],

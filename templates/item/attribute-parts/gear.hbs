@@ -173,56 +173,22 @@
       {{/unless}}
     </div>
     <hr />
-    <div class="grid grid-5col">
-      <div class="grid-span-1">
-        <label>{{localize "TOS.Item.Gear.FIELDS.acidArmor.label"}}</label>
-        <input
-          type="text"
-          name="system.armor.acid.value"
-          value="{{system.armor.acid.value}}"
-          data-dtype="Number"
-        />
-      </div>
-
-      <div class="grid-span-1">
-        <label>{{localize "TOS.Item.Gear.FIELDS.fireArmor.label"}}</label>
-        <input
-          type="text"
-          name="system.armor.fire.value"
-          value="{{system.armor.fire.value}}"
-          data-dtype="Number"
-        />
-      </div>
-
-      <div class="grid-span-1">
-        <label>{{localize "TOS.Item.Gear.FIELDS.frostArmor.label"}}</label>
-        <input
-          type="text"
-          name="system.armor.frost.value"
-          value="{{system.armor.frost.value}}"
-          data-dtype="Number"
-        />
-      </div>
-
-      <div class="grid-span-1">
-        <label>{{localize "TOS.Item.Gear.FIELDS.lightningArmor.label"}}</label>
-        <input
-          type="text"
-          name="system.armor.lightning.value"
-          value="{{system.armor.lightning.value}}"
-          data-dtype="Number"
-        />
-      </div>
-
-      <div class="grid-span-1">
-        <label>{{localize "TOS.Item.Gear.FIELDS.magicArmor.label"}}</label>
-        <input
-          type="text"
-          name="system.armor.magic.value"
-          value="{{system.armor.magic.value}}"
-          data-dtype="Number"
-        />
-      </div>
+    <div class="grid grid-8col">
+      {{#each system.armor as |armor key|}}
+        {{#unless (or (eq key "value") (eq key "durability"))}}
+          <div class="grid-span-1">
+            <label>
+              {{localize (concat "TOS.Item.Gear.FIELDS." key "Armor.label")}}
+            </label>
+            <input
+              type="text"
+              name="system.armor.{{key}}.value"
+              value="{{armor.value}}"
+              data-dtype="Number"
+            />
+          </div>
+        {{/unless}}
+      {{/each}}
     </div>
   </div>
 </section>

@@ -26,7 +26,49 @@ export async function universalAttackLogic({
     label: weapon.name,
     value: index,
   }));
+  function buildDamageProfile(systemData) {
+    if (!systemData) return { expression: [] };
 
+    const raw = [
+      systemData.dmgType1,
+      systemData.bool2,
+      systemData.dmgType2,
+      systemData.bool3,
+      systemData.dmgType3,
+      systemData.bool4,
+      systemData.dmgType4,
+    ]
+      .filter(Boolean)
+      .map((e) => e.toLowerCase());
+
+    return { expression: raw };
+  }
+
+  function resolveDamageProfile(
+    weapon,
+    ability = null,
+    selectedModifiers = [],
+  ) {
+    const weaponProfile = buildDamageProfile(weapon?.system);
+    const abilityProfile = buildDamageProfile(ability?.system);
+
+    // 1️⃣ Modifier authority (highest)
+    for (const mod of selectedModifiers) {
+      const modProfile = buildDamageProfile(mod.system);
+
+      if (modProfile.expression.length > 0) {
+        return modProfile; // first modifier with types wins
+      }
+    }
+
+    // 2️⃣ Ability authority
+    if (abilityProfile.expression.length > 0) {
+      return abilityProfile;
+    }
+
+    // 3️⃣ Weapon fallback
+    return weaponProfile;
+  }
   const handleWeaponSelection = async (weaponIndex) => {
     let customAttack = 0;
     let customDamage = "";
@@ -38,7 +80,7 @@ export async function universalAttackLogic({
 
     for (const mod of selectedModifiers) {
       if (mod.system.description) {
-        concatDescription += `<hr><b>${mod.name}</b><br>${mod.system.description}`;
+        concatDescription += `<b>${mod.name}</b><br>${mod.system.description}`;
       }
     }
 
@@ -78,13 +120,12 @@ export async function universalAttackLogic({
     <tr>
     <hr>
     <td>
-    
     <b>${mod.name} — ${testName} Test</b><br>
     Margin of Success: ${attributeRoll.total}<br>
-    
+    </td>
     </tr>
     <hr>
-    </td>
+    
  
   `;
     }
@@ -103,6 +144,22 @@ export async function universalAttackLogic({
       }
     }
     const weapon = weapons[weaponIndex];
+    console.log(
+      "Raw damage fields:",
+      weapon.system.dmgType1,
+      weapon.system.bool2,
+      weapon.system.dmgType2,
+      weapon.system.bool3,
+      weapon.system.dmgType3,
+      weapon.system.bool4,
+      weapon.system.dmgType4,
+    );
+    const damageProfile = resolveDamageProfile(
+      weapon,
+      null, // no ability layer here
+      selectedModifiers,
+    );
+
     const resolvedFlavor =
       typeof flavorLabel === "function" ? flavorLabel(weapon) : flavorLabel;
 
@@ -204,7 +261,20 @@ export async function universalAttackLogic({
       selectedModifiers,
     );
 
-    const { allBleedRollResults, effectsRollResults } = effects;
+    const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
+      effects;
+
+    const expression = damageProfile?.expression || [];
+
+    const dmgtypes =
+      expression.length > 0
+        ? `
+<tr><td>Damage types:</td></tr>
+<tr><td>${expression
+            .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
+            .join(" ")}</td></tr><hr>
+`
+        : "";
 
     // ─── Damage Line ───
     const damageLine = `
@@ -275,11 +345,11 @@ ${
   <strong style="font-size:20px;">${resolvedFlavor}${modifierLabel}</strong>
 </span>
 <hr>
-<table style="width:100%; text-align:center; font-size:16px;">
-
+<div style="text-align:center; font-size:16px;">
   ${concatDescription}
   ${attributeTestHTML}
-</table>
+  ${dmgtypes}
+</div>
 
 
 <p style="text-align:center; font-size:20px;">
@@ -305,6 +375,8 @@ ${damageLine}
         },
         attack: {
           type: "attack",
+          damageProfile,
+          effects: mechanicalEffects,
           normal: { damage: damageTotal, penetration: penetration },
           critical: {
             damage: critDamageTotal,

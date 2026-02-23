@@ -10,6 +10,7 @@ import { registerEffectSheetExtensions } from "./sheets/effect-sheet.mjs";
 // Import helper/utility classes and constants.
 
 import { TOS } from "./helpers/config.mjs";
+import { statusEffectManager } from "./utils/statusEffectManager.mjs";
 import { usePotion } from "./utils/usePotion.mjs";
 import { defenseRoll } from "./utils/defense.mjs";
 import { throwExplosive } from "./utils/throwExplosive.mjs";
@@ -82,6 +83,7 @@ Hooks.once("init", function () {
   CONFIG.TOS = TOS;
 
   game.tos = game.tos || {};
+  game.tos.statusEffectManager = statusEffectManager;
   game.tos.applyEffect = ToSActiveEffect.applyEffect.bind(ToSActiveEffect);
   game.tos.resolveWeaponContext = resolveWeaponContext;
   game.tos.deductAbilityCost = deductAbilityCost;
@@ -650,13 +652,14 @@ async function handleApplyDamage(messageId) {
   // Targets already selected
   checkTargetsAndContinue();
 }
-async function applyDamageToTargets(message, targets, mode) {
+async function applyDamageToTargets(message, targets, mode, selectedEffects) {
   const data = {
     type: "applyDamage",
     messageId: message.id,
     mode: mode,
     sceneId: canvas.scene.id,
     targetIds: targets.map((t) => t.id),
+    selectedEffects: selectedEffects,
   };
 
   if (game.user.isGM) {
@@ -669,10 +672,11 @@ async function applyDamageToTargets(message, targets, mode) {
   }
 }
 async function applyDamageAsGM(data) {
-  const { messageId, mode, targetIds, sceneId } = data;
-  if (!message?.flags?.attack) return;
+  const { messageId, mode, targetIds, sceneId, selectedEffects } = data;
+  const message = game.messages.get(messageId);
 
   const attack = message.flags.attack;
+  console.log("Attack object:", attack);
 
   const scene = game.scenes.get(sceneId);
   const combat = game.combat;
@@ -691,17 +695,16 @@ async function applyDamageAsGM(data) {
       actor,
       "system.stats.temporaryHealth.value",
     );
-    const armorTotal = getProperty(actor, "system.armor.total") || 0;
-
+    const damageProfile = attack.damageProfile ?? { expression: [] };
     const result = evaluateDmgVsArmor({
       damage: attack[mode].damage,
       penetration: attack[mode].penetration ?? 0,
-      armor: armorTotal,
+      damageProfile,
+      armor: actor.system.armor,
       hp: currentHp,
       tempHp: currentTemporaryHp,
       halfDamage: attack[mode].halfDamage ?? false,
     });
-
     const author =
       message.user ??
       game.users.get(message.userId) ??
@@ -721,6 +724,35 @@ async function applyDamageAsGM(data) {
       "system.stats.temporaryHealth.value": Number(result.newTempHp),
       "system.stats.health.value": Number(result.newHp),
     });
+
+    const effects = message.flags.attack.effects || {};
+    for (const [name, effect] of Object.entries(effects)) {
+      const targetMod = actor.system.effectMods?.[name]?.applyChance || 0;
+      const stackMod = actor.system.effectMods?.[name]?.stackMod || 0;
+
+      const finalChance = effect.chance + targetMod;
+
+      const allowedEffectsForTarget = selectedEffects?.[tokenId] || [];
+
+      if (!allowedEffectsForTarget.includes(name)) continue;
+
+      let stacks = 1;
+
+      if (name === "bleed") {
+        const baseStacks = Math.floor(finalChance / 100);
+        const remainder = finalChance % 100;
+
+        stacks = baseStacks;
+        if (effect.roll <= remainder) stacks++;
+      }
+
+      stacks += stackMod;
+
+      console.log(`Applying ${stacks} ${name} to ${actor.name}`);
+
+      await applyEffectToActor(actor, name, stacks);
+    }
+
     const combatant = combat?.combatants.find((c) => c.tokenId === tokenDoc.id);
     await handlePostDamageStatus({ actor, combatant });
   }
@@ -728,6 +760,7 @@ async function applyDamageAsGM(data) {
 
 function openDamageSelectionDialog(message, targets) {
   const attack = message.flags.attack;
+  const effects = attack.effects || {};
   let mode = "normal";
   const hasCritical = attack.critical !== "" && attack.critical !== undefined;
   const hasBreakthrough =
@@ -737,20 +770,47 @@ function openDamageSelectionDialog(message, targets) {
   const renderPreview = () =>
     targets
       .map((t) => {
+        const damageProfile = attack.damageProfile ?? { expression: [] };
+
         const result = evaluateDmgVsArmor({
           damage: attack[mode].damage,
           penetration: attack[mode].penetration ?? 0,
-          armor: t.actor.system.armor.total,
+          damageProfile,
+          armor: t.actor.system.armor,
           hp: t.actor.system.stats.health.value,
           tempHp: t.actor.system.stats.temporaryHealth.value,
           halfDamage: attack[mode].halfDamage ?? false,
         });
 
+        const effectPreview = Object.entries(effects)
+          .map(([name, effect]) => {
+            const targetMod =
+              t.actor.system.effectMods?.[name]?.applyChance || 0;
+            const originalChance = effect.chance;
+            const finalChance = originalChance + targetMod;
+            const success = effect.roll <= finalChance;
+
+            return `
+        <div style="margin-left:15px;">
+          <label>
+            <input type="checkbox"
+                   name="effect-${t.id}-${name}"
+                   ${success ? "checked" : ""}>
+            ${name.toUpperCase()} →
+            ${effect.roll} < ${finalChance}%
+          </label>
+        </div>
+      `;
+          })
+          .join("");
+
         return `
-        <li>
-          ${t.name} →
-          <strong>${result.finalDamage} HP</strong>
-        </li>`;
+    <li>
+      ${t.name} →
+      <strong>${result.finalDamage} HP</strong>
+      ${effectPreview}
+    </li>
+  `;
       })
       .join("");
 
@@ -781,7 +841,25 @@ function openDamageSelectionDialog(message, targets) {
     buttons: {
       apply: {
         label: "Apply",
-        callback: () => applyDamageToTargets(message, targets, mode),
+        callback: (html) => {
+          const selectedEffects = {};
+
+          html.find('input[type="checkbox"]').each((_, el) => {
+            if (!el.checked) return;
+
+            const parts = el.name.split("-");
+            const tokenId = parts[1];
+            const effectName = parts[2];
+
+            if (!selectedEffects[tokenId]) {
+              selectedEffects[tokenId] = [];
+            }
+
+            selectedEffects[tokenId].push(effectName);
+          });
+
+          applyDamageToTargets(message, targets, mode, selectedEffects);
+        },
       },
       cancel: { label: "Cancel" },
     },
@@ -819,6 +897,42 @@ async function handlePostDamageStatus({ actor, combatant }) {
   // Remove from combat if applicable
   if (combatant) {
     await combatant.parent.deleteEmbeddedDocuments("Combatant", [combatant.id]);
+  }
+}
+async function applyEffectToActor(actor, effectId, stacks = 1) {
+  if (!CONFIG.TOS.effectDefinitions[effectId]) {
+    console.warn(
+      `Effect ${effectId} not defined in CONFIG.TOS.effectDefinitions`,
+    );
+    return;
+  }
+
+  const existing = actor.effects.find((e) => e.statuses?.has(effectId));
+
+  // If effect already exists → increase stacks
+  if (existing) {
+    const currentStacks = existing.getFlag("tos", "stacks") || 1;
+    const newStacks = currentStacks + stacks;
+
+    await existing.setFlag("tos", "stacks", newStacks);
+
+    console.log(
+      `Increased ${effectId} on ${actor.name} to ${newStacks} stacks`,
+    );
+  } else {
+    // Use your system's central applyEffect method
+    await game.tos.applyEffect(actor, effectId);
+
+    // After applying, set stacks if >1
+    if (stacks > 1) {
+      const created = actor.effects.find((e) => e.statuses?.has(effectId));
+
+      if (created) {
+        await created.setFlag("tos", "stacks", stacks);
+      }
+    }
+
+    console.log(`Applied ${effectId} (${stacks}) to ${actor.name}`);
   }
 }
 

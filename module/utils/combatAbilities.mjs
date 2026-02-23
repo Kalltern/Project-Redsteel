@@ -600,10 +600,22 @@ export async function combatAbilities() {
     criticalFailureThreshold,
     halfDamage = 0,
     concatRollAndDescription,
+    mechanicalEffects,
+    damageProfile = [],
   }) {
     const attackHTML = await attackRoll.render();
     const damageHTML = await damageRoll.render();
+    const expression = damageProfile?.expression || [];
 
+    const dmgtypes =
+      expression.length > 0
+        ? `
+<tr><td>Damage types:</td></tr>
+<tr><td>${expression
+            .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
+            .join(" ")}</td></tr>
+`
+        : "";
     const hasBreakthrough =
       showBreakthrough &&
       typeof breakthroughRollResult === "string" &&
@@ -675,6 +687,7 @@ export async function combatAbilities() {
 <tr><td>${concatRollAndDescription}</td></tr>
 </table>
 <hr>
+${dmgtypes}
 <p style="text-align:center; font-size:20px;">
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
@@ -700,6 +713,8 @@ ${damageLine}
         },
         attack: {
           type: "attack",
+          damageProfile,
+          effects: mechanicalEffects,
           normal: { damage: damageTotal, penetration, halfDamage },
           critical: {
             damage: critDamageTotal,
@@ -714,6 +729,45 @@ ${damageLine}
         },
       },
     });
+  }
+  function buildDamageProfile(systemData) {
+    if (!systemData) return { expression: [] };
+
+    const raw = [
+      systemData.dmgType1,
+      systemData.bool2,
+      systemData.dmgType2,
+      systemData.bool3,
+      systemData.dmgType3,
+      systemData.bool4,
+      systemData.dmgType4,
+    ]
+      .filter(Boolean)
+      .map((e) => e.toLowerCase());
+
+    return { expression: raw };
+  }
+
+  function resolveDamageProfile(weapon, ability, selectedModifiers = []) {
+    const weaponProfile = buildDamageProfile(weapon?.system);
+    const abilityProfile = buildDamageProfile(ability?.system);
+
+    // 1️⃣ Modifier authority (highest)
+    for (const mod of selectedModifiers) {
+      const modProfile = buildDamageProfile(mod.system);
+
+      if (modProfile.expression.length > 0) {
+        return modProfile; // first modifier with types wins
+      }
+    }
+
+    // 2️⃣ Ability authority
+    if (abilityProfile.expression.length > 0) {
+      return abilityProfile;
+    }
+
+    // 3️⃣ Weapon fallback
+    return weaponProfile;
   }
 
   async function runAttackMacro(
@@ -733,6 +787,13 @@ ${damageLine}
     halfDamage,
   ) {
     const weapon = weaponContext?.weapon ?? null;
+
+    const damageProfile = resolveDamageProfile(
+      weapon,
+      ability,
+      selectedModifiers,
+    );
+
     abilityAttack = Number(abilityAttack) || 0;
     abilityPenetration = Number(abilityPenetration) || 0;
     abilityTestModifier = Number(abilityTestModifier) || 0;
@@ -846,7 +907,7 @@ ${damageLine}
       doctrineSkillCritPen,
     );
 
-    const { allBleedRollResults, bleedChanceDisplay, effectsRollResults } =
+    const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
       await game.tos.getEffectRolls(
         actor,
         weapon,
@@ -943,6 +1004,8 @@ ${damageLine}
       criticalSuccessThreshold,
       criticalFailureThreshold,
       concatRollAndDescription,
+      mechanicalEffects,
+      damageProfile,
     });
   }
 }

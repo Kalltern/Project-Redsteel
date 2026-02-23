@@ -547,6 +547,7 @@ export async function finalizeRollsAndPostChat(
 
   // --- EFFECT ROLLS ---
   const spellEffects = spell.system.effects || {};
+  const mechanicalEffects = {};
   let effectsRollResults = "";
 
   const spellSchool = spell.system.type;
@@ -593,9 +594,18 @@ export async function finalizeRollsAndPostChat(
       const d100Roll = new Roll("1d100");
       await d100Roll.evaluate();
 
-      const successText = d100Roll.total <= totalEffectValue ? " SUCCESS" : "";
+      const rollValue = d100Roll.total;
+      const successText = rollValue <= totalEffectValue ? " SUCCESS" : "";
 
-      effectsRollResults += `<p><b>${finalEffectName}:</b> ${d100Roll.total} < ${totalEffectValue}% ${successText}</p>`;
+      effectsRollResults += `
+  <p><b>${finalEffectName}:</b>
+  ${rollValue} < ${totalEffectValue}% ${successText}</p>
+`;
+
+      mechanicalEffects[finalEffectName.toLowerCase()] = {
+        chance: totalEffectValue,
+        roll: rollValue,
+      };
     }
   }
 
@@ -640,8 +650,8 @@ export async function finalizeRollsAndPostChat(
   const hasCritDamage = critSuccess === true;
   const showDamageTable = hasDamage;
   const damageHeaders = [
-    "<th>Normal</th>",
-    hasCritDamage && hasDamage ? "<th>Crit</th>" : "",
+    "<th>Damage</th>",
+    hasCritDamage && hasDamage ? "<th>Critical Damage</th>" : "",
   ].join("");
 
   const damageValues = [
@@ -749,14 +759,31 @@ export async function finalizeRollsAndPostChat(
 `;
   let attackFlag = null;
 
+  const damageProfile = {
+    expression: [
+      spell.system.dmgType1,
+      spell.system.bool2,
+      spell.system.dmgType2,
+      spell.system.bool3,
+      spell.system.dmgType3,
+      spell.system.bool4,
+      spell.system.dmgType4,
+    ]
+      .filter(Boolean)
+      .map((e) => e.toLowerCase()),
+  };
+
   if (hasDamage) {
     attackFlag = {
       type: "attack",
+      damageProfile,
       normal: {
         damage: damageTotal,
         penetration: spell.system.penetration,
         halfDamage: spell.system.halfDamage ?? false,
       },
+
+      effects: mechanicalEffects,
     };
 
     if (critSuccess) {
@@ -767,7 +794,7 @@ export async function finalizeRollsAndPostChat(
       };
     }
   }
-
+  console.log("Attack Flag:", attackFlag);
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
     content,

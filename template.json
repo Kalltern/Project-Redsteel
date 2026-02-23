@@ -7,46 +7,101 @@
         "biography": "",
         "armor": {
           "total": 0,
-          "natural": 0,
-          "acid": {
+          "natural": {
             "value": 0,
             "bonus": 0,
             "total": 0
+          },
+          "physical": {
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
+          },
+          "slash": {
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
+          },
+          "pierce": {
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
+          },
+          "blunt": {
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
+          },
+          "acid": {
+            "value": 0,
+            "bonus": 0,
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "fire": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "frost": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "lightning": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "magic": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "dark": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "poison": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
           },
           "holy": {
             "value": 0,
             "bonus": 0,
-            "total": 0
+            "total": 0,
+            "resistance": false,
+            "vulnerability": false,
+            "immunity": false
+          }
+        },
+        "effectMods": {
+          "stun": {
+            "applyChance": 0,
+            "stackMod": 0,
+            "immune": false
           }
         }
       }
@@ -850,7 +905,7 @@
       }
     },
     "npc": {
-      "templates": ["base", "armor"],
+      "templates": ["base"],
       "cr": 0,
       "critRangeMelee": 0,
       "critRangeRanged": 0,
@@ -1270,20 +1325,7 @@
         "Perception"
       ],
       "attributeTest": "",
-      "dmgTypes": [
-        "fire",
-        "frost",
-        "lightning",
-        "acid",
-        "poison",
-        "magic",
-        "dark",
-        "physical",
-        "psychic",
-        "blunt",
-        "piercing",
-        "slash"
-      ],
+      "dmgTypes": [],
       "testModifier": 0,
       "costOptions": [
         "stamina",

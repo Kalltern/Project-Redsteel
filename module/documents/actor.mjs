@@ -72,10 +72,10 @@ export class ToSActor extends Actor {
     }
     let totalArmor = 0;
     for (const item of this.items) {
-      for (const type of elementalTypes) {
-        systemData.armor[type].bonus += item.system?.armor?.[type].value ?? 0;
-      }
       if (item.type === "gear" && item.system.equipped) {
+        for (const type of elementalTypes) {
+          systemData.armor[type].bonus += item.system?.armor?.[type].value ?? 0;
+        }
         if (actorData.type === "character") {
           skill.acrobacy.bonus += item.system.acroPenalty ?? 0;
           skill.athletics.swimming += item.system.swimPenalty ?? 0;
@@ -100,7 +100,21 @@ export class ToSActor extends Actor {
       const armor = systemData.armor[type];
       armor.total = armor.value + armor.bonus;
     }
-    systemData.armor.total = totalArmor + systemData.armor.natural;
+
+    const armor = systemData.armor;
+
+    // Safety normalization //Armor Data migration
+    if (typeof armor.natural === "number") {
+      armor.natural = {
+        value: armor.natural,
+        bonus: 0,
+        total: 0,
+      };
+    }
+
+    const naturalArmor = armor.natural;
+    naturalArmor.total = naturalArmor.value + naturalArmor.bonus;
+    armor.total = totalArmor + naturalArmor.total;
     // Iterate through gear (only helmets)
     for (const item of this.items) {
       let combatSkill = systemData.combatSkills;
