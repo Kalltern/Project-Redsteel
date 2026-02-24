@@ -868,6 +868,7 @@ export async function getEffectRolls(
     mechanicalEffects["bleed"] = {
       chance: totalBleedChance,
       roll: bleedRollResult,
+      critStacks: critBleeds,
     };
   }
   totalBleeds = critBleeds + normalBleeds;

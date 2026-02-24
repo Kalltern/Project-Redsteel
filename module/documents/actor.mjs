@@ -556,6 +556,7 @@ export class ToSActor extends Actor {
           secAttribute.spd.value +
           secAttribute.spd.bonus -
           (stat.fatigue.value >= 3 ? 1 : 0);
+    Math.floor(secAttribute.spd.total);
 
     // Calculate resolve from endurance and will
     const calcResEnd = [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3];

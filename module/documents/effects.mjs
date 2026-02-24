@@ -65,7 +65,7 @@ export class ToSActiveEffect extends ActiveEffect {
     await this.decrementActorTurn();
   }
 
-  static async applyEffect(actor, effectId, { turns } = {}) {
+  static async applyEffect(actor, effectId, { stacks = 1, turns } = {}) {
     const def = CONFIG.TOS.effectDefinitions[effectId];
     if (!def) {
       ui.notifications.error(`Effect not found: ${effectId}`);
@@ -73,51 +73,43 @@ export class ToSActiveEffect extends ActiveEffect {
     }
 
     const duration = turns ?? def.defaultTurns ?? 0;
+    const maxStacks = def.maxStacks ?? 99;
 
-    // Check for existing effect with same status
     const existing = actor.effects.find((e) => e.statuses?.has(effectId));
 
+    // ============================================
+    // EXISTING EFFECT
+    // ============================================
     if (existing) {
-      switch (def.stacking ?? "refresh") {
-        case "ignore":
-          return existing;
+      const currentStacks = existing.getFlag("tos", "stacks") ?? 1;
 
-        case "refresh":
-          await existing.setFlag("tos", "actorTurns", duration);
-          return existing;
+      const newStacks = Math.min(currentStacks + stacks, maxStacks);
+      const appliedStacks = newStacks - currentStacks;
 
-        case "replace":
-          await existing.delete();
-          break;
+      if (appliedStacks <= 0) return existing;
 
-        case "stack": {
-          const currentStacks = existing.getFlag("tos", "stacks") ?? 1;
+      await existing.setFlag("tos", "stacks", newStacks);
 
-          if (currentStacks >= (def.maxStacks ?? 99)) {
-            return existing;
-          }
-
-          const newStacks = currentStacks + 1;
-          await existing.setFlag("tos", "stacks", newStacks);
-
-          // 🔥 THIS LINE
-          await existing.executeTrigger("onApply");
-
-          return existing;
-        }
+      if (duration > 0) {
+        await existing.setFlag("tos", "actorTurns", duration);
       }
+
+      await existing.executeTrigger("onApply", { appliedStacks });
+
+      return existing;
     }
+
+    // ============================================
+    // NEW EFFECT
+    // ============================================
+
+    const initialStacks = Math.min(stacks, maxStacks);
 
     const tosFlags = {
       triggers: def.triggers ?? {},
+      stacks: initialStacks,
     };
 
-    // Only set stacks if stackable
-    if (def.stacking === "stack") {
-      tosFlags.stacks = 1;
-    }
-
-    // Only set duration if positive
     if (duration > 0) {
       tosFlags.actorTurns = duration;
     }
@@ -132,7 +124,7 @@ export class ToSActiveEffect extends ActiveEffect {
       },
     ]);
 
-    await created.executeTrigger("onApply");
+    await created.executeTrigger("onApply", { appliedStacks: initialStacks });
 
     return created;
   }
@@ -201,7 +193,7 @@ export class ToSActiveEffect extends ActiveEffect {
     await this.setFlag("tos", "panicResolved", true);
   }
 
-  async executeTrigger(type) {
+  async executeTrigger(type, context = {}) {
     const trigger = this.triggers[type];
     if (!trigger) return;
 
@@ -209,13 +201,13 @@ export class ToSActiveEffect extends ActiveEffect {
     if (!actor) return;
 
     let formula = trigger.formula;
-    let panic = trigger.panic;
-    // Replace {stacks} placeholder
-    const stacks = this.getFlag("tos", "stacks") ?? 1;
-    formula = formula.replace("{stacks}", stacks);
-    if (panic) {
-      await this._handleBurningPanic();
-    }
+
+    const totalStacks = this.getFlag("tos", "stacks") ?? 1;
+    const appliedStacks = context.appliedStacks ?? 0;
+
+    // Replace safely
+    formula = formula.replaceAll("{stacks}", totalStacks);
+    formula = formula.replaceAll("{appliedStacks}", appliedStacks);
 
     const roll = await new Roll(formula, actor.getRollData()).roll();
 

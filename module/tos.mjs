@@ -730,8 +730,6 @@ async function applyDamageAsGM(data) {
       const targetMod = actor.system.effectMods?.[name]?.applyChance || 0;
       const stackMod = actor.system.effectMods?.[name]?.stackMod || 0;
 
-      const finalChance = effect.chance + targetMod;
-
       const allowedEffectsForTarget = selectedEffects?.[tokenId] || [];
 
       if (!allowedEffectsForTarget.includes(name)) continue;
@@ -739,17 +737,28 @@ async function applyDamageAsGM(data) {
       let stacks = 1;
 
       if (name === "bleed") {
-        const baseStacks = Math.floor(finalChance / 100);
-        const remainder = finalChance % 100;
+        const originalChance = effect.chance;
+        const critStacks = effect.critStacks || 0;
 
-        stacks = baseStacks;
+        const modifiedChance = originalChance + targetMod;
+
+        const base = Math.floor(modifiedChance / 100);
+        const remainder = modifiedChance % 100;
+
+        stacks = base;
         if (effect.roll <= remainder) stacks++;
+
+        if (mode === "critical") {
+          stacks += critStacks;
+        }
       }
 
       stacks += stackMod;
 
       console.log(`Applying ${stacks} ${name} to ${actor.name}`);
-
+      if (name === "bleed") {
+        console.log("BLEED SHOULD ROLL HERE");
+      }
       await applyEffectToActor(actor, name, stacks);
     }
 
@@ -786,21 +795,31 @@ function openDamageSelectionDialog(message, targets) {
           .map(([name, effect]) => {
             const targetMod =
               t.actor.system.effectMods?.[name]?.applyChance || 0;
-            const originalChance = effect.chance;
-            const finalChance = originalChance + targetMod;
-            const success = effect.roll <= finalChance;
+
+            const modifiedChance = effect.chance + targetMod;
+
+            let displayChance = modifiedChance;
+            let extraInfo = "";
+
+            if (name === "bleed") {
+              if (mode === "critical" && effect.critStacks > 0) {
+                extraInfo = ` + ${effect.critStacks} crit stack(s)`;
+              }
+            }
+
+            const success = effect.roll <= modifiedChance;
 
             return `
-        <div style="margin-left:15px;">
-          <label>
-            <input type="checkbox"
-                   name="effect-${t.id}-${name}"
-                   ${success ? "checked" : ""}>
-            ${name.toUpperCase()} →
-            ${effect.roll} < ${finalChance}%
-          </label>
-        </div>
-      `;
+      <div style="margin-left:15px;">
+        <label>
+          <input type="checkbox"
+                 name="effect-${t.id}-${name}"
+                 ${success ? "checked" : ""}>
+          ${name.toUpperCase()} →
+          ${effect.roll} < ${displayChance}%${extraInfo}
+        </label>
+      </div>
+    `;
           })
           .join("");
 
@@ -907,33 +926,7 @@ async function applyEffectToActor(actor, effectId, stacks = 1) {
     return;
   }
 
-  const existing = actor.effects.find((e) => e.statuses?.has(effectId));
-
-  // If effect already exists → increase stacks
-  if (existing) {
-    const currentStacks = existing.getFlag("tos", "stacks") || 1;
-    const newStacks = currentStacks + stacks;
-
-    await existing.setFlag("tos", "stacks", newStacks);
-
-    console.log(
-      `Increased ${effectId} on ${actor.name} to ${newStacks} stacks`,
-    );
-  } else {
-    // Use your system's central applyEffect method
-    await game.tos.applyEffect(actor, effectId);
-
-    // After applying, set stacks if >1
-    if (stacks > 1) {
-      const created = actor.effects.find((e) => e.statuses?.has(effectId));
-
-      if (created) {
-        await created.setFlag("tos", "stacks", stacks);
-      }
-    }
-
-    console.log(`Applied ${effectId} (${stacks}) to ${actor.name}`);
-  }
+  return await game.tos.applyEffect(actor, effectId, { stacks });
 }
 
 Hooks.on("renderChatMessage", (message, html, data) => {
@@ -1032,6 +1025,69 @@ Hooks.on("renderChatMessage", (message, html, data) => {
       });
     }
   }
+});
+Hooks.once("ready", async () => {
+  if (!game.user.isGM) return;
+
+  console.log("Running effectType normalization migration...");
+
+  const effectMap = {
+    Custom: "custom",
+    Bleeding: "bleed",
+    Blinded: "blind",
+    Burning: "burning",
+    Chain: "chain",
+    Corrosion: "corrosion",
+    "Corrosion-severe": "corrosion-severe",
+    Dazzled: "dazzled",
+    Disorientation: "disorientation",
+    Dispell: "dispell",
+    Fear: "fear",
+    Flammable: "flammable",
+    Frozen: "freeze",
+    "Heavy stun": "heavy stun",
+    Paralyzed: "paralyze",
+    Poisoned: "poison",
+    Precision: "precision",
+    Rooted: "root",
+    "Shield strain": "shield strain",
+    "Shield break": "shield break",
+    Slowed: "slow",
+    "Soul mark": "soul mark",
+    Stun: "stun",
+    Terror: "terror",
+    Vulnerable: "vulnerable",
+    Weakened: "weak",
+    Wet: "wet",
+  };
+
+  const items = game.items.filter((i) =>
+    ["spell", "ability", "weapon"].includes(i.type),
+  );
+
+  for (const item of items) {
+    const updates = {};
+
+    for (let i = 1; i <= 3; i++) {
+      const key = `effectType${i}`;
+      const current = item.system[key];
+
+      if (!current || typeof current !== "string") continue;
+
+      const mapped = effectMap[current];
+
+      if (mapped && mapped !== current) {
+        console.log(`Updating ${item.name} ${key}: ${current} → ${mapped}`);
+        updates[`system.${key}`] = mapped;
+      }
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await item.update(updates);
+    }
+  }
+
+  console.log("EffectType normalization complete.");
 });
 
 Hooks.once("ready", () => {

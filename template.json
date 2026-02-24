@@ -1001,10 +1001,14 @@
       },
       "secondaryAttributes": {
         "mov": {
-          "value": 0
+          "value": 0,
+          "bonus": 0,
+          "total": 0
         },
         "ini": {
-          "value": 0
+          "value": 0,
+          "bonus": 0,
+          "total": 0
         }
       },
       "effects": {
