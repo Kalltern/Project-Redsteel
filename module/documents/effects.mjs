@@ -10,7 +10,9 @@ export class ToSActiveEffect extends ActiveEffect {
     if (!counterApi) return;
 
     Hooks.on("preCreateActiveEffect", (effect) => {
-      if (!effect.statuses?.has("bleed")) return;
+      const statusId = effect.getFlag("core", "statusId");
+      const def = CONFIG.TOS.effectDefinitions[statusId];
+      if (!def?.maxStacks) return;
 
       effect.updateSource({
         "flags.statuscounter.config.dataSource": "flags.tos.stacks",
@@ -60,6 +62,22 @@ export class ToSActiveEffect extends ActiveEffect {
     }
   }
 
+  async updateCorrosionChange() {
+    if (this.getFlag("core", "statusId") !== "corrosion") return;
+
+    const stacks = this.getFlag("tos", "stacks") ?? 1;
+    const penalty = -4 * stacks;
+
+    const changes = this.changes.map((c) => {
+      if (c.key === "system.armor.natural.bonus") {
+        return { ...c, value: penalty };
+      }
+      return c;
+    });
+
+    await this.update({ changes });
+  }
+
   async _onActorTurnStart() {
     await this.executeTrigger("onTurnStart");
     await this.decrementActorTurn();
@@ -89,12 +107,15 @@ export class ToSActiveEffect extends ActiveEffect {
       if (appliedStacks <= 0) return existing;
 
       await existing.setFlag("tos", "stacks", newStacks);
+      await existing.updateCorrosionChange();
 
       if (duration > 0) {
         await existing.setFlag("tos", "actorTurns", duration);
       }
 
       await existing.executeTrigger("onApply", { appliedStacks });
+      console.log("Corrosion stacks before:", currentStacks);
+      console.log("Corrosion stacks after:", newStacks);
 
       return existing;
     }
@@ -125,7 +146,7 @@ export class ToSActiveEffect extends ActiveEffect {
     ]);
 
     await created.executeTrigger("onApply", { appliedStacks: initialStacks });
-
+    await created.updateCorrosionChange();
     return created;
   }
 

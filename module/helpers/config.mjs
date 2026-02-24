@@ -94,7 +94,6 @@ TOS.effectDefinitions = {
     name: "Bleeding",
     img: "icons/svg/blood.svg",
     statuses: ["bleed"],
-    stacking: "refresh",
     maxStacks: 6,
     triggers: {
       onApply: {
@@ -343,13 +342,12 @@ TOS.effectDefinitions = {
     name: "Corrosion",
     img: "icons/svg/daze.svg",
     statuses: ["corrosion"],
-    stacking: "stack",
-    scaleWithStacks: true,
+    maxStacks: 99,
     changes: [
       {
         key: "system.armor.natural.bonus",
         mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-        value: -4,
+        value: 0,
       },
     ],
   },

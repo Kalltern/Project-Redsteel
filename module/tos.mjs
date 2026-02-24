@@ -1089,7 +1089,23 @@ Hooks.once("ready", async () => {
 
   console.log("EffectType normalization complete.");
 });
+Hooks.once("ready", async () => {
+  for (const actor of game.actors) {
+    const natural = actor.system.armor?.natural;
 
+    if (typeof natural === "number") {
+      console.log(`Migrating armor for ${actor.name}`);
+
+      await actor.update({
+        "system.armor.natural": {
+          value: natural,
+          bonus: 0,
+          total: 0,
+        },
+      });
+    }
+  }
+});
 Hooks.once("ready", () => {
   // Listen for checkbox changes to update skill visibility
   $(document).on("change", ".toggle-skill-visibility", function () {

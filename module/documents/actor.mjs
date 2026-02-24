@@ -103,18 +103,10 @@ export class ToSActor extends Actor {
 
     const armor = systemData.armor;
 
-    // Safety normalization //Armor Data migration
-    if (typeof armor.natural === "number") {
-      armor.natural = {
-        value: armor.natural,
-        bonus: 0,
-        total: 0,
-      };
-    }
-
     const naturalArmor = armor.natural;
     naturalArmor.total = naturalArmor.value + naturalArmor.bonus;
     armor.total = totalArmor + naturalArmor.total;
+    armor.total = Math.max(0, armor.total);
     // Iterate through gear (only helmets)
     for (const item of this.items) {
       let combatSkill = systemData.combatSkills;
