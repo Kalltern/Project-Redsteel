@@ -51,6 +51,11 @@ TOS.statusEffects = [
     img: "icons/svg/skull.svg",
   },
   {
+    id: "prone",
+    name: "EFFECT.StatusProne",
+    img: "icons/svg/falling.svg",
+  },
+  {
     id: "bleed",
     name: "Bleeding",
     img: "icons/svg/blood.svg",

@@ -138,7 +138,7 @@
       "critRangeMelee": 0,
       "critRangeRanged": 0,
       "critRangeCast": 0,
-      "templates": ["base", "armor"],
+      "templates": ["base"],
       "stats": {
         "health": {
           "value": 20,

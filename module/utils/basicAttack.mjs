@@ -268,8 +268,8 @@ export async function universalAttackLogic({
 
     const dmgtypes =
       expression.length > 0
-        ? `
-<tr><td>Damage types:</td></tr>
+        ? `<hr>
+<tr><th>Damage types:</th></tr>
 <tr><td>${expression
             .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
             .join(" ")}</td></tr><hr>
@@ -348,17 +348,16 @@ ${
 <div style="text-align:center; font-size:16px;">
   ${concatDescription}
   ${attributeTestHTML}
-  ${dmgtypes}
-</div>
+ </div>
 
 
 <p style="text-align:center; font-size:20px;">
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
-
 ${damageLine}
-<hr>
-
+<div style="text-align:center; font-size:14px;">
+${dmgtypes}
+ </div>
 <table style="width:100%; text-align:center; font-size:15px;">
   <tr><th>Effects</th></tr>
   <tr>

@@ -73,9 +73,10 @@ export async function getNonWeaponAbility(actor, ability) {
     await attributeRoll.evaluate({ async: true });
 
     const attributeRollTotal = attributeRoll.total;
-    const attributeString = `
+    const attributeString = `<hr>
       |${abilityAttributeTestName} Test ${totalModifier}%|<br>
       Margin of Success: ${attributeRollTotal}<br>
+      <hr>
     `;
 
     concatRollAndDescription += attributeString;
@@ -83,58 +84,99 @@ export async function getNonWeaponAbility(actor, ability) {
   }
 
   // --- Custom Effects ---
-  const customEffectRolls = new Map();
-  let effectsRollResults = "";
+  const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
+    await game.tos.getEffectRolls(
+      actor,
+      null, // no weapon
+      null, // no weaponContext
+      0, // doctrineBleedBonus
+      0, // doctrineStunBonus
+      0, // weaponSkillEffect
+      0, // critScore
+      false, // critSuccess
+      ability,
+      [], // selectedModifiers if any
+    );
 
-  const effects = ability.system.effects || {};
   const system = ability.system || {};
-
-  for (let i = 1; i <= 3; i++) {
-    const value = effects[`extra${i}`] || 0;
-    if (value <= 0) continue;
-
-    const name = getEffectName(system, effects, i);
-    if (!name || name.trim() === "") continue;
-
-    customEffectRolls.set(name, value);
-  }
-
-  for (const [name, value] of customEffectRolls.entries()) {
-    const roll = new Roll("1d100");
-    await roll.evaluate({ async: true });
-
-    const success = roll.total <= value ? " SUCCESS" : "";
-    effectsRollResults += `<p><b>${name}:</b> ${roll.total} < ${value}${success}</p>`;
-  }
 
   // DAMAGE ROLL
   let damageRoll = null;
   const rollData = actor.getRollData();
-  if (ability.system.roll.diceBonus) {
-    damageRoll = new Roll(ability.system.roll.diceBonus, rollData);
+  if (system.roll.diceBonus) {
+    damageRoll = new Roll(system.roll.diceBonus, rollData);
     await damageRoll.evaluate({ async: true });
   }
+  const damageProfile = buildDamageProfile(system);
+  let rollName = ability.name;
+  const damageTotal = Math.floor(damageRoll.total);
+  const penetration = system.penetration;
+  const halfDamage = system.roll.halfDamage;
+  const attackHTML = await attributeTestRoll.render();
+  const damageHTML = await damageRoll.render();
+  const expression = damageProfile?.expression || [];
 
+  const dmgtypes =
+    expression.length > 0
+      ? `
+<tr><th>Damage types:</th></tr>
+<tr><td>${expression
+          .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
+          .join(" ")}</td></tr>
+`
+      : "";
   // Send the combined chat message
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
+    content: `
+<div class="dual-roll">
+  <div class="roll-column">
+    <div class="roll-label">Margin of Success</div>
+    ${attackHTML}
+  </div>
+  <div class="roll-column">
+    <div class="roll-label">Damage Roll</div>
+    ${damageHTML}
+  </div>
+</div>
+`,
     rolls: [attributeTestRoll, damageRoll].filter((r) => r),
+    flags: {
+      tos: {
+        rollName,
+      },
+      attack: {
+        type: "attack",
+        damageProfile,
+        effects: mechanicalEffects,
+        normal: {
+          damage: damageTotal,
+          penetration: penetration,
+          halfDamage: halfDamage,
+        },
+      },
+    },
     flavor: `
-        <div style="display:flex; align-items:center; justify-content:left; gap:8px; font-size:1.3em; font-weight:bold;">
-            <img src="${ability.img}" title="${ability.name}" width="36" height="36">
-            <span>${ability.name}</span>
-        </div>
-      <table style="width: 100%; text-align: center;font-size: 15px;">
-    <tr>
-      <th>Description:</th>
-    </tr>
-    <td>${concatRollAndDescription}</td>
-     <tr>
-      <th>Effects:</th>
-    </tr>
-    <td>${effectsRollResults}</td>
-    </table>
-    `,
+<div style="display:flex; align-items:center; justify-content:left; gap:8px; font-size:1.3em; font-weight:bold;">
+  <img src="${ability.img}" title="${ability.name}" width="36" height="36">
+  <span>${ability.name}</span>
+</div>
+<hr>
+<table style="width: 100%; text-align: center; font-size: 15px;">
+  <tr>    <th>Description:</th>  </tr>
+  <tr>    <td>${concatRollAndDescription}</td>  </tr>
+  ${dmgtypes}
+
+  <tr>    <td><hr></td>  </tr>
+
+  <tr>    <th>Effects:</th>  </tr>
+
+  <tr>    <td>${effectsRollResults}</td>  </tr>
+
+  <tr>    <td><hr></td>  </tr>
+
+</table>
+`,
   });
 }
 
@@ -675,7 +717,7 @@ export async function getEffectRolls(
     const modifier = actorEffects[effectName] || 0;
     const abilityBonus = abilityEffects[effectName] || 0;
     const offValue = offProps?.effects?.[effectName] || 0;
-    let shouldProcess = baseValue > 0 || offValue > 0;
+    let shouldProcess = baseValue > 0 || offValue > 0 || abilityBonus > 0;
 
     if (shouldProcess) {
       let modifiedEffectValue = offValue + baseValue + modifier + abilityBonus;
@@ -789,7 +831,11 @@ export async function getEffectRolls(
 
   let bleedChanceDisplay = 0;
 
-  if (weaponEffects.bleed > 0 || offProps?.effects?.bleed > 0) {
+  if (
+    weaponEffects.bleed > 0 ||
+    offProps?.effects?.bleed > 0 ||
+    abilityEffects["bleed"] > 0
+  ) {
     const abilityBleed = abilityEffects["bleed"] || 0;
     const actorBleed = actorEffects["bleed"] || 0;
     const offBleed = offProps?.effects?.bleed || 0;
@@ -982,4 +1028,44 @@ function collectExtrasFromSource(systemMap, effectMap, collector) {
 
     collector.push({ name, value });
   }
+}
+// injected function from combatAbilities, will be fixed later
+function buildDamageProfile(systemData) {
+  if (!systemData) return { expression: [] };
+
+  const raw = [
+    systemData.dmgType1,
+    systemData.bool2,
+    systemData.dmgType2,
+    systemData.bool3,
+    systemData.dmgType3,
+    systemData.bool4,
+    systemData.dmgType4,
+  ]
+    .filter(Boolean)
+    .map((e) => e.toLowerCase());
+
+  return { expression: raw };
+}
+
+function resolveDamageProfile(weapon, ability, selectedModifiers = []) {
+  const weaponProfile = buildDamageProfile(weapon?.system);
+  const abilityProfile = buildDamageProfile(ability?.system);
+
+  // 1️⃣ Modifier authority (highest)
+  for (const mod of selectedModifiers) {
+    const modProfile = buildDamageProfile(mod.system);
+
+    if (modProfile.expression.length > 0) {
+      return modProfile; // first modifier with types wins
+    }
+  }
+
+  // 2️⃣ Ability authority
+  if (abilityProfile.expression.length > 0) {
+    return abilityProfile;
+  }
+
+  // 3️⃣ Weapon fallback
+  return weaponProfile;
 }
