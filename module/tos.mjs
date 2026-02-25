@@ -130,7 +130,6 @@ Hooks.once("init", function () {
   CONFIG.Item.documentClass = ToSItem;
   CONFIG.Combat.documentClass = ToSCombat;
   CONFIG.ActiveEffect.documentClass = ToSActiveEffect;
-  ToSActiveEffect.registerHooks();
   CONFIG.statusEffects = TOS.statusEffects;
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
@@ -321,6 +320,10 @@ Hooks.once("ready", () => {
       await applyDamageAsGM(data);
     }
   });
+});
+
+Hooks.once("ready", () => {
+  ToSActiveEffect.registerHooks();
 });
 
 Hooks.once("ready", async () => {

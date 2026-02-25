@@ -239,7 +239,7 @@ export async function firstAid() {
     healRoll = new Roll("2d4");
     Math.floor(healRoll);
     await healRoll.evaluate({ async: true });
-  } else if (d100 <= critSuccess || firstAidRoll.total >= 50) {
+  } else if (d100 <= critSuccess || firstAidRoll.total >= 60) {
     critStatus = "<strong style='color: green;'>Critical Success!</strong>";
     healRoll = new Roll("(3d6+3)*2");
     Math.floor(healRoll);

@@ -358,8 +358,14 @@ TOS.effectDefinitions = {
   },
   fear: {
     name: "Fear",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/death/undead-ghost-scream-teal.webp",
     statuses: ["fear"],
+    defaultRounds: 3,
+    triggers: {
+      onRoundStart: {
+        custom: "fearTest",
+      },
+    },
     changes: [
       {
         key: "system.armor.natural.bonus",

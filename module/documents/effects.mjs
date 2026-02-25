@@ -2,10 +2,16 @@ export class ToSActiveEffect extends ActiveEffect {
   /* -------------------------------------------- */
   /*  CHANGE STRUCTURE                            */
   /* -------------------------------------------- */
-  static registerHooks() {
-    Hooks.on("updateCombat", this._onCombatUpdate.bind(this));
-  }
+
   static registerStatusCounterIntegration() {
+    if (!game.user.isGM) {
+      console.log(
+        "Skipping StatusCounter integration on non-GM:",
+        game.user.name,
+      );
+      return;
+    }
+
     const counterApi = game.modules.get("statuscounter")?.api;
     if (!counterApi) return;
 
@@ -32,15 +38,28 @@ export class ToSActiveEffect extends ActiveEffect {
       }
     });
   }
+  static registerHooks() {
+    if (this._hooksRegistered) return;
 
-  static async _onCombatUpdate(combat, changed) {
-    if ("round" in changed) {
+    Hooks.on("updateCombat", async (combat, changed) => {
+      if (!("round" in changed)) return;
+
+      if (!this._isAuthoritative()) return;
+
       await this._onRoundStart(combat);
-    }
+    });
 
-    if ("turn" in changed) {
+    Hooks.on("combatTurn", async (combat) => {
+      if (!this._isAuthoritative()) return;
       await this._onTurnStart(combat);
-    }
+    });
+
+    this._hooksRegistered = true;
+  }
+  static _isAuthoritative() {
+    if (!game.user.isGM) return false;
+    if (!game.users.activeGM) return false;
+    return game.user.id === game.users.activeGM.id;
   }
   static async _onTurnStart(combat) {
     const actor = combat.combatant?.actor;
@@ -52,6 +71,17 @@ export class ToSActiveEffect extends ActiveEffect {
   }
 
   static async _onRoundStart(combat) {
+    const lastProcessed = combat.getFlag("tos", "lastProcessedRound");
+
+    if (lastProcessed === combat.round) {
+      console.warn("TOS | Round already processed:", combat.round);
+      return;
+    }
+
+    await combat.setFlag("tos", "lastProcessedRound", combat.round);
+
+    console.log("TOS | Processing round:", combat.round);
+
     for (const combatant of combat.combatants) {
       const actor = combatant.actor;
       if (!actor) continue;
@@ -215,35 +245,38 @@ export class ToSActiveEffect extends ActiveEffect {
   }
 
   async executeTrigger(type, context = {}) {
-    const trigger = this.triggers[type];
+    const trigger = this.triggers?.[type];
     if (!trigger) return;
 
     const actor = this.parent;
     if (!actor) return;
 
+    // Handle custom trigger
+    if (trigger.custom === "fearTest") {
+      return game.tos?.handleFearTest?.(actor, this);
+    }
+
     let formula = trigger.formula;
+    if (!formula) return;
 
-    const totalStacks = this.getFlag("tos", "stacks") ?? 1;
-    const appliedStacks = context.appliedStacks ?? 0;
+    const stacks = this.getFlag("tos", "stacks") ?? 1;
+    const appliedStacks = context.appliedStacks ?? stacks;
 
-    // Replace safely
-    formula = formula.replaceAll("{stacks}", totalStacks);
-    formula = formula.replaceAll("{appliedStacks}", appliedStacks);
+    formula = formula
+      .replace("{stacks}", stacks)
+      .replace("{appliedStacks}", appliedStacks);
 
-    const roll = await new Roll(formula, actor.getRollData()).roll();
+    const roll = await new Roll(formula).roll();
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: this.name,
+      flavor: `${this.name} – ${type}`,
+      create: true,
     });
 
-    if (trigger.target) {
-      const current = foundry.utils.getProperty(actor, trigger.target);
-      if (typeof current !== "number") return;
-
-      await actor.update({
-        [trigger.target]: current - roll.total,
-      });
+    // Burning panic logic
+    if (trigger.panic) {
+      await this._handleBurningPanic();
     }
   }
 }
