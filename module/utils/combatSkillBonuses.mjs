@@ -535,7 +535,7 @@ export async function getDamageRolls(
     per: actor.system.attributes.per.total,
   };
   const offProps = getOffhandProps(weaponContext);
-
+  const actorMods = getActorCombatModifiers(actor, weapon);
   const { sneakDamage } = await getSneakDamageFormula(
     actor,
     weapon,
@@ -547,14 +547,18 @@ export async function getDamageRolls(
   }
   if (sneakDamage) damageFormula += `+ ${sneakDamage}`;
   if (abilityDamage) damageFormula += `+ ${abilityDamage}`;
+  if (actorMods) damageFormula += `+ ${actorMods.damageBonus}`;
   damageFormula += ")";
   damageFormula = damageFormula.replace(/\s*\+\s*$/, "");
   damageFormula = damageFormula.replace(/@([\w.]+)/g, (_, key) => {
     return foundry.utils.getProperty(rollData, key) ?? 0;
   });
+
   const damageRoll = new Roll(damageFormula, actor.system);
   await damageRoll.evaluate();
-  const damageTotal = Math.floor(damageRoll.total);
+
+  console.log("enchant damage", actorMods.damageBonus);
+  const damageTotal = Math.floor(damageRoll.total ?? 0);
 
   // If the weapon has breakthrough, roll it
   let breakthroughRollResult = "";
@@ -678,6 +682,7 @@ export async function getEffectRolls(
   selectedModifiers = [],
 ) {
   // --- Initial Setup ---
+
   const mechanicalEffects = {};
   let totalBleedChance = 0;
   let bleedRollResult = null;
@@ -693,6 +698,8 @@ export async function getEffectRolls(
   const offProps = getOffhandProps(weaponContext);
   const weaponEffects = ws.effects || {};
   const actorEffects = actor.system.effects || {};
+  const actorMods = getActorCombatModifiers(actor, weapon);
+
   const weaponSystem = ws || {};
   let abilityEffects = {};
   let abilitySystem = {};
@@ -747,6 +754,13 @@ export async function getEffectRolls(
   }
 
   const effectContributions = [];
+  if (actorMods?.extraEffects) {
+    for (const [name, value] of Object.entries(actorMods.extraEffects)) {
+      if (value > 0) {
+        effectContributions.push({ name, value });
+      }
+    }
+  }
   collectExtrasFromSource(weaponSystem, weaponEffects, effectContributions);
   if (
     offProps?.effects &&
@@ -1030,7 +1044,7 @@ function collectExtrasFromSource(systemMap, effectMap, collector) {
     collector.push({ name, value });
   }
 }
-// injected function from combatAbilities, will be fixed later
+// copypasted function from combatAbilities, will be fixed later
 function buildDamageProfile(systemData) {
   if (!systemData) return { expression: [] };
 
@@ -1049,24 +1063,35 @@ function buildDamageProfile(systemData) {
   return { expression: raw };
 }
 
-function resolveDamageProfile(weapon, ability, selectedModifiers = []) {
-  const weaponProfile = buildDamageProfile(weapon?.system);
-  const abilityProfile = buildDamageProfile(ability?.system);
+export function getActorCombatModifiers(actor) {
+  const effects = actor.system.activeCombatEffects ?? {};
 
-  // 1️⃣ Modifier authority (highest)
-  for (const mod of selectedModifiers) {
-    const modProfile = buildDamageProfile(mod.system);
+  let result = {
+    damageBonus: 0,
+    penetrationBonus: 0,
+    damageTypeMode: null,
+    damageTypes: [],
+    extraEffects: {},
+  };
 
-    if (modProfile.expression.length > 0) {
-      return modProfile; // first modifier with types wins
+  for (const group of Object.values(effects)) {
+    // 🔥 CRITICAL FIX
+    if (!group) continue;
+
+    result.damageBonus += group.damageBonus ?? 0;
+    result.penetrationBonus += group.penetrationBonus ?? 0;
+
+    if (group.damageTypes?.length) {
+      result.damageTypes.push(...group.damageTypes);
+      result.damageTypeMode = group.damageTypeMode ?? result.damageTypeMode;
+    }
+
+    if (group.extraEffects) {
+      for (const [k, v] of Object.entries(group.extraEffects)) {
+        result.extraEffects[k] = (result.extraEffects[k] ?? 0) + v;
+      }
     }
   }
 
-  // 2️⃣ Ability authority
-  if (abilityProfile.expression.length > 0) {
-    return abilityProfile;
-  }
-
-  // 3️⃣ Weapon fallback
-  return weaponProfile;
+  return result;
 }

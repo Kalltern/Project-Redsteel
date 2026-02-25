@@ -748,16 +748,20 @@ ${damageLine}
     return { expression: raw };
   }
 
-  function resolveDamageProfile(weapon, ability, selectedModifiers = []) {
+  function resolveDamageProfile(
+    weapon,
+    ability = null,
+    selectedModifiers = [],
+    actor = null,
+  ) {
     const weaponProfile = buildDamageProfile(weapon?.system);
     const abilityProfile = buildDamageProfile(ability?.system);
 
     // 1️⃣ Modifier authority (highest)
     for (const mod of selectedModifiers) {
       const modProfile = buildDamageProfile(mod.system);
-
       if (modProfile.expression.length > 0) {
-        return modProfile; // first modifier with types wins
+        return modProfile;
       }
     }
 
@@ -766,7 +770,43 @@ ${damageLine}
       return abilityProfile;
     }
 
-    // 3️⃣ Weapon fallback
+    // 3️⃣ Actor enchant authority
+    if (actor) {
+      const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+
+      if (actorMods?.damageTypes?.length) {
+        const baseExpression = weaponProfile.expression ?? [];
+        const baseTypes = baseExpression.filter(
+          (t) => t !== "and" && t !== "or",
+        );
+
+        const enchantTypes = actorMods.damageTypes.map((t) => t.toLowerCase());
+
+        let finalTypes;
+
+        if (actorMods.damageTypeMode === "override") {
+          finalTypes = enchantTypes;
+        } else {
+          // expand
+          finalTypes = [...baseTypes];
+          for (const type of enchantTypes) {
+            if (!finalTypes.includes(type)) {
+              finalTypes.push(type);
+            }
+          }
+        }
+
+        const newExpression = [];
+        finalTypes.forEach((type, index) => {
+          if (index > 0) newExpression.push("or");
+          newExpression.push(type);
+        });
+
+        return { expression: newExpression };
+      }
+    }
+
+    // 4️⃣ Weapon fallback
     return weaponProfile;
   }
 
@@ -792,6 +832,7 @@ ${damageLine}
       weapon,
       ability,
       selectedModifiers,
+      actor,
     );
 
     abilityAttack = Number(abilityAttack) || 0;
@@ -858,8 +899,9 @@ ${damageLine}
           weaponContext.offWeapon?.system?.offhandProperties?.penetration,
         ) || 0
       : 0;
-
-    const penetration = mainPen + offPen + abilityPenetration;
+    const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+    const penetration =
+      mainPen + offPen + abilityPenetration + actorMods.penetrationBonus;
 
     let {
       attackRoll,
@@ -1006,6 +1048,7 @@ ${damageLine}
       concatRollAndDescription,
       mechanicalEffects,
       damageProfile,
+      halfDamage,
     });
   }
 }

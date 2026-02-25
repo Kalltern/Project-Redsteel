@@ -2,7 +2,9 @@ export class ToSActiveEffect extends ActiveEffect {
   /* -------------------------------------------- */
   /*  CHANGE STRUCTURE                            */
   /* -------------------------------------------- */
-
+  static EFFECT_OVERRIDES = {
+    heavy_stun: ["stun"],
+  };
   static registerStatusCounterIntegration() {
     if (!game.user.isGM) {
       console.log(
@@ -42,16 +44,15 @@ export class ToSActiveEffect extends ActiveEffect {
     if (this._hooksRegistered) return;
 
     Hooks.on("updateCombat", async (combat, changed) => {
-      if (!("round" in changed)) return;
-
       if (!this._isAuthoritative()) return;
 
-      await this._onRoundStart(combat);
-    });
+      if ("round" in changed) {
+        await this._onRoundStart(combat);
+      }
 
-    Hooks.on("combatTurn", async (combat) => {
-      if (!this._isAuthoritative()) return;
-      await this._onTurnStart(combat);
+      if ("turn" in changed) {
+        await this._onTurnStart(combat);
+      }
     });
 
     this._hooksRegistered = true;
@@ -82,7 +83,7 @@ export class ToSActiveEffect extends ActiveEffect {
 
     console.log("TOS | Processing round:", combat.round);
 
-    for (const combatant of combat.combatants) {
+    for (const combatant of combat.combatants.values()) {
       const actor = combatant.actor;
       if (!actor) continue;
 
@@ -92,6 +93,37 @@ export class ToSActiveEffect extends ActiveEffect {
     }
   }
 
+  static async _applyCombatModifiers(actor, combatModifiers) {
+    const group = combatModifiers.exclusiveGroup ?? "default";
+
+    const current = foundry.utils.deepClone(
+      actor.system.activeCombatEffects ?? {},
+    );
+
+    // Remove any existing modifier in same exclusive group
+    if (current[group]) {
+      delete current[group];
+    }
+
+    current[group] = combatModifiers;
+
+    await actor.update({
+      "system.activeCombatEffects": current,
+    });
+  }
+
+  static async _removeCombatModifiers(actor, effectId) {
+    const def = CONFIG.TOS.effectDefinitions[effectId];
+    if (!def?.combatModifiers) return;
+
+    const group = def.combatModifiers.exclusiveGroup ?? "default";
+
+    console.log("Removing group:", group);
+
+    await actor.update({
+      [`system.activeCombatEffects.-=${group}`]: null,
+    });
+  }
   async updateCorrosionChange() {
     if (this.getFlag("core", "statusId") !== "corrosion") return;
 
@@ -124,13 +156,33 @@ export class ToSActiveEffect extends ActiveEffect {
     const maxStacks = def.maxStacks ?? 99;
 
     const existing = actor.effects.find((e) => e.statuses?.has(effectId));
+    // ============================================
+    // Effect Override Rules
+    // ============================================
+    const overrides = this.EFFECT_OVERRIDES?.[effectId];
+    if (overrides?.length) {
+      for (const overrideId of overrides) {
+        const existing = actor.effects.find((e) => e.statuses?.has(overrideId));
+        if (existing) {
+          await existing.delete();
+        }
+      }
+    }
 
     // ============================================
     // EXISTING EFFECT
     // ============================================
     if (existing) {
-      const currentStacks = existing.getFlag("tos", "stacks") ?? 1;
+      // -----------------------------
+      // FEAR: Reset instead of stack
+      // -----------------------------
+      if (effectId === "fear") {
+        await existing.setFlag("tos", "stacks", 3);
+        await existing.executeTrigger("onApply", { appliedStacks: 3 });
+        return existing;
+      }
 
+      const currentStacks = existing.getFlag("tos", "stacks") ?? 1;
       const newStacks = Math.min(currentStacks + stacks, maxStacks);
       const appliedStacks = newStacks - currentStacks;
 
@@ -144,9 +196,6 @@ export class ToSActiveEffect extends ActiveEffect {
       }
 
       await existing.executeTrigger("onApply", { appliedStacks });
-      console.log("Corrosion stacks before:", currentStacks);
-      console.log("Corrosion stacks after:", newStacks);
-
       return existing;
     }
 
@@ -154,7 +203,7 @@ export class ToSActiveEffect extends ActiveEffect {
     // NEW EFFECT
     // ============================================
 
-    const initialStacks = Math.min(stacks, maxStacks);
+    const initialStacks = effectId === "fear" ? 3 : Math.min(stacks, maxStacks);
 
     const tosFlags = {
       triggers: def.triggers ?? {},
@@ -176,7 +225,14 @@ export class ToSActiveEffect extends ActiveEffect {
     ]);
 
     await created.executeTrigger("onApply", { appliedStacks: initialStacks });
+    // Corrosion armor update
     await created.updateCorrosionChange();
+    // --------------------------------------------
+    // COMBAT MODIFIER INTEGRATION
+    // --------------------------------------------
+    if (def.combatModifiers) {
+      await this._applyCombatModifiers(actor, def.combatModifiers);
+    }
     return created;
   }
 
@@ -200,11 +256,14 @@ export class ToSActiveEffect extends ActiveEffect {
   async decrementActorTurn() {
     if (!this.actorTurns) return;
 
-    if (this.actorTurns <= 1) {
-      return this.delete();
+    const remaining = this.actorTurns - 1;
+    console.log("Remaining stacks", remaining);
+    if (remaining <= 0) {
+      await this.delete();
+      return;
     }
 
-    return this.setFlag("tos", "actorTurns", this.actorTurns - 1);
+    await this.setFlag("tos", "actorTurns", remaining);
   }
 
   /* -------------------------------------------- */
@@ -222,7 +281,7 @@ export class ToSActiveEffect extends ActiveEffect {
     const actor = this.parent;
     if (!actor) return;
 
-    const resolve = actor.system.secondaryAttributes.res?.value ?? 0;
+    const resolve = actor.system.secondaryAttributes.res?.total ?? 0;
 
     const roll = await new Roll(`${resolve * 10} - 1d100`).roll();
 
@@ -244,6 +303,85 @@ export class ToSActiveEffect extends ActiveEffect {
     await this.setFlag("tos", "panicResolved", true);
   }
 
+  async _handleFearTest() {
+    const actor = this.parent;
+    if (!actor) return;
+
+    const resolve = actor.system.secondaryAttributes.res?.total ?? 0;
+
+    const roll = await new Roll(`${resolve * 10} - 1d100`).roll();
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor: "Fear – Resolve Test",
+    });
+
+    const total = roll.total;
+
+    // Extract raw d100 result safely
+    const dice = roll.terms.find((t) => t.faces === 100);
+    const diceResult = dice?.results?.[0]?.result ?? 0;
+
+    let stacks = this.getFlag("tos", "stacks") ?? 1;
+
+    // =========================
+    // CRITICAL FAILURE
+    // =========================
+    if (total <= -60 || diceResult >= 96) {
+      stacks += 1;
+      await this.setFlag("tos", "stacks", stacks);
+
+      ui.notifications.info(`${actor.name} is overwhelmed by fear! (+1 round)`);
+      return;
+    }
+
+    // =========================
+    // CRITICAL SUCCESS
+    // =========================
+    if (total >= 60 || diceResult <= 5) {
+      stacks -= 1;
+
+      if (stacks <= 0) {
+        await this.delete();
+        ui.notifications.info(`${actor.name} overcomes their fear!`);
+        return;
+      }
+
+      await this.setFlag("tos", "stacks", stacks);
+      ui.notifications.info(`${actor.name} steels their nerves. (-1 round)`);
+      return;
+    }
+
+    // Any fail will apply panic
+    if (roll.total >= 0) return;
+    await game.tos.applyEffect(actor, "panic");
+  }
+
+  async _handleFearRound() {
+    const actor = this.parent;
+    if (!actor) return;
+
+    let stacks = this.getFlag("tos", "stacks") ?? 1;
+
+    // -------------------------
+    // Automatic decrement
+    // -------------------------
+    stacks -= 1;
+
+    if (stacks <= 0) {
+      await this.delete();
+      ui.notifications.info(`${actor.name} is no longer afraid.`);
+      return;
+    }
+
+    await this.setFlag("tos", "stacks", stacks);
+
+    // -------------------------
+    // Now perform resolve test
+    // -------------------------
+    await this._handleFearTest();
+  }
+
   async executeTrigger(type, context = {}) {
     const trigger = this.triggers?.[type];
     if (!trigger) return;
@@ -253,7 +391,11 @@ export class ToSActiveEffect extends ActiveEffect {
 
     // Handle custom trigger
     if (trigger.custom === "fearTest") {
-      return game.tos?.handleFearTest?.(actor, this);
+      return this._handleFearTest();
+    }
+
+    if (trigger.custom === "fearRound") {
+      return this._handleFearRound();
     }
 
     let formula = trigger.formula;
@@ -278,5 +420,20 @@ export class ToSActiveEffect extends ActiveEffect {
     if (trigger.panic) {
       await this._handleBurningPanic();
     }
+  }
+  async _onDelete(options, userId) {
+    await super._onDelete(options, userId);
+
+    const actor = this.parent;
+    if (!actor) return;
+
+    console.log("Deleting effect:", this.name);
+    console.log("StatusId:", this.getFlag("core", "statusId"));
+    console.log("Combat Effects BEFORE:", actor.system.activeCombatEffects);
+
+    const effectId = this.getFlag("core", "statusId");
+    if (!effectId) return;
+
+    await ToSActiveEffect._removeCombatModifiers(actor, effectId);
   }
 }

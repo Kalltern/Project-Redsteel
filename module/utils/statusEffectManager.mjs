@@ -1,8 +1,11 @@
 export async function statusEffectManager() {
   const STATUS_EFFECTS = Object.entries(CONFIG.TOS.effectDefinitions)
-    .map(([id, def]) => ({ id, name: def.name }))
+    .map(([id, def]) => ({
+      id,
+      name: def.name,
+      icon: def.img,
+    }))
     .sort((a, b) => a.name.localeCompare(b.name));
-
   function getSelectedActors() {
     const tokens = canvas.tokens.controlled;
 
@@ -67,26 +70,50 @@ export async function statusEffectManager() {
   flex-direction:column;
   gap:6px;
 }
+
 .tos-scroll {
   max-height:400px;
   overflow-y:auto;
   padding-right:4px;
 }
+
 .tos-row {
   display:flex;
   justify-content:space-between;
   align-items:center;
   font-size:13px;
-  padding:2px 0;
+  padding:4px 0;
 }
+
+.tos-effect-info {
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.tos-effect-icon {
+  width:18px;
+  height:18px;
+  object-fit:contain;
+}
+
+.tos-effect-name {
+  transition:0.15s;
+}
+
+.tos-row.hovering .tos-effect-name {
+  color:#ff4d4d;
+  text-shadow:0 0 6px red;
+}
+
 .tos-actions span {
   cursor:pointer;
   margin-left:6px;
   transition:0.15s;
 }
+
 .tos-actions span:hover {
   color:#ff4d4d;
-  text-shadow:0 0 6px red;
 }
 </style>
 
@@ -100,9 +127,12 @@ export async function statusEffectManager() {
 
   for (const effect of STATUS_EFFECTS) {
     content += `
-    <div class="tos-row">
-      <div>${effect.name}</div>
-      <div class="tos-actions">
+<div class="tos-row" data-effect-row="${effect.id}">
+  <div class="tos-effect-info">
+    <img src="${effect.icon}" class="tos-effect-icon"/>
+    <span class="tos-effect-name">${effect.name}</span>
+  </div>
+  <div class="tos-actions">
         <span data-apply="${effect.id}">APPLY</span> |
         <span data-remove="${effect.id}">REMOVE</span>
       </div>
@@ -140,6 +170,23 @@ export async function statusEffectManager() {
           const effectId = e.currentTarget.dataset.remove;
           await removeEffectFromAll(effectId);
         });
+      });
+      root.querySelectorAll(".tos-row").forEach((row) => {
+        const apply = row.querySelector("[data-apply]");
+        const remove = row.querySelector("[data-remove]");
+
+        const addHover = () => row.classList.add("hovering");
+        const removeHover = () => row.classList.remove("hovering");
+
+        if (apply) {
+          apply.addEventListener("mouseenter", addHover);
+          apply.addEventListener("mouseleave", removeHover);
+        }
+
+        if (remove) {
+          remove.addEventListener("mouseenter", addHover);
+          remove.addEventListener("mouseleave", removeHover);
+        }
       });
     },
   }).render(true);

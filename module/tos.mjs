@@ -47,6 +47,7 @@ import {
   getEffectRolls,
   getCriticalRolls,
   evaluateDmgVsArmor,
+  getActorCombatModifiers,
 } from "./utils/combatSkillBonuses.mjs";
 import {
   showSpellSelectionDialogs,
@@ -84,6 +85,7 @@ Hooks.once("init", function () {
 
   game.tos = game.tos || {};
   game.tos.statusEffectManager = statusEffectManager;
+  game.tos.getActorCombatModifiers = getActorCombatModifiers;
   game.tos.applyEffect = ToSActiveEffect.applyEffect.bind(ToSActiveEffect);
   game.tos.resolveWeaponContext = resolveWeaponContext;
   game.tos.deductAbilityCost = deductAbilityCost;
@@ -699,6 +701,7 @@ async function applyDamageAsGM(data) {
       "system.stats.temporaryHealth.value",
     );
     const damageProfile = attack.damageProfile ?? { expression: [] };
+
     const result = evaluateDmgVsArmor({
       damage: attack[mode].damage,
       penetration: attack[mode].penetration ?? 0,
@@ -783,7 +786,7 @@ function openDamageSelectionDialog(message, targets) {
     targets
       .map((t) => {
         const damageProfile = attack.damageProfile ?? { expression: [] };
-
+        console.log("attack[mode]:", attack[mode]);
         const result = evaluateDmgVsArmor({
           damage: attack[mode].damage,
           penetration: attack[mode].penetration ?? 0,

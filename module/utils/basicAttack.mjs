@@ -48,25 +48,60 @@ export async function universalAttackLogic({
     weapon,
     ability = null,
     selectedModifiers = [],
+    actor = null,
   ) {
     const weaponProfile = buildDamageProfile(weapon?.system);
     const abilityProfile = buildDamageProfile(ability?.system);
 
-    // 1️⃣ Modifier authority (highest)
+    // Modifier authority (highest)
     for (const mod of selectedModifiers) {
       const modProfile = buildDamageProfile(mod.system);
-
       if (modProfile.expression.length > 0) {
-        return modProfile; // first modifier with types wins
+        return modProfile;
       }
     }
 
-    // 2️⃣ Ability authority
+    // ACTOR ENCHANT OVERRIDE
+    if (actor) {
+      const actorMods = game.tos.getActorCombatModifiers(actor);
+      console.log("Actor enchant mods:", actorMods);
+      if (actorMods?.damageTypes?.length) {
+        const baseExpression = weaponProfile.expression ?? [];
+
+        const baseTypes = baseExpression.filter(
+          (t) => t !== "and" && t !== "or",
+        );
+        const enchantTypes = actorMods.damageTypes.map((t) => t.toLowerCase());
+        let finalTypes;
+        if (actorMods.damageTypeMode === "override") {
+          finalTypes = enchantTypes;
+        } else {
+          // default to expand
+          finalTypes = [...baseTypes];
+          for (const type of enchantTypes) {
+            if (!finalTypes.includes(type)) {
+              finalTypes.push(type);
+            }
+          }
+        }
+
+        // Always convert to OR chain
+        const newExpression = [];
+        finalTypes.forEach((type, index) => {
+          if (index > 0) newExpression.push("or");
+          newExpression.push(type);
+        });
+
+        return { expression: newExpression };
+      }
+    }
+
+    // Ability authority
     if (abilityProfile.expression.length > 0) {
       return abilityProfile;
     }
 
-    // 3️⃣ Weapon fallback
+    // Weapon fallback
     return weaponProfile;
   }
   const handleWeaponSelection = async (weaponIndex) => {
@@ -158,6 +193,7 @@ export async function universalAttackLogic({
       weapon,
       null, // no ability layer here
       selectedModifiers,
+      actor,
     );
 
     const resolvedFlavor =
@@ -185,8 +221,9 @@ export async function universalAttackLogic({
           resolvedContext.offWeapon?.system?.offhandProperties?.penetration,
         ) || 0
       : 0;
-
-    const penetration = mainPen + offPen + customPenetration;
+    const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+    const penetration =
+      mainPen + offPen + customPenetration + actorMods.penetrationBonus;
     const totalDoctrineBonus = doctrine.doctrineBonus;
     const totalDoctrineCritBonus =
       doctrine.doctrineCritBonus + customCritChance;
@@ -265,7 +302,10 @@ export async function universalAttackLogic({
       effects;
 
     const expression = damageProfile?.expression || [];
-
+    console.log(
+      "Actor combat mods:",
+      game.tos.getActorCombatModifiers(actor, weapon),
+    );
     const dmgtypes =
       expression.length > 0
         ? `<hr>

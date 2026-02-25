@@ -170,7 +170,7 @@ export class ToSItem extends Item {
 
     let half = false;
     let formula = input;
-
+    console.log("INPUT:", input);
     if (typeof formula === "string" && formula.includes("@Half")) {
       half = true;
       formula = formula.replace("@Half", "");

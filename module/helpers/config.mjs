@@ -361,9 +361,13 @@ TOS.effectDefinitions = {
     img: "icons/magic/death/undead-ghost-scream-teal.webp",
     statuses: ["fear"],
     defaultRounds: 3,
+    maxStacks: 99,
     triggers: {
-      onRoundStart: {
+      onApply: {
         custom: "fearTest",
+      },
+      onRoundStart: {
+        custom: "fearRound",
       },
     },
     changes: [
@@ -386,5 +390,103 @@ TOS.effectDefinitions = {
         value: -25,
       },
     ],
+  },
+  resist_acid: {
+    name: "Resist Acid",
+    img: "icons/magic/acid/projectile-bubble.webp",
+    statuses: ["resist_acid"],
+    changes: [
+      {
+        key: "system.armor.acid.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  resist_fire: {
+    name: "Resist Fire",
+    img: "icons/magic/fire/flame-burning-embers-yellow.webp",
+    statuses: ["resist_fire"],
+    changes: [
+      {
+        key: "system.armor.fire.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  resist_frost: {
+    name: "Resist Frost",
+    img: "icons/magic/water/snowflake-ice-blue.webp",
+    statuses: ["resist_frost"],
+    changes: [
+      {
+        key: "system.armor.frost.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  resist_lightning: {
+    name: "Resist Lightning",
+    img: "icons/magic/lightning/bolt-strike-blue.webp",
+    statuses: ["resist_lightning"],
+    changes: [
+      {
+        key: "system.armor.lightning.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  resist_magic: {
+    name: "Resist Magic",
+    img: "icons/magic/symbols/runes-star-glow-purple.webp",
+    statuses: ["resist_magic"],
+    changes: [
+      {
+        key: "system.armor.magic.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  resist_dark: {
+    name: "Resist Dark",
+    img: "icons/magic/death/skull-energy-purple.webp",
+    statuses: ["resist_dark"],
+    changes: [
+      {
+        key: "system.armor.dark.resistance",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: true,
+      },
+    ],
+  },
+
+  ice_weapon: {
+    name: "Ice Weapon",
+    img: "icons/magic/water/snowflake-ice-blue.webp",
+    statuses: ["ice_weapon"],
+    defaultTurns: 5,
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+
+      damageBonus: 2,
+      penetrationBonus: 1,
+
+      damageTypeMode: "expand",
+      damageTypes: ["magic", "frost"],
+
+      extraEffects: {
+        slow: 15,
+      },
+    },
   },
 };
