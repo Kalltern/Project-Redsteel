@@ -863,7 +863,8 @@ export class ToSActor extends Actor {
         (attribute.modBonus ?? 0) +
         (systemData.globalMod ?? 0);
     }
-
+    const initiative = systemData.secondaryAttributes.ini;
+    initiative.total = initiative.value + initiative.bonus;
     const hp = systemData.stats.health;
     const stamina = systemData.stats.stamina;
     const holyEnergy = systemData.stats.holyEnergy;

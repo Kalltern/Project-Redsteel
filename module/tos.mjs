@@ -312,14 +312,20 @@ Hooks.once("ready", function () {
   Hooks.on("hotbarDrop", (bar, data, slot) => createDocMacro(data, slot));
 });
 const SOCKET = "system.tos";
+
 Hooks.once("ready", () => {
   console.log("TOS | Socket Listener Registered");
 
   game.socket.on(SOCKET, async (data) => {
     console.log("TOS | GM Received Socket Data:", data);
     if (!game.user.isGM) return;
+
     if (data.type === "applyDamage") {
       await applyDamageAsGM(data);
+    }
+
+    if (data.type === "applyEffects") {
+      await applyEffectsAsGM(data);
     }
   });
 });
@@ -925,6 +931,9 @@ async function handlePostDamageStatus({ actor, combatant }) {
   }
 }
 async function applyEffectToActor(actor, effectId, stacks = 1) {
+  console.log("CONFIG.TOS:", CONFIG.TOS);
+  console.log("effectDefinitions:", CONFIG.TOS?.effectDefinitions);
+  console.log("Trying to apply:", effectId);
   if (!CONFIG.TOS.effectDefinitions[effectId]) {
     console.warn(
       `Effect ${effectId} not defined in CONFIG.TOS.effectDefinitions`,
@@ -1030,8 +1039,202 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         await handleApplyDamage(message.id);
       });
     }
+    // --- Apply Effects (ONLY if no attack but has effects) ---
+    if (!message.flags?.attack && message.flags?.effects) {
+      const effects = message.flags.effects;
+
+      if (Object.keys(effects).length > 0) {
+        let buttonContainer = html.find(".button-container");
+
+        if (buttonContainer.length === 0) {
+          buttonContainer = $('<div class="button-container"></div>');
+          html.find(".message-content").append(buttonContainer);
+        }
+
+        const applyEffectsButton = $(`
+      <button
+        type="button"
+        class="tos-apply-effects"
+        data-message-id="${message.id}">
+        Apply Effects
+      </button>
+    `);
+
+        buttonContainer.append(applyEffectsButton);
+        updateButtonContainerLayout(buttonContainer);
+
+        applyEffectsButton.on("click", async () => {
+          await handleApplyEffects(message.id);
+        });
+      }
+    }
   }
 });
+async function handleApplyEffects(messageId) {
+  const message = game.messages.get(messageId);
+  if (!message?.flags?.effects) return;
+
+  const checkTargetsAndContinue = () => {
+    const targets = Array.from(game.user.targets);
+    if (!targets.length) {
+      ui.notifications.warn("Please select at least one target.");
+      return false;
+    }
+    openEffectSelectionDialog(message, targets);
+    return true;
+  };
+
+  if (!Array.from(game.user.targets).length) {
+    new Dialog({
+      title: "No Targets Selected",
+      content: "<p>Please select one or more targets, then press OK.</p>",
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: checkTargetsAndContinue,
+        },
+      },
+      default: "ok",
+    }).render(true);
+    return;
+  }
+
+  checkTargetsAndContinue();
+}
+function openEffectSelectionDialog(message, targets) {
+  const effects = message.flags.effects || {};
+
+  const renderPreview = () =>
+    targets
+      .map((t) => {
+        const effectList = Object.entries(effects)
+          .map(([name, effect]) => {
+            const baseChance = effect?.chance;
+            const roll = effect?.roll;
+
+            let previewText = "";
+
+            if (typeof baseChance === "number" && typeof roll === "number") {
+              previewText = ` → ${roll} < ${baseChance}%`;
+            }
+
+            return `
+              <div style="margin-left:15px;">
+                <label>
+                  <input type="checkbox"
+                         name="effect-${t.id}-${name}">
+                  ${name.toUpperCase()}${previewText}
+                </label>
+              </div>
+            `;
+          })
+          .join("");
+
+        return `
+          <li>
+            <strong>${t.name}</strong>
+            ${effectList}
+          </li>
+        `;
+      })
+      .join("");
+
+  new Dialog({
+    title: "Apply Effects",
+    content: `
+      <form>
+        <ul class="effect-preview">
+          ${renderPreview()}
+        </ul>
+      </form>
+    `,
+    buttons: {
+      apply: {
+        label: "Apply",
+        callback: (html) => {
+          const selectedEffects = {};
+
+          html.find('input[type="checkbox"]').each((_, el) => {
+            if (!el.checked) return;
+
+            const parts = el.name.split("-");
+            const tokenId = parts[1];
+            const effectName = parts[2];
+
+            if (!selectedEffects[tokenId]) {
+              selectedEffects[tokenId] = [];
+            }
+
+            selectedEffects[tokenId].push(effectName);
+          });
+
+          applyEffectsToTargets(message, targets, selectedEffects);
+        },
+      },
+      cancel: { label: "Cancel" },
+    },
+  }).render(true);
+}
+async function applyEffectsToTargets(message, targets, selectedEffects) {
+  const data = {
+    type: "applyEffects",
+    messageId: message.id,
+    sceneId: canvas.scene.id,
+    targetIds: targets.map((t) => t.id),
+    selectedEffects: selectedEffects,
+  };
+
+  if (game.user.isGM) {
+    await applyEffectsAsGM(data);
+  } else {
+    game.socket.emit(SOCKET, data);
+    ui.notifications.info("Effect request sent to GM.");
+  }
+}
+async function applyEffectsAsGM(data) {
+  const { messageId, targetIds, sceneId, selectedEffects } = data;
+
+  const message = game.messages.get(messageId);
+  const effects = message.flags?.effects || {};
+  const scene = game.scenes.get(sceneId);
+
+  for (const tokenId of targetIds) {
+    const tokenDoc = scene.tokens.get(tokenId);
+    if (!tokenDoc) continue;
+
+    const actor = tokenDoc.actor;
+    if (!actor) continue;
+
+    const allowedEffects = selectedEffects?.[tokenId] || [];
+    console.log("message.flags:", message.flags);
+    console.log("message.flags.effects:", message.flags.effects);
+    console.log("getFlag tos effects:", message.getFlag("tos", "effects"));
+    console.log("Allowed effects for token:", allowedEffects);
+    for (const effectId of allowedEffects) {
+      console.log("Processing effect:", effectId);
+      const effectData = effects[effectId];
+      console.log("Effect data:", effectData);
+      if (!effectData) continue;
+
+      let stacks = 1;
+
+      if (effectId === "bleed" && typeof effectData.chance === "number") {
+        const base = Math.floor(effectData.chance / 100);
+        const remainder = effectData.chance % 100;
+
+        stacks = base;
+        if (
+          typeof effectData.roll === "number" &&
+          effectData.roll <= remainder
+        ) {
+          stacks++;
+        }
+      }
+
+      await applyEffectToActor(actor, effectId, stacks);
+    }
+  }
+}
 Hooks.once("ready", async () => {
   if (!game.user.isGM) return;
 
@@ -1041,7 +1244,8 @@ Hooks.once("ready", async () => {
     Custom: "custom",
     Bleeding: "bleed",
     Blinded: "blind",
-    Burning: "burning",
+    Burning: "burn",
+    burning: "burn",
     Chain: "chain",
     Corrosion: "corrosion",
     "Corrosion-severe": "corrosion-severe",
@@ -1112,6 +1316,16 @@ Hooks.once("ready", async () => {
     }
   }
 });
+
+Hooks.once("ready", () => {
+  if (!document.getElementById("item-tooltip")) {
+    const tooltip = document.createElement("div");
+    tooltip.id = "item-tooltip";
+    tooltip.classList.add("item-tooltip", "hidden");
+    document.body.appendChild(tooltip);
+  }
+});
+
 Hooks.once("ready", () => {
   // Listen for checkbox changes to update skill visibility
   $(document).on("change", ".toggle-skill-visibility", function () {

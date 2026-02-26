@@ -247,7 +247,7 @@
             data-action="roll"
             data-item-id="{{item._id}}"
                >
-              <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+              <img src="{{item.img}}" title="{{item.name}}" class="item-icon" data-item-id="{{item.id}}"width="24" height="24" />
             </a>
           </div>
           <div>{{item.name}}</div>
@@ -360,7 +360,7 @@
   data-action="roll"
   data-item-id="{{item._id}}"
 >
-  <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+  <img src="{{item.img}}" title="{{item.name}}" class="item-icon" data-item-id="{{item.id}}" width="24" height="24" />
 </a>
 
         </div>
@@ -466,6 +466,8 @@
               <img
                 src="{{item.img}}"
                 title="{{item.name}}"
+                class="item-icon" 
+                data-item-id="{{item.id}}"
                 width="24"
                 height="24"
               />
@@ -551,6 +553,8 @@
               <img
                 src="{{item.img}}"
                 title="{{item.name}}"
+                class="item-icon" 
+                data-item-id="{{item.id}}"
                 width="24"
                 height="24"
               />
@@ -580,4 +584,5 @@
       </li>
     {{/each}}
   </ol>
+  
 </section>

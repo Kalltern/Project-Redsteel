@@ -554,59 +554,80 @@ export async function finalizeRollsAndPostChat(
   const actorEffects = actor.system.effects?.[spellSchool] || {};
 
   for (const [key, effectValue] of Object.entries(spellEffects)) {
-    if (effectValue > 0) {
-      let finalEffectName = "";
+    // 0 = ignore completely
+    if (effectValue === 0) continue;
 
-      // 1. Handle Built-in Effects (stun, bleed)
-      if (key === "stun" || key === "bleed") {
-        finalEffectName = key.charAt(0).toUpperCase() + key.slice(1);
+    let finalEffectName = "";
+
+    // 1. Handle Built-in Effects
+    if (key === "stun" || key === "bleed") {
+      finalEffectName = key.charAt(0).toUpperCase() + key.slice(1);
+    }
+
+    // 2. Handle Customizable Slots
+    else if (key.startsWith("extra")) {
+      const index = key.replace("extra", "");
+      const typeValue = spell.system[`effectType${index}`] || "";
+
+      if (typeValue.toLowerCase() === "custom") {
+        finalEffectName =
+          spell.system.effects[`effectName${index}`] || `Custom ${index}`;
+      } else {
+        finalEffectName = typeValue;
       }
+    }
 
-      // 2. Handle Customizable Slots (extra1, extra2, extra3)
-      else if (key.startsWith("extra")) {
-        const index = key.replace("extra", ""); // gets "1", "2", or "3"
+    if (!finalEffectName || key.startsWith("effectName")) continue;
 
-        // Look for type in system.effectType#
-        const typeValue = spell.system[`effectType${index}`] || "";
+    // Normalize actor effects once per loop (you may want to move this outside later)
+    const normalizedActorEffects = Object.fromEntries(
+      Object.entries(actorEffects).map(([k, v]) => [k.toLowerCase(), v]),
+    );
 
-        if (typeValue.toLowerCase() === "custom") {
-          // Look for custom name in system.effects.effectName#
-          finalEffectName =
-            spell.system.effects[`effectName${index}`] || `Custom ${index}`;
-        } else {
-          finalEffectName = typeValue;
-        }
-      }
+    const actorBonus =
+      normalizedActorEffects[finalEffectName.toLowerCase()] || 0;
 
-      // Skip if we couldn't resolve a name or if it's an internal field (like effectName1)
-      if (!finalEffectName || key.startsWith("effectName")) continue;
+    const totalEffectValue = effectValue + actorBonus;
 
-      // Add actor-specific bonus
-      const normalizedActorEffects = Object.fromEntries(
-        Object.entries(actorEffects).map(([k, v]) => [k.toLowerCase(), v]),
-      );
-      const actorBonus =
-        normalizedActorEffects[finalEffectName.toLowerCase()] || 0;
-
-      const totalEffectValue = effectValue + actorBonus;
-
-      // Roll 1d100
-      const d100Roll = new Roll("1d100");
-      await d100Roll.evaluate();
-
-      const rollValue = d100Roll.total;
-      const successText = rollValue <= totalEffectValue ? " SUCCESS" : "";
-
+    // ----------------------------------
+    // AUTO SUCCESS (-1 sentinel)
+    // ----------------------------------
+    if (effectValue === -1) {
       effectsRollResults += `
-  <p><b>${finalEffectName}:</b>
-  ${rollValue} < ${totalEffectValue}% ${successText}</p>
-`;
+      <p><b>${finalEffectName}:</b></p>
+    `;
 
       mechanicalEffects[finalEffectName.toLowerCase()] = {
-        chance: totalEffectValue,
-        roll: rollValue,
+        chance: null,
+        roll: null,
       };
+
+      continue;
     }
+
+    // ----------------------------------
+    // Skip if final chance <= 0
+    // ----------------------------------
+    if (totalEffectValue <= 0) continue;
+
+    // ----------------------------------
+    // Normal roll resolution
+    // ----------------------------------
+    const d100Roll = new Roll("1d100");
+    await d100Roll.evaluate();
+
+    const rollValue = d100Roll.total;
+    const successText = rollValue <= totalEffectValue ? " SUCCESS" : "";
+
+    effectsRollResults += `
+    <p><b>|${finalEffectName}|</b>
+    ${rollValue} < ${totalEffectValue}% ${successText}</p>
+  `;
+
+    mechanicalEffects[finalEffectName.toLowerCase()] = {
+      chance: totalEffectValue,
+      roll: rollValue,
+    };
   }
 
   // --- CRITICAL SCORE ROLL ---
@@ -758,6 +779,7 @@ export async function finalizeRollsAndPostChat(
 </div>
 `;
   let attackFlag = null;
+  let effectsFlag = null;
 
   const damageProfile = {
     expression: [
@@ -794,6 +816,10 @@ export async function finalizeRollsAndPostChat(
       };
     }
   }
+  if (Object.keys(mechanicalEffects).length > 0) {
+    effectsFlag = mechanicalEffects;
+  }
+
   console.log("Attack Flag:", attackFlag);
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
@@ -836,6 +862,7 @@ export async function finalizeRollsAndPostChat(
           actor.system.combatSkills.channeling.criticalFailureThreshold,
       },
       ...(attackFlag && { attack: attackFlag }),
+      ...(effectsFlag && { effects: effectsFlag }),
     },
   });
 }

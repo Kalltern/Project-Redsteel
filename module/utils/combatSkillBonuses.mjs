@@ -715,16 +715,20 @@ export async function getEffectRolls(
 
   if (critScore > 1) {
     critBleeds += 1;
-  } // --- 1. Process Fixed Effects (STUN and BLEED) ---
+  } // --- 1. Process Fixed Effects (STUN) ---
 
-  const fixedEffectNames = ["stun", "bleed"];
+  const fixedEffectNames = ["stun"];
 
   for (const effectName of fixedEffectNames) {
     const baseValue = weaponEffects[effectName] || 0;
     const modifier = actorEffects[effectName] || 0;
     const abilityBonus = abilityEffects[effectName] || 0;
     const offValue = offProps?.effects?.[effectName] || 0;
-    let shouldProcess = baseValue > 0 || offValue > 0 || abilityBonus > 0;
+    let totalBaseValue = baseValue + offValue + abilityBonus;
+
+    let isAuto = baseValue === -1 || offValue === -1 || abilityBonus === -1;
+
+    let shouldProcess = isAuto || totalBaseValue > 0;
 
     if (shouldProcess) {
       let modifiedEffectValue = offValue + baseValue + modifier + abilityBonus;
@@ -737,6 +741,18 @@ export async function getEffectRolls(
           sneakEffect +
           weaponSkillEffect +
           (critScore > 1 && critSuccess ? 100 : 0);
+        if (isAuto) {
+          effectsRollResults += `<p><b>|Stun| </b></p>`;
+
+          mechanicalEffects["stun"] = {
+            chance: null,
+            roll: null,
+            auto: true,
+          };
+
+          continue;
+        }
+
         const d100Roll = new Roll("1d100");
         await d100Roll.evaluate();
         const roundedModifiedValue = Math.floor(modifiedEffectValue);
@@ -756,7 +772,7 @@ export async function getEffectRolls(
   const effectContributions = [];
   if (actorMods?.extraEffects) {
     for (const [name, value] of Object.entries(actorMods.extraEffects)) {
-      if (value > 0) {
+      if (value !== 0) {
         effectContributions.push({ name, value });
       }
     }
@@ -792,7 +808,14 @@ export async function getEffectRolls(
 
   for (const { name, value } of effectContributions) {
     if (customEffectRolls.has(name)) {
-      customEffectRolls.set(name, customEffectRolls.get(name) + value);
+      const existing = customEffectRolls.get(name);
+
+      // If either side is AUTO, result is AUTO
+      if (existing === -1 || value === -1) {
+        customEffectRolls.set(name, -1);
+      } else {
+        customEffectRolls.set(name, existing + value);
+      }
     } else {
       customEffectRolls.set(name, value);
     }
@@ -800,25 +823,40 @@ export async function getEffectRolls(
 
   // 3. Process and Display ALL Merged Effects from the Map
   for (const [name, value] of customEffectRolls.entries()) {
-    const modifiedEffectValue = value;
+    if (value === 0) continue;
+
+    if (value === -1) {
+      effectsRollResults += `<p><b>|${name}|</b></p>`;
+
+      mechanicalEffects[name] = {
+        chance: null,
+        roll: null,
+        auto: true,
+      };
+
+      continue;
+    }
+
+    if (value <= 0) continue;
 
     const d100Roll = new Roll("1d100");
     await d100Roll.evaluate();
-    const roundedModifiedValue = Math.floor(modifiedEffectValue);
 
+    const roundedModifiedValue = Math.floor(value);
     const successText = d100Roll.total <= roundedModifiedValue ? "SUCCESS" : "";
 
-    // The 'name' variable here will be the user-typed custom name if applicable
     effectsRollResults += `<p><b>${name}:</b> ${d100Roll.total} < ${roundedModifiedValue}% ${successText}</p>`;
+
     mechanicalEffects[name] = {
       chance: roundedModifiedValue,
       roll: d100Roll.total,
+      auto: false,
     };
   }
 
   // --- 4. Sharp Bleed Logic ---
 
-  if (ws.sharp && weaponEffects.bleed) {
+  if (ws.sharp && weaponEffects.bleed > 0) {
     if (critScore > 1) {
       critBleeds += 1;
     }
@@ -845,11 +883,28 @@ export async function getEffectRolls(
 
   let bleedChanceDisplay = 0;
 
-  if (
-    weaponEffects.bleed > 0 ||
-    offProps?.effects?.bleed > 0 ||
-    abilityEffects["bleed"] > 0
-  ) {
+  const bleedBaseValue =
+    (weaponEffects.bleed || 0) +
+    (offProps?.effects?.bleed || 0) +
+    (abilityEffects["bleed"] || 0);
+
+  const bleedIsAuto =
+    weaponEffects.bleed === -1 ||
+    offProps?.effects?.bleed === -1 ||
+    abilityEffects["bleed"] === -1;
+
+  if (bleedIsAuto) {
+    normalBleeds += 1;
+
+    mechanicalEffects["bleed"] = {
+      chance: null,
+      roll: null,
+      auto: true,
+      critStacks: critBleeds,
+    };
+
+    bleedChanceDisplay = "AUTO";
+  } else if (bleedBaseValue > 0) {
     const abilityBleed = abilityEffects["bleed"] || 0;
     const actorBleed = actorEffects["bleed"] || 0;
     const offBleed = offProps?.effects?.bleed || 0;
@@ -870,7 +925,7 @@ export async function getEffectRolls(
 
     bleedRollResult = bleedRoll.total;
     regularBleedRolls.push(bleedRollResult);
-    // Stack calculation
+
     const bleedBase = Math.floor(totalBleedChance / 100);
     const bleedChance = totalBleedChance % 100;
 
@@ -883,12 +938,16 @@ export async function getEffectRolls(
       chance: totalBleedChance,
       roll: bleedRollResult,
       critStacks: critBleeds,
+      auto: false,
     };
   }
   totalBleeds = critBleeds + normalBleeds;
   let allBleedRollResults = "";
-  if (totalBleeds > 0 || bleedChanceDisplay > 0) {
-    allBleedRollResults = `| Bleed: ${[
+  if (
+    mechanicalEffects["bleed"] &&
+    (totalBleeds > 0 || bleedChanceDisplay === "AUTO")
+  ) {
+    allBleedRollResults = `|Bleed| ${[
       ...regularBleedRolls,
       ...sharpBleedRolls,
     ].join("  Sharp: ")} | < ${bleedChanceDisplay}% 
@@ -1035,8 +1094,9 @@ function collectExtrasFromSource(systemMap, effectMap, collector) {
   if (!systemMap || !effectMap) return;
 
   for (let i = 1; i <= 3; i++) {
-    const value = effectMap[`extra${i}`] || 0;
-    if (value <= 0) continue;
+    const value = effectMap[`extra${i}`] ?? 0;
+
+    if (value === 0) continue;
 
     const name = getEffectName(systemMap, effectMap, i);
     if (!name || name.trim() === "") continue;

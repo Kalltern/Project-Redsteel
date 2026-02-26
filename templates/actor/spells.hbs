@@ -89,11 +89,11 @@
           </li>
 
           {{#each rankGroup.spells as |item|}}
-            <li class="item flexrow" data-item-id="{{item._id}}" data-drag="true" data-document-class="Item">
+            <li class="item flexrow" data-item-id="{{item.id}}" data-drag="true" data-document-class="Item">
               <div class="item-name flexrow">
                 <div class="item-image">
                   <a class="rollable" data-roll-type="item" data-action="roll">
-                    <img src="{{item.img}}" class="spell-icon" data-item-id="{{item._id}}" width="24" height="24"/>
+                    <img src="{{item.img}}" class="item-icon" data-item-id="{{item.id}}" width="24" height="24"/>
                   </a>
                 </div>
                 <div>{{item.name}}</div>
@@ -121,8 +121,5 @@
         </ol>
       {{/if}}
     {{/each}}
-
   </section>
 {{/each}}
-{{!-- GLOBAL spell tooltip --}}
-<div id="spell-tooltip" class="spell-tooltip"></div>

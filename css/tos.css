@@ -409,7 +409,8 @@ prose-mirror {
   border: 3px solid #5f5843; /* gold border */
 }
 
-.tos .sheet-header .actor {
+.tos .sheet-header .actor,
+.tos .sheet-npc-header {
   flex: 1;
   padding: 5px;
   box-shadow:
@@ -424,7 +425,19 @@ prose-mirror {
     url("headertextureTest7.JPG");
 }
 .tos .sheet-npc-header {
-  height: 440px; /* NPC-specific height */
+  max-height: 460px;
+}
+
+.tos .sheet-npc-header {
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+}
+
+.tos .sheet-npc-header .header-fields {
+  flex: 1;
+  min-width: 0;
+  padding: 5px;
 }
 .header-fields .grid .grid-2col input {
   text-align: center;
@@ -1233,18 +1246,25 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   color: inherit; /* Default color */
 }
 
-.spell-tooltip {
-  position: absolute;
-  z-index: 100;
-  background: #1e1e1e;
-  color: #eee;
-  border: 1px solid #555;
-  padding: 0.5rem;
+#item-tooltip {
+  position: fixed;
+  z-index: 9999;
   max-width: 300px;
+
+  background: rgba(20, 20, 20, 0.95);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
   pointer-events: none;
 }
 
-.spell-tooltip.hidden {
+#item-tooltip.hidden {
   display: none;
 }
 

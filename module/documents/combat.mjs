@@ -24,7 +24,7 @@ export class ToSCombat extends Combat {
       // Custom formula per actor type
       const rollFormula =
         actor.type === "npc"
-          ? "1d12 + @secondaryAttributes.ini.value"
+          ? "1d12 + @secondaryAttributes.ini.total"
           : actor.system.doctrines.rogue.value >= 7
             ? "2d12kh1 + @secondaryAttributes.ini.total + @secondaryAttributes.spd.total"
             : "1d12 + @secondaryAttributes.ini.total + @secondaryAttributes.spd.total";

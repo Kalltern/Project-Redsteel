@@ -20,7 +20,7 @@ export class ToSItem extends Item {
         "custom",
         "bleed",
         "blind",
-        "burning",
+        "burn",
         "chain",
         "corrosion",
         "corrosion_severe",
@@ -170,7 +170,6 @@ export class ToSItem extends Item {
 
     let half = false;
     let formula = input;
-    console.log("INPUT:", input);
     if (typeof formula === "string" && formula.includes("@Half")) {
       half = true;
       formula = formula.replace("@Half", "");
@@ -246,33 +245,102 @@ export class ToSItem extends Item {
     }
   }
   // Handle tooltip data
-
   getTooltipData() {
-    const system = this.system;
+    const data = this.system;
+
+    console.log("Tooltip data:", this.system);
+
+    if (this.type === "spell") {
+      return this._getMagicTooltipData(data);
+    }
+
+    if (this.type === "ability") {
+      return this._getAbilityTooltipData(data);
+    }
+
+    // fallback for other item types
+    return {
+      title: this.name,
+      sections: [],
+      stats: [],
+      description: data.description,
+    };
+  }
+  _getMagicTooltipData(data) {
+    const damageLines = [
+      data.dmgType1 && `${data.dmgType1} ${data.bool2 ?? ""}`,
+      data.dmgType2 && `${data.dmgType2} ${data.bool3 ?? ""}`,
+      data.dmgType3 && `${data.dmgType3} ${data.bool4 ?? ""}`,
+      data.dmgType4,
+    ].filter(Boolean);
+
+    const effectLines = [
+      data.effectType1 &&
+        `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
+      data.effectType2 &&
+        `${data.effectType2} ${data.effects?.extra2 ? data.effects.extra2 + "%" : ""}`,
+      data.effectType3 &&
+        `${data.effectType3} ${data.effects?.extra3 ? data.effects.extra3 + "%" : ""}`,
+    ].filter(Boolean);
 
     return {
-      name: this.name,
-      difficulty: system.difficulty,
-      cost: system.cost,
-      perRound: system.perRound,
-      actionCost: system.actionCost,
-      range: system.range,
-      description: system.description,
-      penetration: system.penetration,
-      //damage types
-      dmgType1: system.dmgType1,
-      dmgType2: system.dmgType2,
-      dmgType3: system.dmgType3,
-      dmgType4: system.dmgType4,
-      bool2: system.bool2,
-      bool3: system.bool3,
-      bool4: system.bool4,
-      //effect types
-      effectType1: system.effectType1,
-      effectType2: system.effectType2,
-      effectType3: system.effectType3,
-      //effect chances
-      effects: system.effects,
+      title: this.name,
+      sections: [
+        { label: "Damage types", lines: damageLines },
+        { label: "Effect types", lines: effectLines },
+      ],
+      stats: [
+        { label: "Difficulty", value: data.difficulty },
+        {
+          label: "Cost",
+          value: data.perRound ? `${data.cost} / ${data.perRound}` : data.cost,
+        },
+        { label: "Actions", value: data.actionCost },
+        { label: "Range", value: data.range },
+      ],
+      description: data.description,
+    };
+  }
+
+  _getAbilityTooltipData(data) {
+    const effectLines = [
+      data.effectType1 &&
+        `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
+      data.effectType2 &&
+        `${data.effectType2} ${data.effects?.extra2 ? data.effects.extra2 + "%" : ""}`,
+    ].filter(Boolean);
+
+    return {
+      title: this.name,
+      sections: [{ label: "Effect types", lines: effectLines }],
+      stats: [
+        { label: "Difficulty", value: data.difficulty },
+        { label: "Cooldown", value: data.cooldown },
+        { label: "Actions", value: data.actionCost },
+        { label: "Range", value: data.range },
+      ],
+      description: data.description,
+    };
+  }
+
+  _getitemTooltipData(data) {
+    const effectLines = [
+      data.effectType1 &&
+        `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
+      data.effectType2 &&
+        `${data.effectType2} ${data.effects?.extra2 ? data.effects.extra2 + "%" : ""}`,
+    ].filter(Boolean);
+
+    return {
+      title: this.name,
+      sections: [{ label: "Effect types", lines: effectLines }],
+      stats: [
+        { label: "Difficulty", value: data.difficulty },
+        { label: "Cooldown", value: data.cooldown },
+        { label: "Actions", value: data.actionCost },
+        { label: "Range", value: data.range },
+      ],
+      description: data.description,
     };
   }
 }

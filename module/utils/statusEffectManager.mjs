@@ -42,6 +42,29 @@ export async function statusEffectManager() {
     );
   }
 
+  async function reduceEffectStackFromAll(effectId) {
+    const actors = getSelectedActors();
+    if (!actors.length) return;
+
+    await Promise.all(
+      actors.map(async (actor) => {
+        const existing = getEffect(actor, effectId);
+        if (!existing) return;
+
+        const stacks = existing.getFlag("tos", "stacks") ?? 0;
+
+        // If no stacks tracked → just delete
+        if (!stacks || stacks <= 1) {
+          await existing.delete();
+          return;
+        }
+
+        // Otherwise reduce by 1
+        await existing.setFlag("tos", "stacks", stacks - 1);
+      }),
+    );
+  }
+
   async function removeAllEffects() {
     const actors = getSelectedActors();
     if (!actors.length) return;
@@ -103,7 +126,7 @@ export async function statusEffectManager() {
 
 .tos-row.hovering .tos-effect-name {
   color:#ff4d4d;
-  text-shadow:0 0 6px red;
+
 }
 
 .tos-actions span {
@@ -134,6 +157,7 @@ export async function statusEffectManager() {
   </div>
   <div class="tos-actions">
         <span data-apply="${effect.id}">APPLY</span> |
+        <span data-reduce="${effect.id}">REDUCE</span> |
         <span data-remove="${effect.id}">REMOVE</span>
       </div>
     </div>
@@ -165,6 +189,12 @@ export async function statusEffectManager() {
         });
       });
 
+      root.querySelectorAll("[data-reduce]").forEach((el) => {
+        el.addEventListener("click", async (e) => {
+          const effectId = e.currentTarget.dataset.reduce;
+          await reduceEffectStackFromAll(effectId);
+        });
+      });
       root.querySelectorAll("[data-remove]").forEach((el) => {
         el.addEventListener("click", async (e) => {
           const effectId = e.currentTarget.dataset.remove;
@@ -173,6 +203,7 @@ export async function statusEffectManager() {
       });
       root.querySelectorAll(".tos-row").forEach((row) => {
         const apply = row.querySelector("[data-apply]");
+        const reduce = row.querySelector("[data-reduce]");
         const remove = row.querySelector("[data-remove]");
 
         const addHover = () => row.classList.add("hovering");
@@ -186,6 +217,11 @@ export async function statusEffectManager() {
         if (remove) {
           remove.addEventListener("mouseenter", addHover);
           remove.addEventListener("mouseleave", removeHover);
+        }
+
+        if (reduce) {
+          reduce.addEventListener("mouseenter", addHover);
+          reduce.addEventListener("mouseleave", removeHover);
         }
       });
     },

@@ -34,7 +34,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       toggleEquipped: this._toggleEquipped,
       toggleReroll: this._toggleReroll,
       toggleSchool: this._toggleSchool,
-      buildSpellTooltip: this._buildSpellTooltip,
+      buildTooltip: this._buildTooltip,
       setActiveWeaponSet: this._setActiveWeaponSet,
       toggleTwoHandGrip: this._toggleTwoHandGrip,
       toggleNpcOffhand: this._toggleNpcOffhand,
@@ -104,68 +104,64 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       rerollActive[index] ? "active" : "inactive",
     );
   }
+  static _onBuildTooltip(event) {
+    const target = event.target.closest("[data-item-id]");
+    if (!target) return;
 
-  static _buildSpellTooltip(spell) {
-    const data = spell.getTooltipData();
+    const itemId = target.dataset.itemId;
+    if (!itemId) return;
 
-    const dmgTypes = [
-      { type: data.dmgType1, flag: data.bool2 },
-      { type: data.dmgType2, flag: data.bool3 },
-      { type: data.dmgType3, flag: data.bool4 },
-      { type: data.dmgType4 },
-    ];
+    const item = this.actor.items.get(itemId);
+    if (!item) return;
 
-    const effects = [
-      { type: data.effectType1, extra: data.effects.extra1 },
-      { type: data.effectType2, extra: data.effects.extra2 },
-      { type: data.effectType3, extra: data.effects.extra3 },
-    ];
-    const validDamageTypes = dmgTypes.filter((element) => element.type);
-    const validEffectTypes = effects.filter((element) => element.type);
-    const damageHTML = validDamageTypes
-      .map((element) => {
-        return `
-      ${element.type}${element.flag ? " " + element.flag : ""}
-    `;
-      })
+    console.log("Tooltip triggered for:", item.name);
+
+    const html = this.buildTooltipForItem(item);
+
+    const tooltip = document.getElementById("item-tooltip");
+    tooltip.innerHTML = html;
+    tooltip.classList.remove("hidden");
+  }
+
+  static _buildTooltip(data) {
+    const sectionHTML = (data.sections || [])
+      .filter((section) => section.lines?.length)
+      .map(
+        (section) => `
+      <hr>
+      <tr><td>${section.label}:</td></tr>
+      <tr><td>
+        ${section.lines.join("<br>")}
+      </td></tr>
+    `,
+      )
       .join("");
 
-    const effectHTML = validEffectTypes
-      .map((element) => {
-        return `
-      ${element.type}${element.extra ? " " + element.extra + "%" : ""}
-    `;
-      })
+    const statsHTML = (data.stats || [])
+      .filter(
+        (stat) =>
+          stat.value !== undefined && stat.value !== null && stat.value !== "",
+      )
+      .map(
+        (stat) => `
+      <div><b>${stat.label}:</b> ${stat.value}</div>
+    `,
+      )
       .join("");
-    const damageSection = damageHTML
-      ? `
-    <hr>      
-    <tr><td>Damage types:</td></tr>
-    <tr><td>
-    ${damageHTML}
-    </td></tr>`
-      : "";
-    const effectSection = effectHTML
-      ? `
-    <hr>      
-    <tr><td>Effect types:</td></tr>
-    <tr><td>
-    ${effectHTML}
-    </td></tr>`
-      : "";
 
     return `
-    <strong>${data.name}</strong>
-    
-    ${damageSection}
-    ${effectSection}
+    <strong>${data.title}</strong>
+    ${sectionHTML}
     <hr>
-    <div><b>Difficulty:</b> ${data.difficulty}</div>
-    <div><b>Cost:</b> ${data.cost}${data.perRound ? ` / ${data.perRound}` : ""}</div>
-    <div><b>Actions:</b> ${data.actionCost}</div>
-    <div><b>Range:</b> ${data.range}</div>
+    ${statsHTML}
     ${data.description ? `<hr>${data.description}` : ""}
   `;
+  }
+
+  static buildTooltipForItem(item) {
+    console.log("Building tooltip for:", item.name);
+    const data = item.getTooltipData(); // universal method
+    return this._buildTooltip(data);
   }
 
   static async _toggleNpcOffhand(event, target) {
@@ -836,11 +832,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
 
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
-    console.log("Sheet element:", this.element);
-    console.log(
-      "weapon-equip buttons:",
-      this.element.querySelectorAll(".weapon-equip").length,
-    );
+
     if (!this._weaponContextBound) {
       this.element.addEventListener(
         "contextmenu",
@@ -849,6 +841,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       this._weaponContextBound = true;
     }
 
+    this._activateItemTooltips();
     // You may want to add other special handling here
     // Foundry comes with a large number of utility classes, e.g. SearchFilter
     // That you may want to implement yourself.
@@ -862,31 +855,42 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
    **************/
 
   // Render spell tooltips
-  render(force, options) {
-    super.render(force, options);
-    if (!this.element) return;
-    this._activateSpellTooltips();
-  }
+  _activateItemTooltips() {
+    const root =
+      this.element instanceof HTMLElement ? this.element : this.element?.[0];
 
-  _activateSpellTooltips() {
-    const tooltip = this.element.querySelector("#spell-tooltip");
+    if (!root) return;
+
+    const tooltip = document.getElementById("item-tooltip");
     if (!tooltip) return;
 
-    for (const icon of this.element.querySelectorAll(".spell-icon")) {
-      if (icon.dataset.tooltipBound) continue; // prevent duplicates
+    for (const icon of root.querySelectorAll(".item-icon")) {
+      if (icon.dataset.tooltipBound) continue;
       icon.dataset.tooltipBound = "true";
 
       icon.addEventListener("mouseenter", (ev) => {
-        const spell = this.actor.items.get(ev.currentTarget.dataset.itemId);
-        if (!spell) return;
+        const itemId = ev.currentTarget.dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        if (!item) return;
 
-        tooltip.innerHTML = this._buildSpellTooltip(spell);
+        tooltip.innerHTML = this.constructor.buildTooltipForItem(item);
+
         tooltip.classList.remove("hidden");
       });
 
-      icon.addEventListener("mousemove", (ev) => {
-        tooltip.style.left = `${ev.clientX + 12}px`;
-        tooltip.style.top = `${ev.clientY + 12}px`;
+      icon.addEventListener("mouseenter", (ev) => {
+        const itemId = ev.currentTarget.dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        if (!item) return;
+
+        tooltip.innerHTML = this.constructor.buildTooltipForItem(item);
+
+        tooltip.classList.remove("hidden");
+
+        const rect = ev.currentTarget.getBoundingClientRect();
+
+        tooltip.style.left = `${rect.right + 12}px`;
+        tooltip.style.top = `${rect.top - 100}px`;
       });
 
       icon.addEventListener("mouseleave", () => {
@@ -1621,49 +1625,3 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     }
   }
 }
-
-Hooks.on("renderActorSheetV2", (sheet, html) => {
-  const tooltip = html.querySelector("#spell-tooltip");
-  if (!tooltip) return;
-
-  html.querySelectorAll(".spell-icon").forEach((icon) => {
-    icon.addEventListener("mouseenter", (ev) => {
-      const itemId = ev.currentTarget.dataset.itemId;
-      const spell = sheet.actor.items.get(itemId);
-      if (!spell) return;
-
-      tooltip.innerHTML = sheet.constructor._buildSpellTooltip(spell);
-      tooltip.classList.remove("hidden");
-
-      const iconRect = ev.currentTarget.getBoundingClientRect();
-      const sheetRect = html.getBoundingClientRect();
-
-      const OFFSET_X = 25;
-      const OFFSET_Y = -150;
-      const PADDING = 38; // set if you want breathing room
-
-      // ⬇️ STORE top
-      let top = iconRect.top - sheetRect.top + OFFSET_Y;
-      let left = iconRect.right - sheetRect.left + OFFSET_X;
-
-      tooltip.style.left = `${left}px`;
-      tooltip.style.top = `${top}px`;
-
-      // ⬇️ MEASURE
-      const tooltipHeight = tooltip.offsetHeight;
-      const sheetHeight = html.clientHeight;
-
-      // ⬇️ HARD RULE: bottom must not pass sheet bottom
-      const maxTop = sheetHeight - tooltipHeight - PADDING;
-
-      if (top > maxTop) {
-        top = maxTop;
-        tooltip.style.top = `${top}px`;
-      }
-    });
-
-    icon.addEventListener("mouseleave", () => {
-      tooltip.classList.add("hidden");
-    });
-  });
-});
