@@ -342,6 +342,7 @@
       "race": "Race",
       "consumable": "Consumable",
       "ability": "Ability",
+      "ammunition": "Ammunition",
       "feature": "Feature",
       "spell": "Spell"
     }

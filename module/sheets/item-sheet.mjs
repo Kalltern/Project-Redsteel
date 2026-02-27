@@ -57,6 +57,9 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
     attributesGear: {
       template: "systems/tos/templates/item/attribute-parts/gear.hbs",
     },
+    attributesAmmunition: {
+      template: "systems/tos/templates/item/attribute-parts/ammunition.hbs",
+    },
     attributesItem: {
       template: "systems/tos/templates/item/attribute-parts/item.hbs",
     },
@@ -97,6 +100,9 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
         break;
       case "gear":
         options.parts.push("attributesGear", "effects");
+        break;
+      case "ammuniton":
+        options.parts.push("attributesAmmunition", "effects");
         break;
       case "race":
         options.parts.push("attributesRace", "effects");
@@ -145,6 +151,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
       case "attributesFeature":
       case "attributesItem":
       case "attributesGear":
+      case "attributesAmmunition":
       case "attributesRace":
       case "attributesConsumable":
       case "attributesAbility":
@@ -217,6 +224,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
         case "attributesAbility":
         case "attributesConsumable":
         case "attributesGear":
+        case "attributesAmmunition":
         case "attributesWeapon":
           tab.id = "attributes";
           tab.label += "Attributes";

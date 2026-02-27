@@ -92,7 +92,7 @@ TOS.effectDefinitions = {
 
   bleed: {
     name: "Bleeding",
-    img: "icons/svg/blood.svg",
+    img: "icons/skills/wounds/blood-drip-droplet-red.webp",
     statuses: ["bleed"],
     maxStacks: 6,
     triggers: {
@@ -108,7 +108,7 @@ TOS.effectDefinitions = {
   },
   burn: {
     name: "Burning",
-    img: "icons/magic/fire/flame-burning-embers-yellow.webp",
+    img: "icons/magic/fire/flame-burning-campfire-rocks.webp",
     statuses: ["burn"],
     triggers: {
       onApply: {
@@ -126,7 +126,7 @@ TOS.effectDefinitions = {
 
   panic: {
     name: "Panicked",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/control/fear-fright-white.webp",
     statuses: ["panic"],
     defaultTurns: 2,
     changes: [
@@ -139,7 +139,7 @@ TOS.effectDefinitions = {
   },
   wet: {
     name: "Wet",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/water/water-drop-swirl-blue.webp",
     statuses: ["wet"],
     changes: [
       {
@@ -167,7 +167,7 @@ TOS.effectDefinitions = {
   // needs upgrade for suffocation and the existence of a ice block health
   freeze: {
     name: "Freeze",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/water/barrier-ice-crystal-wall-faceted.webp",
     statuses: ["freeze"],
     triggers: {
       onApply: {
@@ -204,7 +204,7 @@ TOS.effectDefinitions = {
   },
   slow: {
     name: "Slow",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/movement/chevrons-down-yellow.webp",
     statuses: ["slow"],
     defaultTurns: 3,
     changes: [
@@ -247,7 +247,7 @@ TOS.effectDefinitions = {
   },
   root: {
     name: "Root",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/nature/root-vine-entwined-thorns.webp",
     statuses: ["root"],
     defaultTurns: 3,
     changes: [
@@ -280,7 +280,7 @@ TOS.effectDefinitions = {
   },
   shadowbound: {
     name: "Shadowbound",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/control/debuff-chains-purple.webp",
     statuses: ["shadowbound"],
     triggers: {
       onApply: {
@@ -317,7 +317,7 @@ TOS.effectDefinitions = {
   },
   poison: {
     name: "Poison",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/acid/dissolve-drip-droplet-smoke.webp",
     statuses: ["poison"],
     defaultTurns: 3,
     triggers: {
@@ -340,7 +340,7 @@ TOS.effectDefinitions = {
   },
   corrosion: {
     name: "Corrosion",
-    img: "icons/svg/daze.svg",
+    img: "icons/skills/melee/shield-damaged-broken-gold.webp",
     statuses: ["corrosion"],
     maxStacks: 99,
     changes: [
@@ -380,7 +380,7 @@ TOS.effectDefinitions = {
   },
   heavy_stun: {
     name: "Heavy stun",
-    img: "icons/svg/daze.svg",
+    img: "icons/magic/movement/abstract-ribbons-red-orange.webp",
     statuses: ["heavy_stun"],
     defaultTurns: 2,
     changes: [

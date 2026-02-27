@@ -677,9 +677,6 @@ async function applyDamageToTargets(message, targets, mode, selectedEffects) {
     await applyDamageAsGM(data);
   } else {
     game.socket.emit(SOCKET, data);
-
-    // UI Feedback for player so they know they sent it
-    ui.notifications.info("Damage request sent to GM.");
   }
 }
 async function applyDamageAsGM(data) {
@@ -687,7 +684,6 @@ async function applyDamageAsGM(data) {
   const message = game.messages.get(messageId);
 
   const attack = message.flags.attack;
-  console.log("Attack object:", attack);
 
   const scene = game.scenes.get(sceneId);
   const combat = game.combat;
@@ -767,9 +763,7 @@ async function applyDamageAsGM(data) {
 
       stacks += stackMod;
 
-      console.log(`Applying ${stacks} ${name} to ${actor.name}`);
       if (name === "bleed") {
-        console.log("BLEED SHOULD ROLL HERE");
       }
       await applyEffectToActor(actor, name, stacks);
     }
@@ -931,9 +925,6 @@ async function handlePostDamageStatus({ actor, combatant }) {
   }
 }
 async function applyEffectToActor(actor, effectId, stacks = 1) {
-  console.log("CONFIG.TOS:", CONFIG.TOS);
-  console.log("effectDefinitions:", CONFIG.TOS?.effectDefinitions);
-  console.log("Trying to apply:", effectId);
   if (!CONFIG.TOS.effectDefinitions[effectId]) {
     console.warn(
       `Effect ${effectId} not defined in CONFIG.TOS.effectDefinitions`,
@@ -1206,14 +1197,8 @@ async function applyEffectsAsGM(data) {
     if (!actor) continue;
 
     const allowedEffects = selectedEffects?.[tokenId] || [];
-    console.log("message.flags:", message.flags);
-    console.log("message.flags.effects:", message.flags.effects);
-    console.log("getFlag tos effects:", message.getFlag("tos", "effects"));
-    console.log("Allowed effects for token:", allowedEffects);
     for (const effectId of allowedEffects) {
-      console.log("Processing effect:", effectId);
       const effectData = effects[effectId];
-      console.log("Effect data:", effectData);
       if (!effectData) continue;
 
       let stacks = 1;

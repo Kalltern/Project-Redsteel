@@ -1138,6 +1138,7 @@
       "race",
       "weapon",
       "ability",
+      "ammunition",
       "item",
       "consumable"
     ],
@@ -1290,6 +1291,14 @@
     "item": {
       "templates": ["base"],
       "quantity": 1
+    },
+    "ammunition": {
+      "templates": ["base"],
+      "quantity": 0,
+      "option": "",
+      "options": [],
+      "bleed": 0,
+      "penetration": 0
     },
     "consumable": {
       "templates": ["base"],

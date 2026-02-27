@@ -104,6 +104,7 @@ export async function universalAttackLogic({
     // Weapon fallback
     return weaponProfile;
   }
+
   const handleWeaponSelection = async (weaponIndex) => {
     let customAttack = 0;
     let customDamage = "";
@@ -179,6 +180,23 @@ export async function universalAttackLogic({
       }
     }
     const weapon = weapons[weaponIndex];
+    // ─── AMMO CHECK ───
+    const ammoOption = actor.getRequiredAmmoOption(weapon);
+    let ammo = null;
+
+    if (ammoOption) {
+      ammo = actor.getEquippedAmmo(ammoOption);
+
+      if (!ammo) {
+        ui.notifications.warn(`No equipped ${ammoOption}!`);
+        return;
+      }
+
+      if ((ammo.system.quantity ?? 0) <= 0) {
+        ui.notifications.warn(`Out of ${ammoOption}!`);
+        return;
+      }
+    }
     console.log(
       "Raw damage fields:",
       weapon.system.dmgType1,
@@ -428,6 +446,9 @@ ${dmgtypes}
         },
       },
     });
+    if (ammo) {
+      await actor.deductAmmo(ammo);
+    }
   };
 
   if (preResolvedContext?.weapon) {

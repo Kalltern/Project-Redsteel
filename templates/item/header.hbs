@@ -15,7 +15,55 @@
     <div class="document-name">
       <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
     </div>
+    {{!-- =====================
+         AMMUNITION
+    ====================== --}}
+    {{#if (eq item.type "ammunition")}}
+      <div class="grid-span-1">
+        <label for="ammunition-option">Option:</label>
+        <select name="system.option" id="ammunition-option">
+          <option value="">-- Select a type --</option>
+          {{#each system.options as |option|}}
+            <option value="{{option}}" {{#if (eq ../system.option option)}}selected{{/if}}>
+              {{option}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="grid grid-2col">
+      <div class="grid-span-1">
+        <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}</label>
+        <input
+          type="number"
+          name="system.quantity"
+          value="{{system.quantity}}"
+          data-dtype="Number"
+        />
+      </div>
+       {{#if (or (eq system.option "arrows") (eq system.option "bolts"))}}
+        
+      <div class="grid-span-1">
+        <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+        <input
+          type="number"
+          name="system.penetration"
+          value="{{system.penetration}}"
+          data-dtype="Number"
+        />
+      </div>
 
+     <div class="grid-span-1">
+        <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.bleed.label"}}</label>
+        <input
+          type="number"
+          name="system.bleed"
+          value="{{system.bleed}}"
+          data-dtype="Number"
+        />
+      </div>
+       {{/if}}
+      </div>
+    {{/if}}
     {{!-- =====================
          FEATURE
     ====================== --}}

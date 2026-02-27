@@ -1,0 +1,30 @@
+{{! Attributes Tab }}
+<section
+  class='tab attributes {{tab.cssClass}}'
+  data-group='primary'
+  data-tab='attributes'
+>
+  {{! As you add new fields, add them in here! }}
+  <h3>Reroll Settings</h3>
+
+  <!-- Static Input for Reroll Name -->
+  <label for="reroll-name">Reroll Name</label>
+  <input 
+    type="text" 
+    id="reroll-name" 
+    name="system.reroll.name" 
+    value="{{system.reroll.name}}" 
+    placeholder="Enter reroll name" />
+
+  <!-- Static Input for Reroll Value -->
+  <label for="reroll-value">Reroll Value</label>
+  <input 
+    type="number" 
+    id="reroll-value" 
+    name="system.reroll.value" 
+    value="{{system.reroll.value}}" 
+    min="0" 
+    placeholder="Enter number of rerolls" />
+
+
+</section>

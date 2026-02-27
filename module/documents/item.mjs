@@ -9,6 +9,17 @@ export class ToSItem extends Item {
   prepareData() {
     super.prepareData();
 
+    if (this.type === "ammunition") {
+      this.system.options = [
+        "arrows",
+        "bolts",
+        "stones",
+        "axes",
+        "javelins",
+        "knives",
+      ];
+    }
+
     // Only initialize effectTypes for relevant items (e.g., spells, consumables)
 
     if (

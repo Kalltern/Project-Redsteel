@@ -27,8 +27,8 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       viewDoc: this._viewDoc,
       createDoc: this._createDoc,
       deleteDoc: this._deleteDoc,
-      addConsumable: this._addConsumable,
-      subtractConsumable: this._subtractConsumable,
+      addSupply: this._addSupply,
+      subtractSupply: this._subtractSupply,
       toggleEffect: this._toggleEffect,
       roll: this._onRoll,
       toggleEquipped: this._toggleEquipped,
@@ -38,6 +38,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       setActiveWeaponSet: this._setActiveWeaponSet,
       toggleTwoHandGrip: this._toggleTwoHandGrip,
       toggleNpcOffhand: this._toggleNpcOffhand,
+      toggleAmmoEquipped: this._toggleAmmoEquipped,
     },
     // Custom property that's merged into `this.options`
     dragDrop: [{ dragSelector: "[data-drag]", dropSelector: null }],
@@ -207,6 +208,37 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     const list = header.closest(".items-list");
     list.classList.toggle("collapsed");
     header.classList.toggle("collapsed");
+  }
+
+  static async _toggleAmmoEquipped(event, target) {
+    const doc = this._getEmbeddedDocument(target);
+    if (!doc) return;
+
+    const actor = doc.actor;
+    const option = doc.system.option;
+
+    const currentlyEquipped = doc.system.equipped ?? false;
+
+    // If turning ON
+    if (!currentlyEquipped) {
+      // Unequip other ammo of same option
+      const others = actor.items.filter(
+        (i) =>
+          i.type === "ammunition" &&
+          i.system.option === option &&
+          i._id !== doc._id,
+      );
+
+      for (let other of others) {
+        if (other.system.equipped) {
+          await other.update({ "system.equipped": false });
+        }
+      }
+    }
+
+    await doc.update({
+      "system.equipped": !currentlyEquipped,
+    });
   }
 
   static _toggleEquipped(event) {
@@ -768,10 +800,12 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     const weapon = [];
     const race = [];
     const gear = [];
+    const ammunition = [];
     const ability = [];
     const consumables = [];
     const items = [];
     const spells = [];
+    const supplies = [];
 
     // Iterate through items, allocating to containers
     for (let i of this.document.items) {
@@ -790,10 +824,16 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       // Append to consumable.
       else if (i.type === "consumable") {
         consumables.push(i);
+        supplies.push(i);
       }
       // Append to item.
       else if (i.type === "item") {
         items.push(i);
+      }
+      // Append to ammunition.
+      else if (i.type === "ammunition") {
+        ammunition.push(i);
+        supplies.push(i);
       }
       // Append to abilities.
       else if (i.type === "ability") {
@@ -817,8 +857,12 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       (a, b) => (a.sort || 0) - (b.sort || 0),
     );
     context.items = items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+    context.ammunition = ammunition.sort(
+      (a, b) => (a.sort || 0) - (b.sort || 0),
+    );
     context.ability = ability.sort((a, b) => (a.sort || 0) - (b.sort || 0));
     context.spells = spells.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+    context.supplies = supplies.sort((a, b) => (a.sort || 0) - (b.sort || 0));
     context.race = race.sort((a, b) => (a.sort || 0) - (b.sort || 0));
   }
 
@@ -964,15 +1008,16 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
    */
-  static async _addConsumable(event, target) {
+  static async _addSupply(event, target) {
     const doc = this._getEmbeddedDocument(target);
-    const currentQty = doc.system.quantity;
+    const currentQty = Number(doc.system.quantity ?? 0);
     await doc.update({ "system.quantity": currentQty + 1 });
   }
 
-  static async _subtractConsumable(event, target) {
+  static async _subtractSupply(event, target) {
     const doc = this._getEmbeddedDocument(target);
-    const currentQty = doc.system.quantity;
+    const currentQty = Number(doc.system.quantity ?? 0);
+
     if (currentQty <= 1) {
       await doc.delete();
     } else {

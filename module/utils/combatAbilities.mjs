@@ -827,7 +827,26 @@ ${damageLine}
     halfDamage,
   ) {
     const weapon = weaponContext?.weapon ?? null;
+    // ─── AMMO CHECK ───
+    let ammo = null;
 
+    if (weapon) {
+      const ammoOption = actor.getRequiredAmmoOption?.(weapon);
+
+      if (ammoOption) {
+        ammo = actor.getEquippedAmmo?.(ammoOption);
+
+        if (!ammo) {
+          ui.notifications.warn(`No equipped ${ammoOption}!`);
+          return;
+        }
+
+        if ((ammo.system.quantity ?? 0) <= 0) {
+          ui.notifications.warn(`Out of ${ammoOption}!`);
+          return;
+        }
+      }
+    }
     const damageProfile = resolveDamageProfile(
       weapon,
       ability,
@@ -1050,6 +1069,10 @@ ${damageLine}
       damageProfile,
       halfDamage,
     });
+    // ─── AMMO DEDUCTION ───
+    if (ammo) {
+      await actor.deductAmmo(ammo);
+    }
   }
 }
 

@@ -66,7 +66,16 @@ export class ToSActor extends Actor {
     let combatSkill = systemData.combatSkills;
     let secondaryAttribute = systemData.secondaryAttributes;
     // Iterate through gear
-    const elementalTypes = ["acid", "fire", "frost", "lightning", "magic"];
+    const elementalTypes = [
+      "acid",
+      "fire",
+      "frost",
+      "lightning",
+      "magic",
+      "poison",
+      "dark",
+      "holy",
+    ];
     for (const type of elementalTypes) {
       systemData.armor[type].bonus = 0;
     }
@@ -970,5 +979,45 @@ export class ToSActor extends Actor {
     if (this.type !== "npc") return;
 
     // Process additional NPC data here.
+  }
+  getRequiredAmmoOption(weapon) {
+    const wClass = weapon.system.class;
+    const isThrown = weapon.system.thrown;
+
+    if (wClass === "bow") return "arrows";
+    if (wClass === "crossbow") return "bolts";
+
+    if (isThrown) {
+      if (wClass === "sword") return "knives";
+      if (wClass === "axe") return "axes";
+      if (wClass === "polearm") return "javelins";
+    }
+
+    return null;
+  }
+
+  getEquippedAmmo(option) {
+    return this.items.find(
+      (i) =>
+        i.type === "ammunition" &&
+        i.system.option === option &&
+        i.system.equipped === true,
+    );
+  }
+
+  async deductAmmo(ammoItem) {
+    const qty = Number(ammoItem.system.quantity ?? 0);
+
+    if (qty <= 0) return false;
+
+    if (qty === 1) {
+      await ammoItem.delete();
+    } else {
+      await ammoItem.update({
+        "system.quantity": qty - 1,
+      });
+    }
+
+    return true;
   }
 }

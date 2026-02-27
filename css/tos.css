@@ -1757,3 +1757,17 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   color: #f5c542; /* warm yellow */
   filter: drop-shadow(0 0 4px rgba(245, 197, 66, 0.8));
 }
+
+/* Ammo toggle */
+.ammo-toggle {
+  opacity: 0.4;
+}
+
+.ammo-toggle.active {
+  opacity: 1;
+  color: #d4af37; /* subtle gold */
+}
+.item.ammo-equipped {
+  background: rgba(80, 200, 120, 0.18);
+  border-left: 4px solid #50c878;
+}
