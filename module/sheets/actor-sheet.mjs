@@ -150,7 +150,10 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       .join("");
 
     return `
-    <strong>${data.title}</strong>
+  <div class="tooltip-header">
+  <img src="${data.icon}" class="tooltip-icon">
+  <div class="tooltip-title"><strong>${data.title}</strong></div>
+  </div>
     ${sectionHTML}
     <hr>
     ${statsHTML}

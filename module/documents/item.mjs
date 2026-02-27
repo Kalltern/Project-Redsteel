@@ -257,10 +257,25 @@ export class ToSItem extends Item {
     if (this.type === "ability") {
       return this._getAbilityTooltipData(data);
     }
-
+    if (this.type === "weapon") {
+      return this._getWeaponTooltipData(data);
+    }
+    if (this.type === "gear" && !data.shield) {
+      return this._getGearTooltipData(data);
+    }
+    if (this.type === "gear" && data.shield) {
+      return this._getShieldTooltipData(data);
+    }
+    if (data.option === "potion") {
+      return this._getPotionTooltipData(data);
+    }
+    if (this.type === "feature") {
+      return this._getFeatureTooltipData(data);
+    }
     // fallback for other item types
     return {
       title: this.name,
+      img: this.img,
       sections: [],
       stats: [],
       description: data.description,
@@ -284,9 +299,10 @@ export class ToSItem extends Item {
     ].filter(Boolean);
 
     return {
+      icon: this.img,
       title: this.name,
       sections: [
-        { label: "Damage types", lines: damageLines },
+        { label: "Damage types", lines: [damageLines.join(" ")] },
         { label: "Effect types", lines: effectLines },
       ],
       stats: [
@@ -304,26 +320,139 @@ export class ToSItem extends Item {
 
   _getAbilityTooltipData(data) {
     const effectLines = [
+      data.effects.bleed && `Bleed ${data.effects.bleed}%`,
+      data.effects.stun && `Stun ${data.effects.stun}%`,
       data.effectType1 &&
         `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
       data.effectType2 &&
         `${data.effectType2} ${data.effects?.extra2 ? data.effects.extra2 + "%" : ""}`,
+      data.effectType3 &&
+        `${data.effectType3} ${data.effects?.extra3 ? data.effects.extra3 + "%" : ""}`,
     ].filter(Boolean);
 
     return {
+      icon: this.img,
       title: this.name,
       sections: [{ label: "Effect types", lines: effectLines }],
       stats: [
         { label: "Difficulty", value: data.difficulty },
-        { label: "Cooldown", value: data.cooldown },
+        { label: "Cost", value: `${data.cost} ${data.costType}` },
+        { label: "Damage", value: data.roll.diceBonus },
+        { label: "Test Type", value: data.attributeTest },
         { label: "Actions", value: data.actionCost },
         { label: "Range", value: data.range },
       ],
       description: data.description,
     };
   }
+  _getWeaponTooltipData(data) {
+    const effectLines = [
+      data.effects.bleed && `Bleed ${data.effects.bleed}%`,
+      data.effects.stun && `Stun ${data.effects.stun}%`,
+      data.effectType1 &&
+        `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
+      data.effectType2 &&
+        `${data.effectType2} ${data.effects?.extra2 ? data.effects.extra2 + "%" : ""}`,
+      data.effectType3 &&
+        `${data.effectType3} ${data.effects?.extra3 ? data.effects.extra3 + "%" : ""}`,
+    ].filter(Boolean);
 
-  _getitemTooltipData(data) {
+    return {
+      icon: this.img,
+      title: this.name,
+      sections: [{ label: "Effect types", lines: effectLines }],
+      stats: [
+        { label: "Weapon Type", value: `${data.type} ${data.class}` },
+        {
+          label: "Damage",
+          value: `${data.roll.diceNum}d${data.roll.diceSize}+${data.roll.diceBonus}`,
+        },
+        { label: "Penetration", value: `${data.penetration}` },
+        { label: "Attack", value: data.attack },
+        { label: "Defense", value: data.defense },
+        { label: "Crit range", value: data.critRange },
+        { label: "Crit chance", value: data.critChance },
+        { label: "Crit fail", value: data.critFail },
+        { label: "Crit defense", value: data.critDefense },
+        { label: "Crit dodge", value: data.critDodge },
+        { label: "Dodge", value: data.dodge },
+        { label: "Breakthrough", value: data.breakthrough },
+        { label: "Sneak damage", value: data.sneakDamage },
+        { label: "Finesse", value: data.finesse },
+        { label: "Sharp", value: data.sharp },
+        { label: "Thrown", value: data.thrown },
+        { label: "Can be held in offhand", value: data.offhand },
+      ].filter(
+        (stat) =>
+          stat.value !== 0 && stat.value !== false && stat.value != null,
+      ),
+      description: data.description,
+    };
+  }
+  _getGearTooltipData(data) {
+    return {
+      icon: this.img,
+      title: this.name,
+      stats: [
+        { label: "Armor layer", value: data.layer },
+        { label: "Armor", value: data.armor.value },
+        { label: "Acid armor", value: data.armor.acid.value },
+        { label: "Fire armor", value: data.armor.fire.value },
+        { label: "Frost armor", value: data.armor.frost.value },
+        { label: "Lightning armor", value: data.armor.lightning.value },
+        { label: "Magic armor", value: data.armor.magic.value },
+        { label: "Dark armor", value: data.armor.dark.value },
+        { label: "Poison armor", value: data.armor.poison.value },
+        { label: "Holy armor", value: data.armor.holy.value },
+        { label: "Durability", value: data.armor.durability },
+        { label: "Defense", value: data.defense },
+        { label: "Ranged defense", value: data.rangedDefense },
+        { label: "Critical defense", value: data.critDefense },
+        { label: "Critical ranged defense", value: data.rangedCritDefense },
+        { label: "Max speed reduction", value: data.maxSpeed },
+        { label: "Max health bonus", value: data.healthBonus },
+        { label: "Initiative penalty", value: data.iniPenalty },
+        { label: "Perception penalty", value: data.perPenalty },
+        { label: "Acrobacy penalty", value: data.acroPenalty },
+        { label: "Dodge penalty", value: data.dodgePenalty },
+        { label: "Archery penalty", value: data.archeryPenalty },
+        { label: "Channeling penalty", value: data.castPenalty },
+        { label: "Swimming penalty", value: data.swimPenalty },
+      ].filter(
+        (stat) =>
+          stat.value !== 0 && stat.value !== false && stat.value != null,
+      ),
+      description: data.description,
+    };
+  }
+  _getShieldTooltipData(data) {
+    return {
+      icon: this.img,
+      title: this.name,
+      stats: [
+        { label: "Defense", value: data.defense },
+        { label: "Ranged defense", value: data.rangedDefense },
+        { label: "Critical defense", value: data.critDefense },
+        { label: "Critical ranged defense", value: data.rangedCritDefense },
+        { label: "Dodge penalty", value: data.dodgePenalty },
+        { label: "Armor", value: data.armor.value },
+        { label: "Acid armor", value: data.armor.acid.value },
+        { label: "Fire armor", value: data.armor.fire.value },
+        { label: "Frost armor", value: data.armor.frost.value },
+        { label: "Lightning armor", value: data.armor.lightning.value },
+        { label: "Magic armor", value: data.armor.magic.value },
+        { label: "Dark armor", value: data.armor.dark.value },
+        { label: "Poison armor", value: data.armor.poison.value },
+        { label: "Holy armor", value: data.armor.holy.value },
+        { label: "Durability", value: data.armor.durability },
+      ].filter(
+        (stat) =>
+          stat.value !== 0 && stat.value !== false && stat.value != null,
+      ),
+      description: data.description,
+    };
+  }
+  _getPotionTooltipData(data) {
     const effectLines = [
       data.effectType1 &&
         `${data.effectType1} ${data.effects?.extra1 ? data.effects.extra1 + "%" : ""}`,
@@ -332,14 +461,34 @@ export class ToSItem extends Item {
     ].filter(Boolean);
 
     return {
+      icon: this.img,
       title: this.name,
       sections: [{ label: "Effect types", lines: effectLines }],
       stats: [
-        { label: "Difficulty", value: data.difficulty },
-        { label: "Cooldown", value: data.cooldown },
-        { label: "Actions", value: data.actionCost },
-        { label: "Range", value: data.range },
-      ],
+        { label: "Potion Type", value: `${data.type} ${data.option}` },
+        { label: "Toxicity", value: data.toxicity },
+        {
+          label: "Replenishes",
+          value: `${data.roll.diceNum}d${data.roll.diceSize}+${data.roll.diceBonus}`,
+        },
+      ].filter(
+        (stat) =>
+          stat.value !== 0 && stat.value !== false && stat.value != null,
+      ),
+      description: data.description,
+    };
+  }
+  _getFeatureTooltipData(data) {
+    return {
+      icon: this.img,
+      title: this.name,
+      stats: [
+        { label: "Type:", value: data.option },
+        { label: "Number of rerolls", value: data.reroll.value },
+      ].filter(
+        (stat) =>
+          stat.value !== 0 && stat.value !== false && stat.value != null,
+      ),
       description: data.description,
     };
   }

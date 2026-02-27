@@ -1255,7 +1255,7 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
-
+  border: 1px solid #7a7332;
   font-size: 13px;
   line-height: 1.4;
 
@@ -1263,7 +1263,20 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
 
   pointer-events: none;
 }
-
+.tooltip-header {
+  display: flex; /* 👈 makes children sit next to each other */
+  align-items: center; /* 👈 vertical alignment */
+  gap: 8px; /* 👈 space between icon and title */
+}
+.tooltip-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.tooltip-title {
+  font-size: 20px;
+}
 #item-tooltip.hidden {
   display: none;
 }
