@@ -125,9 +125,6 @@ export class ToSActor extends Actor {
       }
     }
 
-    const dodgeLimit = systemData.dodgeLimit;
-    dodgeLimit.total = dodgeLimit.value + dodgeLimit.bonus;
-
     this._prepareGlobalMod();
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
@@ -213,6 +210,8 @@ export class ToSActor extends Actor {
           // Dodge penalty
           combatSkills.dodge.bonus += shield.system.dodgePenalty ?? 0;
 
+          const dodgeLimit = systemData.dodgeLimit;
+          dodgeLimit.total = dodgeLimit.value + dodgeLimit.bonus;
           // Initiative / speed penalties
           secondary.ini.bonus += shield.system.iniPenalty ?? 0;
           secondary.spd.bonus += shield.system.maxSpeed ?? 0;
@@ -866,7 +865,11 @@ export class ToSActor extends Actor {
     // Make modifications to data here. For example:
     for (let [key, combatSkill] of Object.entries(systemData.combatSkills)) {
       combatSkill.rating =
-        combatSkill.value + combatSkill.bonus + systemData.globalMod;
+        Number(combatSkill.value ?? 0) +
+        Number(combatSkill.bonus ?? 0) +
+        Number(systemData.globalMod ?? 0);
+
+      console.log("After:", key, combatSkill.rating);
     }
 
     for (let [key, attribute] of Object.entries(systemData.attributes)) {
@@ -893,7 +896,6 @@ export class ToSActor extends Actor {
 
     hp.value = Number(hp.value) || 0;
     hp.max = Number(hp.max) || 0;
-
     systemData.xp = systemData.cr * systemData.cr * 100;
 
     const baseCriticalSuccess = 5; // Base critical success threshold
