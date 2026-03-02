@@ -479,8 +479,8 @@
           <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.armor.label"}}</label>
           <input
             type="text"
-            name="system.armor.natural"
-            value="{{system.armor.natural.total}}"
+            name="system.armor.natural.value"
+            value="{{system.armor.natural.value}}"
             class="attribute-score"
             data-dtype="Number"
           />
@@ -494,7 +494,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.acidArmor.label"}}</label>
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.acid.label"}}</label>
           <input
             type="text"
             name="system.armor.acid.value"
@@ -512,7 +512,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.fireArmor.label"}}</label>
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.fire.label"}}</label>
           <input
             type="text"
             name="system.armor.fire.value"
@@ -530,7 +530,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.frostArmor.label"}}</label>
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.frost.label"}}</label>
           <input
             type="text"
             name="system.armor.frost.value"
@@ -548,7 +548,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.lightningArmor.label"}}</label>
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.lightning.label"}}</label>
           <input
             type="text"
             name="system.armor.lightning.value"
@@ -566,7 +566,59 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.magicArmor.label"}}</label>
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.poison.label"}}</label>
+          <input
+            type="text"
+            name="system.armor.poison.value"
+            value="{{system.armor.poison.value}}"
+            class="attribute-score"
+            data-dtype="Number"
+          />
+          <input
+            type="text"
+            value="{{system.armor.poison.total}}"
+            data-dtype="Number"
+            data-class="stat-input"
+            readonly
+          />
+        </div>
+                <div class="attribute-armor">
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.dark.label"}}</label>
+          <input
+            type="text"
+            name="system.armor.dark.value"
+            value="{{system.armor.dark.value}}"
+            class="attribute-score"
+            data-dtype="Number"
+          />
+          <input
+            type="text"
+            value="{{system.armor.dark.total}}"
+            data-dtype="Number"
+            data-class="stat-input"
+            readonly
+          />
+        </div>
+
+                <div class="attribute-armor">
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.holy.label"}}</label>
+          <input
+            type="text"
+            name="system.armor.holy.value"
+            value="{{system.armor.holy.value}}"
+            class="attribute-score"
+            data-dtype="Number"
+          />
+          <input
+            type="text"
+            value="{{system.armor.holy.total}}"
+            data-dtype="Number"
+            data-class="stat-input"
+            readonly
+          />
+        </div>
+                        <div class="attribute-armor">
+          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.magic.label"}}</label>
           <input
             type="text"
             name="system.armor.magic.value"

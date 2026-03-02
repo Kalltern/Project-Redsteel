@@ -316,18 +316,6 @@ export async function universalAttackLogic({
 
     const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
       effects;
-
-    const expression = damageProfile?.expression || [];
-    const dmgtypes =
-      expression.length > 0
-        ? `<hr>
-<tr><th>Damage types:</th></tr>
-<tr><td>${expression
-            .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
-            .join(" ")}</td></tr><hr>
-`
-        : "";
-
     // ─── Damage Line ───
     const damageLine = `
 <div style="
@@ -369,6 +357,7 @@ ${
     </div>
   </div>
 </div>
+<hr>
 `;
 
     const attackHTML = await attackRoll.render();
@@ -407,9 +396,7 @@ ${
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
 ${damageLine}
-<div style="text-align:center; font-size:14px;">
-${dmgtypes}
- </div>
+
 <table style="width:100%; text-align:center; font-size:15px;">
   <tr><th>Effects</th></tr>
   <tr>

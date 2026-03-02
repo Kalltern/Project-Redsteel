@@ -134,17 +134,6 @@ export async function getNonWeaponAbility(actor, ability) {
   const halfDamage = system.roll.halfDamage;
   const attackHTML = await attributeTestRoll.render();
   const damageHTML = await damageRoll.render();
-  const expression = damageProfile?.expression || [];
-
-  const dmgtypes =
-    expression.length > 0
-      ? `
-<tr><th>Damage types:</th></tr>
-<tr><td>${expression
-          .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
-          .join(" ")}</td></tr>
-`
-      : "";
   // Send the combined chat message
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
@@ -185,10 +174,6 @@ export async function getNonWeaponAbility(actor, ability) {
 <table style="width: 100%; text-align: center; font-size: 15px;">
   <tr>    <th>Description:</th>  </tr>
   <tr>    <td>${concatRollAndDescription}</td>  </tr>
-  
-  ${dmgtypes}
-
-  <tr>    <td><hr></td>  </tr>
 
   <tr>    <th>Effects:</th>  </tr>
 

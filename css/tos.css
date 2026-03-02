@@ -808,10 +808,10 @@ prose-mirror {
   text-align: left;
 }
 .tos .items-list .items-header.gear .item-name {
-  max-width: 300px;
+  max-width: 260px;
 }
 .tos .items-list .items-header.gear .item-durability {
-  margin-right: 100px;
+  margin-right: 85px;
 }
 .item-name.spellDifficulty {
   text-indent: 3rem;
@@ -1776,4 +1776,25 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
 .item.ammo-equipped {
   background: rgba(80, 200, 120, 0.18);
   border-left: 4px solid #50c878;
+}
+
+.tos-damage-footer {
+  position: relative;
+  margin-top: 10px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  text-align: center;
+  opacity: 0.75;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 0 0 6px 6px;
+}
+
+/* The separator line */
+.tos-damage-footer::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #d4b26a; /* or your theme border color */
+  margin-bottom: 6px;
 }

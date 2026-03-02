@@ -935,6 +935,27 @@ async function applyEffectToActor(actor, effectId, stacks = 1) {
   return await game.tos.applyEffect(actor, effectId, { stacks });
 }
 
+Hooks.on("renderChatMessage", (message, html) => {
+  // Only apply to your attack messages
+  const attackFlag = message.flags?.attack;
+  if (!attackFlag?.damageProfile) return;
+
+  const expression = attackFlag.damageProfile.expression || [];
+  if (!expression.length) return;
+
+  const formatted = expression
+    .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
+    .join(" ");
+
+  const footer = document.createElement("div");
+  footer.classList.add("tos-damage-footer");
+  footer.innerHTML = `${formatted}`;
+
+  // IMPORTANT: html[0] is <li class="chat-message">
+  const content = html[0].querySelector(".message-content");
+  content.after(footer);
+});
+
 Hooks.on("renderChatMessage", (message, html, data) => {
   function updateButtonContainerLayout(container) {
     const buttonCount = container.find("button, a.button").length;
@@ -1220,6 +1241,25 @@ async function applyEffectsAsGM(data) {
     }
   }
 }
+
+Hooks.on("renderChatMessage", (message, html) => {
+  if (!message.flags?.attack) return;
+
+  html.find(".dice-formula").each((_, el) => {
+    let formula = el.textContent;
+
+    // Remove + 0 or - 0
+    formula = formula.replace(/([\+\-]\s*0)(?!\d)/g, "");
+
+    // Optional: clean extra whitespace
+    formula = formula.replace(/\s{2,}/g, " ").trim();
+
+    // Optional: clean leading +
+    formula = formula.replace(/^\+\s*/, "");
+
+    el.textContent = formula;
+  });
+});
 Hooks.once("ready", async () => {
   if (!game.user.isGM) return;
 

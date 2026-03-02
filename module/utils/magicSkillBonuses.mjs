@@ -692,30 +692,6 @@ export async function finalizeRollsAndPostChat(
 `
     : "";
 
-  const dmgtypes = (() => {
-    const hasType =
-      spell.system.dmgType1 ||
-      spell.system.dmgType2 ||
-      spell.system.dmgType3 ||
-      spell.system.dmgType4;
-
-    if (!hasType) return "";
-
-    const parts = [
-      spell.system.dmgType1,
-      spell.system.bool2,
-      spell.system.dmgType2,
-      spell.system.bool3,
-      spell.system.dmgType3,
-      spell.system.bool4,
-      spell.system.dmgType4,
-    ].filter(Boolean);
-
-    return `
-    <tr><td>Damage types:</td></tr>
-    <tr><td>${parts.join(" ")}</td></tr>
-  `;
-  })();
   let rollName = spell.name;
   const hasEffects = effectsRollResults.trim().length > 0;
   const effectsTable = hasEffects
@@ -848,7 +824,6 @@ export async function finalizeRollsAndPostChat(
         </b></p>
             <tr><th>Description:</th></tr>
             <tr><td><br>${renderedDescription}</td></tr>
-            ${dmgtypes}
         </table>
         <hr>
         ${damageTable}

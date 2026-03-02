@@ -605,26 +605,6 @@ export async function combatAbilities() {
   }) {
     const attackHTML = await attackRoll.render();
     const damageHTML = await damageRoll.render();
-    const expression = damageProfile?.expression || [];
-    const dmgtypes =
-      expression.length > 0
-        ? `
-<hr>
-<div style="
-  text-align:center;
-  font-size:14px;
-  margin-top:6px;
-">
-  <div style="font-weight:bold; margin-bottom:4px;">
-    Damage Types
-  </div>
-  <div>
-    ${expression.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(" ")}
-  </div>
-</div>
-<hr>
-`
-        : "";
     const hasBreakthrough =
       showBreakthrough &&
       typeof breakthroughRollResult === "string" &&
@@ -638,7 +618,7 @@ export async function combatAbilities() {
   font-size:16px;
   max-width: fit-content;
   margin: 0 auto;
-">
+" class="combat-grid">
 
   <div style="display:grid; grid-template-columns:auto 1fr; column-gap:8px;">
     <div>Damage:</div><div style="text-align:center;">${damageTotal}</div>
@@ -703,9 +683,7 @@ export async function combatAbilities() {
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
 ${damageLine}
-<div style="text-align:center; font-size:14px;">
-${dmgtypes}
- </div>
+<hr>
 <table style="width:100%; text-align:center; font-size:15px;">
   <tr><th>Effects</th></tr>
   <tr>
