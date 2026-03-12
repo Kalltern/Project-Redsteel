@@ -180,7 +180,7 @@ export class ToSActor extends Actor {
     const brawler = systemData.skills.brawler;
 
     /* -------------------------------------------- */
-    /* Shield bonuses from active weapon set        */
+    /* Shield bonuses from active weapon set  + Dimakerus logic       */
     /* -------------------------------------------- */
 
     const combatData = systemData.combat;
@@ -191,9 +191,11 @@ export class ToSActor extends Actor {
     if (activeSetId) {
       const activeSet = combatData.weaponSets?.[activeSetId];
       if (activeSet?.off) {
-        const shield = actorData.items.get(activeSet.off);
+        const offHand = actorData.items.get(activeSet.off);
+        const mainHand = actorData.items.get(activeSet.main);
 
-        if (shield?.system?.shield) {
+        if (offHand?.system?.shield) {
+          const shield = offHand;
           // Defense bonuses
           combatSkills.meleeDefense.bonus += shield.system.defense ?? 0;
           combatSkills.rangedDefense.bonus += shield.system.rangedDefense ?? 0;
@@ -210,6 +212,30 @@ export class ToSActor extends Actor {
           // Initiative / speed penalties
           secondary.ini.bonus += shield.system.iniPenalty ?? 0;
           secondary.spd.bonus += shield.system.maxSpeed ?? 0;
+        }
+        if (!offHand?.system?.shield) {
+          const weaponClass = mainHand?.system?.weapon?.class;
+          if (systemData.doctrines.dimakerus.value >= 1) {
+            if (weaponClass === "axe") {
+              combatSkills.combat.bonus += 5;
+            }
+            if (weaponClass === "blunt") {
+              combatSkills.combat.bonus += 8;
+            }
+            if (weaponClass === "sword") {
+              combatSkills.combat.bonus += 5;
+              systemData.effects.bleed += 3;
+            }
+          } else if (systemData.doctrines.duelist.value >= 1) {
+            if (weaponClass === "sword") {
+              // no penalty
+            }
+          } else {
+            combatSkills.combat.bonus -= 10;
+            combatSkills.dodge.bonus -= 10;
+            combatSkills.rangedDefense.bonus -= 10;
+            combatSkills.meleeDefense.bonus -= 10;
+          }
         }
       }
     }
@@ -235,6 +261,13 @@ export class ToSActor extends Actor {
             globalMod;
         }
 
+        if (key === "acting") {
+          skill.blend +=
+            skillset1[skill.value] +
+            attributeScore[skill.id].total * 3 +
+            skill.bonus +
+            globalMod;
+        }
         skill.rating =
           skillset1[skill.value] +
           attributeScore[skill.id].total * 3 +

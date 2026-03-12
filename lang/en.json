@@ -96,6 +96,8 @@
           "athletics": { "label": "Athletics" },
           "muscles": { "label": "Muscles" },
           "smithing": { "label": "Smithing" },
+          "swimming": { "label": "Swimming" },
+          "blend": { "label": "Blend" },
           "brawler": { "label": "Brawler" },
           "acrobacy": { "label": "Acrobacy" },
           "craft": { "label": "Craft" },

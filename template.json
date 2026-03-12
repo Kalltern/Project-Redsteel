@@ -604,6 +604,7 @@
           "bonus": 0
         },
         "acting": {
+          "blend": 0,
           "value": 0,
           "rating": 0,
           "critbonus": 0,

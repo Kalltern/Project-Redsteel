@@ -992,7 +992,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         const rollFormula = message.rolls[0].formula;
         const roll = new Roll(rollFormula);
         await roll.evaluate();
-        const d100Result = roll.dice[0]?.total; // Extract the d100 result
+        const d100Result = roll.dice?.[0]?.results?.[0]?.result ?? roll.total; // Extract the d100 result
         const criticalSuccessThreshold =
           message.flags.tos.criticalSuccessThreshold;
         const criticalFailureThreshold =

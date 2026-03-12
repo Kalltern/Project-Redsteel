@@ -1171,14 +1171,25 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
 
         console.log("Roll Type:", dataset.rollType);
         console.log("Skill Key:", skillKey);
-        skillData =
-          dataset.rollType === "skill"
-            ? this.actor.system.skills[skillKey]
-            : dataset.rollType === "combat-skill"
-              ? this.actor.system.combatSkills[skillKey]
-              : dataset.rollType === "attribute"
-                ? this.actor.system.attributes[skillKey] // Handle attributes
-                : dataset.rollType === "secondaryAttribute";
+        if (dataset.rollType === "skill") {
+          skillData = this.actor.system.skills[skillKey];
+
+          // Subskill fallback
+          const subskillParents = {
+            swimming: "athletics",
+            blend: "acting",
+          };
+
+          if (!skillData && subskillParents[skillKey]) {
+            skillData = this.actor.system.skills[subskillParents[skillKey]];
+          }
+        } else if (dataset.rollType === "combat-skill") {
+          skillData = this.actor.system.combatSkills[skillKey];
+        } else if (dataset.rollType === "attribute") {
+          skillData = this.actor.system.attributes[skillKey];
+        } else if (dataset.rollType === "secondaryAttribute") {
+          skillData = this.actor.system.secondaryAttributes[skillKey];
+        }
 
         if (skillData) {
           const criticalMessage = this.evaluateCriticalSuccess(
@@ -1215,9 +1226,11 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
           flavor: `<p style="text-align: center; font-size: 20px;"><b>${label}</b></p>`,
           rollMode: game.settings.get("core", "rollMode"),
           flags: {
-            rollName,
-            criticalSuccessThreshold, // Store critical success threshold
-            criticalFailureThreshold, // Store critical failure threshold
+            tos: {
+              rollName,
+              criticalSuccessThreshold, // Store critical success threshold
+              criticalFailureThreshold, // Store critical failure threshold
+            },
           },
         });
       } else {
