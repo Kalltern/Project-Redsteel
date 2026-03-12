@@ -616,9 +616,15 @@ export async function getCriticalRolls(
     weapon,
     weaponContext ?? null,
   );
+  let actorCritRange;
+  if (ws.class === "crossbow" || ws === "bow" || ws.thrown) {
+    actorCritRange = actor.system.critRangeRanged;
+  } else {
+    actorCritRange = actor.system.critRangeMelee;
+  }
   const critRange =
     (ws.critRange ?? 0) +
-      actor.system.critRangeMelee +
+      actorCritRange +
       doctrineCritRangeBonus +
       (offProps?.critRange || 0) +
       failedAttack || 0;

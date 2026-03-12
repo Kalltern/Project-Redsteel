@@ -72,27 +72,71 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     : "";
 
   if (!ability) {
+    const buttons = {
+      melee: {
+        label: "Melee Defense",
+        callback: (html) => {
+          const overwhelm = Number(
+            html.find('input[name="overwhelm"]:checked').val(),
+          );
+          meleeDefense({ overwhelm });
+        },
+      },
+
+      ranged: {
+        label: "Ranged Defense",
+        callback: (html) => {
+          const overwhelm = Number(
+            html.find('input[name="overwhelm"]:checked').val(),
+          );
+          rangedDefense({ overwhelm });
+        },
+      },
+
+      dodge: {
+        label: "Dodge",
+        callback: (html) => {
+          const overwhelm = Number(
+            html.find('input[name="overwhelm"]:checked').val(),
+          );
+          dodgeDefense({ overwhelm });
+        },
+      },
+    };
+
+    // Add spell defense if actor can use magic
+    if (actor.system.magicPotential || actor.system.priest) {
+      buttons.spell = {
+        label: "Spell",
+        callback: (html) => {
+          const overwhelm = Number(
+            html.find('input[name="overwhelm"]:checked').val(),
+          );
+          spellDefense({ overwhelm });
+        },
+      };
+    }
+
     const dialog = new Dialog({
       title: "Select Defense Type",
       content: `
-    ${activeSetPreview}
-    <hr>
-    <p>Choose defense:</p>
-  `,
-      buttons: {
-        melee: {
-          label: "Melee Defense",
-          callback: () => meleeDefense({}),
-        },
-        ranged: {
-          label: "Ranged Defense",
-          callback: () => rangedDefense({}),
-        },
-        dodge: {
-          label: "Dodge",
-          callback: () => dodgeDefense({}),
-        },
-      },
+      ${activeSetPreview}
+      <hr>
+      <div style="margin-bottom:8px;">
+        <label style="font-weight:bold;margin-right:6px;">Overwhelm:</label>
+        ${[0, 1, 2, 3, 4]
+          .map(
+            (i) => `
+          <label style="margin-right:6px;">
+            <input type="radio" name="overwhelm" value="${i}" ${i === 0 ? "checked" : ""}>
+            ${i}
+          </label>
+        `,
+          )
+          .join("")}
+      </div>
+    `,
+      buttons: buttons,
       default: "melee",
       render: (html) => {
         html.find(".weapon-set-toggle").on("click", async () => {
@@ -151,7 +195,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   /* -------------------------------------------- */
   /*  MELEE DEFENSE                               */
   /* -------------------------------------------- */
-  async function meleeDefense({ ability = null, weapon = null } = {}) {
+  async function meleeDefense({
+    ability = null,
+    weapon = null,
+    overwhelm = 0,
+  } = {}) {
     const resolveWithContext = async (context) => {
       const weapon = context.weapon;
       const offProps = getOffhandProps(context);
@@ -160,6 +208,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       const offDefense = Number(offProps?.defense) || 0;
       const mainCrit = Number(weapon.system.critDefense) || 0;
       const offCrit = Number(offProps?.critDefense) || 0;
+      const overwhelmPenalty = overwhelm * -5;
       console.log("DEFENSE CONTEXT:", context);
 
       const { doctrineCritDefenseBonus, doctrineDefenseBonus } =
@@ -182,10 +231,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         weaponDefense: mainDefense + offDefense,
         doctrineDefenseBonus,
         abilityDefense,
+        overwhelmPenalty,
       };
 
       const roll = new Roll(
-        "@defenseRating + @weaponDefense + @doctrineDefenseBonus + @abilityDefense - 1d100",
+        "@defenseRating + @weaponDefense + @doctrineDefenseBonus + @abilityDefense + @overwhelmPenalty - 1d100",
         rollData,
       );
 
@@ -197,6 +247,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         rollName,
         criticalSuccessThreshold,
         criticalFailureThreshold,
+        overwhelm,
       );
     };
 
@@ -241,7 +292,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   /* -------------------------------------------- */
   /*  RANGED DEFENSE                              */
   /* -------------------------------------------- */
-  async function rangedDefense({ ability = null, weapon = null } = {}) {
+  async function rangedDefense({
+    ability = null,
+    weapon = null,
+    overwhelm = 0,
+  } = {}) {
     const resolveWithContext = async (context) => {
       const weapon = context.weapon;
       const offProps = getOffhandProps(context);
@@ -252,6 +307,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         await game.tos.getDoctrineBonuses(actor, weapon);
 
       const defense = actor.system.combatSkills.rangedDefense;
+      const overwhelmPenalty = overwhelm * -5;
       const abilityDefense = Number(ability?.system?.rangedDefense) || 0;
 
       const criticalSuccessThreshold =
@@ -263,10 +319,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         defenseRating: defense.rating,
         doctrineRangedDefenseBonus,
         abilityDefense,
+        overwhelmPenalty,
       };
 
       const roll = new Roll(
-        "@defenseRating + @doctrineRangedDefenseBonus + @abilityDefense - 1d100",
+        "@defenseRating + @doctrineRangedDefenseBonus + @abilityDefense + @overwhelmPenalty - 1d100",
         rollData,
       );
 
@@ -278,6 +335,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         rollName,
         criticalSuccessThreshold,
         criticalFailureThreshold,
+        overwhelm,
       );
     };
 
@@ -311,7 +369,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   /*  DODGE DEFENSE                               */
   /* -------------------------------------------- */
 
-  async function dodgeDefense({ ability = null, weapon = null } = {}) {
+  async function dodgeDefense({
+    ability = null,
+    weapon = null,
+    overwhelm = 0,
+  } = {}) {
     const resolveWithContext = async (context) => {
       const weapon = context.weapon;
       const offProps = getOffhandProps(context);
@@ -324,6 +386,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
       const dodge = actor.system.combatSkills.dodge;
       const abilityDefense = Number(ability?.system?.dodge) || 0;
+      const overwhelmPenalty = overwhelm * -5;
 
       const criticalSuccessThreshold =
         dodge.criticalSuccessThreshold +
@@ -348,10 +411,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         dodgeRating: dodge.rating,
         weaponDodge: mainDodge + offDodge,
         abilityDefense,
+        overwhelmPenalty,
       };
 
       const roll = new Roll(
-        "@dodgeRating + @weaponDodge + @abilityDefense - 1d100",
+        "@dodgeRating + @weaponDodge + @abilityDefense + @overwhelmPenalty - 1d100",
         rollData,
       );
 
@@ -369,6 +433,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         rollName,
         criticalSuccessThreshold,
         criticalFailureThreshold,
+        overwhelm,
         { dodgeFailed },
       );
     };
@@ -399,6 +464,108 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     });
   }
 
+  async function spellDefense({ overwhelm = 0 } = {}) {
+    const overwhelmPenalty = overwhelm * -5;
+    // ─────────────────────────────
+    // Priest: Holy Defense
+    // ─────────────────────────────
+    if (actor.system.priest) {
+      let holyEnergy = actor.system.stats.holyEnergy.value ?? 0;
+      let holyEnergyCast = actor.system.stats.holyEnergy.cast ?? 0;
+
+      if (holyEnergy <= 0) {
+        ui.notifications.warn("Not enough Holy Energy!");
+        return;
+      }
+
+      await actor.update({
+        "system.stats.holyEnergy.value": holyEnergy - 1,
+      });
+
+      const faith = actor.system.secondaryAttributes.fth.total ?? 0;
+
+      const roll = new Roll(
+        "@holyEnergyCast + @faithBonus + @overwhelmPenalty - 1d100",
+        {
+          holyEnergyCast,
+          faithBonus: faith * 8,
+          overwhelmPenalty,
+        },
+      );
+
+      await roll.evaluate();
+
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        flavor: `<strong>Holy Defense</strong>`,
+      });
+
+      return;
+    }
+
+    // ─────────────────────────────
+    // Magic Defense (non-priests)
+    // ─────────────────────────────
+
+    const defenseLevels = {
+      Wild: 0,
+      Apprentice: 1,
+      Expert: 2,
+      Master: 3,
+      Grandmaster: 5,
+    };
+
+    new Dialog({
+      title: "Magic Defense",
+      content: `<p>Select your Magic Defense level:</p>`,
+      buttons: Object.entries(defenseLevels).reduce(
+        (buttons, [level, cost]) => {
+          buttons[level] = {
+            label: `${level} (-${cost} Mana)`,
+            callback: async () => {
+              const mana = actor.system.stats.mana.value ?? 0;
+
+              if (mana < cost) {
+                ui.notifications.warn("Not enough Mana!");
+                return;
+              }
+
+              await actor.update({
+                "system.stats.mana.value": mana - cost,
+              });
+
+              const rating =
+                actor.system.combatSkills.channeling.rating +
+                actor.system.combatSkills.channeling.defense;
+
+              const roll = new Roll("@rating + @overwhelmPenalty - 1d100", {
+                rating,
+                overwhelmPenalty,
+              });
+
+              await roll.evaluate();
+
+              await roll.toMessage({
+                speaker: ChatMessage.getSpeaker({ actor }),
+                flavor: `
+                <div style="display:flex;align-items:center;gap:8px;font-size:1.3em;font-weight:bold;">
+                  <img src="icons/magic/defensive/shield-barrier-blades-teal.webp" width="36" height="36">
+                  <span>Magic Defense (${level})</span>
+                </div>
+
+                ${overwhelm > 0 ? `<p style="text-align:center">Overwhelm: -${overwhelm * 5}</p>` : ""}
+                `,
+              });
+            },
+          };
+
+          return buttons;
+        },
+        {},
+      ),
+      default: "Wild",
+    }).render(true);
+  }
   /* -------------------------------------------- */
   /*  CHAT MESSAGE                                */
   /* -------------------------------------------- */
@@ -409,6 +576,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     rollName,
     criticalSuccessThreshold,
     criticalFailureThreshold,
+    overwhelm,
     { dodgeFailed = false } = {},
   ) {
     const rollResult = roll.dice[0].results[0].result;
@@ -460,8 +628,12 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
                   ? "Dodge Failed"
                   : ""
           }
+
         </b></p>
-        ${armorTable}        
+          <div style="display:flex;justify-content:center;align-items:center;gap:8px;font-size:1.3em;font-weight:bold;">
+            ${overwhelm > 0 ? `<p>Overwhelm: -${overwhelm * 5}</p>` : ""}
+          </div>
+       ${armorTable}        
       `,
       flags: {
         tos: {
