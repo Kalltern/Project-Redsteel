@@ -1529,6 +1529,7 @@ Hooks.on("preCreateToken", function (document, data) {
     });
   }
 });
+
 // seduction to temptation conversion and removal of seduction
 Hooks.once("ready", async () => {
   for (let actor of game.actors) {

@@ -1324,7 +1324,7 @@
       "standalone": false,
       "modifiesAttack": false,
       "multiAttack": false,
-      "typeOptions": ["melee", "ranged"],
+      "typeOptions": ["melee", "ranged", "other"],
       "effectOptions": ["and", "or"],
       "effectTypes": [],
       "classOptions": ["movement", "attack", "defense"],

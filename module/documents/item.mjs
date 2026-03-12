@@ -98,6 +98,10 @@ export class ToSItem extends Item {
           ],
         };
       }
+
+      if (this.type === "ability") {
+        this.system.typeOptions = ["melee", "ranged", "other"];
+      }
     }
 
     if (this.system.roll) {

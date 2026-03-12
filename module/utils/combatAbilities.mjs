@@ -18,17 +18,19 @@ export async function combatAbilities() {
   const abilities = allAbilities.filter(
     (a) =>
       !a.system.modifiesAttack &&
-      (["melee", "ranged"].includes(a.system.type) ||
+      (["melee", "ranged", "other"].includes(a.system.type) ||
         a.system.class === "defense"),
   );
 
   const ABILITY_TABS = [
     { id: "melee", label: "Melee" },
     { id: "ranged", label: "Ranged" },
+    { id: "other", label: "Other" },
   ];
 
   function getAbilityCategory(ability) {
     if (ability.system.type === "ranged") return "ranged";
+    if (ability.system.type === "other") return "other";
     if (ability.system.type === "melee" || ability.system.class === "defense") {
       return "melee";
     }
@@ -38,6 +40,7 @@ export async function combatAbilities() {
   const abilitiesByCategory = {
     melee: [],
     ranged: [],
+    other: [],
   };
 
   for (const ability of abilities) {
@@ -154,7 +157,12 @@ export async function combatAbilities() {
     }
     if (!paid) return;
     const isStandalone = ability.system.standalone;
-    if (isStandalone) {
+    if (ability.system.type === "other") {
+      await runUtilityAbility(actor, ability, selectedModifiers);
+
+      if (!keepOpen) dialog.close();
+      return;
+    } else if (isStandalone) {
       console.warn("STANDALONE BRANCH HIT:", ability.name);
 
       await updateCombatFlags(actor, intent);
@@ -603,8 +611,33 @@ export async function combatAbilities() {
     mechanicalEffects,
     damageProfile = [],
   }) {
-    const attackHTML = await attackRoll.render();
-    const damageHTML = await damageRoll.render();
+    let attackHTML = "";
+    let damageHTML = "";
+    let critHTML = "";
+
+    if (critScore !== undefined) {
+      critHTML = `
+  <div style="display:grid; grid-template-columns:auto 1fr; column-gap:8px;">
+    <div>Crit Dmg:</div><div style="text-align:center;">${critDamageTotal}</div>
+    <div>Crit Pen:</div><div style="text-align:center;">${critBonusPenetration}</div>
+    <div>Crit score:</div>
+    <div style="text-align:center;">
+      <span title="Crit range result ${critScoreResult}"
+        style="text-decoration:underline dotted; cursor:help;">
+        [ ${critScore} ]
+      </span>
+    </div>
+  </div>
+`;
+    }
+
+    if (attackRoll) {
+      attackHTML = await attackRoll.render();
+    }
+
+    if (damageRoll) {
+      damageHTML = await damageRoll.render();
+    }
     const hasBreakthrough =
       showBreakthrough &&
       typeof breakthroughRollResult === "string" &&
@@ -635,18 +668,7 @@ export async function combatAbilities() {
     }
   </div>
 
-  <div style="display:grid; grid-template-columns:auto 1fr; column-gap:8px;">
-    <div>Crit Dmg:</div><div style="text-align:center;">${critDamageTotal}</div>
-    <div>Crit Pen:</div><div style="text-align:center;">${critBonusPenetration}</div>
-    <div>Crit score:</div>
-    <div style="text-align:center;">
-      <span title="Crit range result ${critScoreResult}"
-        style="text-decoration:underline dotted; cursor:help;">
-        [ ${critScore} ]
-      </span>
-    </div>
-  </div>
-</div>
+${critHTML}
 `;
 
     await ChatMessage.create({
@@ -1087,17 +1109,22 @@ export async function deductAbilityCost(actor, abilities = []) {
   const drainTotals = {};
   const addTotals = {};
   const updates = {};
-
+  function resolveStatKey(stat) {
+    if (stat === "temporaryhealth") return "temporaryHealth";
+    return stat;
+  }
   // ---------------------------------
   // 1. Collect all drains and adds
   // ---------------------------------
   for (const ability of abilities) {
     // Simple costType system
     const costType = ability.system.costType;
+    const normalizedType = costType?.toLowerCase();
     const costValue = Number(ability.system.cost) || 0;
 
-    if (costType && costValue > 0) {
-      drainTotals[costType] = (drainTotals[costType] || 0) + costValue;
+    if (normalizedType && costValue > 0) {
+      drainTotals[normalizedType] =
+        (drainTotals[normalizedType] || 0) + costValue;
     }
 
     const resources = Array.isArray(ability.system.resources)
@@ -1106,16 +1133,17 @@ export async function deductAbilityCost(actor, abilities = []) {
 
     for (const res of resources) {
       const { type, mode, amount } = res;
-      if (!type || !mode || !amount) continue;
+      if (!type || !mode) continue;
+      const stat = type.toLowerCase();
 
       const value = Number(amount) || 0;
 
       if (mode === "drain") {
-        drainTotals[type] = (drainTotals[type] || 0) + value;
+        drainTotals[stat] = (drainTotals[stat] || 0) + value;
       }
 
       if (mode === "add") {
-        addTotals[type] = (addTotals[type] || 0) + value;
+        addTotals[stat] = (addTotals[stat] || 0) + value;
       }
     }
   }
@@ -1124,10 +1152,11 @@ export async function deductAbilityCost(actor, abilities = []) {
   // 2. Validate drains
   // ---------------------------------
   for (const [stat, totalDrain] of Object.entries(drainTotals)) {
-    const currentValue = actor.system.stats[stat]?.value ?? 0;
+    const actorStat = resolveStatKey(stat);
+    const currentValue = actor.system.stats[actorStat]?.value ?? 0;
 
     if (currentValue < totalDrain) {
-      ui.notifications.warn(`Not enough ${stat}`);
+      ui.notifications.warn(`Not enough ${stat.replace(/([A-Z])/g, " $1")}`);
       return false;
     }
   }
@@ -1141,11 +1170,13 @@ export async function deductAbilityCost(actor, abilities = []) {
   ]);
 
   for (const stat of affectedStats) {
-    const currentValue = actor.system.stats[stat]?.value ?? 0;
+    const actorStat = resolveStatKey(stat);
+
+    const currentValue = actor.system.stats[actorStat]?.value ?? 0;
     const drain = drainTotals[stat] || 0;
     const add = addTotals[stat] || 0;
 
-    updates[`system.stats.${stat}.value`] = Math.max(
+    updates[`system.stats.${actorStat}.value`] = Math.max(
       currentValue - drain + add,
       0,
     );
@@ -1223,4 +1254,34 @@ function renderWeaponLoadoutsDialog(actor) {
 
 </section>
 `;
+}
+
+// non attack ability resolution
+
+async function runUtilityAbility(actor, ability, modifiers = []) {
+  let description = ability.system.description || "";
+
+  for (const mod of modifiers) {
+    if (mod.system.description) {
+      description += `
+<hr>
+<b>${mod.name}</b><br>
+${mod.system.description}
+`;
+    }
+  }
+
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `
+<span style="display:inline-flex; align-items:center;">
+  <img src="${ability.img}" width="36" height="36" style="margin-right:8px;">
+  <strong style="font-size:20px;">${ability.name}</strong>
+</span>
+<hr>
+<div style="text-align:center; font-size:16px;">
+${description}
+</div>
+`,
+  });
 }
