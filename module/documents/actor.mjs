@@ -861,7 +861,7 @@ export class ToSActor extends Actor {
         // Calculate critical failure threshold for each skill
         anySkill.criticalFailureThreshold = Math.min(
           100,
-          baseCriticalFailure - Math.max(0, -luck) + critFailPenalty,
+          baseCriticalFailure - Math.max(0, -luck) - critFailPenalty,
         );
       }
     }

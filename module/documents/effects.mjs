@@ -4,6 +4,7 @@ export class ToSActiveEffect extends ActiveEffect {
   /* -------------------------------------------- */
   static EFFECT_OVERRIDES = {
     stun: ["stagger"],
+    guard: ["defensive_stance"],
   };
   static registerStatusCounterIntegration() {
     if (!game.user.isGM) {

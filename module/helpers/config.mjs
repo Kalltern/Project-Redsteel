@@ -473,7 +473,6 @@ TOS.effectDefinitions = {
     name: "Ice Weapon",
     img: "icons/magic/water/snowflake-ice-blue.webp",
     statuses: ["ice_weapon"],
-    defaultTurns: 5,
 
     combatModifiers: {
       exclusiveGroup: "weaponEnchant",
@@ -488,5 +487,17 @@ TOS.effectDefinitions = {
         slow: 15,
       },
     },
+  },
+  defensive_stance: {
+    name: "Defensive stance",
+    img: "icons/skills/melee/shield-block-gray-yellow.webp",
+    statuses: ["defensive_stance"],
+  },
+
+  guard: {
+    name: "Guard",
+    img: "icons/skills/melee/shield-block-gray-yellow.webp",
+    statuses: ["guard"],
+    defaultTurns: 1,
   },
 };

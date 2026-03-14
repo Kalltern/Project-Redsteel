@@ -380,6 +380,88 @@ export function calculateAttackBonuses(actor, spell) {
     }
   }
 
+  const rankBonusTables = {
+    fire: {
+      apprentice: 5,
+      expert: 10,
+      master: 15,
+      grandmaster: 20,
+    },
+
+    water: {
+      apprentice: 10,
+      expert: 15,
+      master: 20,
+      grandmaster: 30,
+    },
+
+    air: {
+      apprentice: 10,
+      expert: 15,
+      master: 20,
+      grandmaster: 25,
+    },
+  };
+  const schoolEffects = {
+    fire: "burn",
+    water: "slow",
+    air: "stagger",
+  };
+
+  function applyEffect(effectModifiers, effect, value) {
+    effectModifiers[effect] = (effectModifiers[effect] || 0) + value;
+  }
+
+  function applySchoolTraitBonus(actor, spell, effectModifiers) {
+    const school = spell.system.type;
+    const damageTypes = [
+      spell.system.dmgType1,
+      spell.system.dmgType2,
+      spell.system.dmgType3,
+      spell.system.dmgType4,
+    ].filter(Boolean);
+    const rank = spell.system.rank;
+
+    if (!spell.system.isOffensive) return;
+
+    // FIRE
+    if (actor.system.effects?.fire?.improvedBurn) {
+      if (school === "fire" && damageTypes.includes("fire")) {
+        const bonus = rankBonusTables.fire[rank];
+        if (bonus) applyEffect(effectModifiers, schoolEffects.fire, bonus);
+      }
+    }
+
+    // WATER
+    if (actor.system.effects?.water?.improvedSlow) {
+      if (school === "water" && damageTypes.includes("frost")) {
+        const bonus = rankBonusTables.water[rank];
+        if (bonus) applyEffect(effectModifiers, schoolEffects.water, bonus);
+      }
+    }
+
+    // AIR
+    if (actor.system.effects?.air?.improvedStagger) {
+      if (school === "air" && damageTypes.includes("lightning")) {
+        const bonus = rankBonusTables.air[rank];
+        if (bonus) applyEffect(effectModifiers, schoolEffects.air, bonus);
+      }
+    }
+
+    console.log("Fire perk debug:", {
+      improvedBurn: actor.system.effects?.fire?.improvedBurn,
+      school: spell.system.type,
+      damageTypes: [
+        spell.system.damageType1,
+        spell.system.damageType2,
+        spell.system.damageType3,
+        spell.system.damageType4,
+      ],
+      rank: spell.system.rank,
+      isOffensive: spell.system.isOffensive,
+    });
+  }
+
   // --- Future Addon Example: "Focus" Trait ---
   // if (actor.items.find(i => i.name === "Focus")) {
   //     // Add +10 to all damage rolls (flat number)
@@ -398,6 +480,8 @@ export function calculateAttackBonuses(actor, spell) {
       effectModifiers[key] = (effectModifiers[key] || 0) + value;
     }
   }
+
+  applySchoolTraitBonus(actor, spell, effectModifiers);
 
   return {
     attackBonus,
@@ -548,21 +632,34 @@ export async function finalizeRollsAndPostChat(
   const damageTotal = damageRoll.total + damageBonus;
 
   // --- EFFECT ROLLS ---
-  const spellEffects = spell.system.effects || {};
+  const spellEffects = foundry.utils.deepClone(spell.system.effects || {});
+  const perkEffects = bonuses.effectModifiers || {};
+
   const mechanicalEffects = {};
   let effectsRollResults = "";
 
+  // ensure perk effects exist in spellEffects
+  for (const effect in perkEffects) {
+    if (!(effect in spellEffects)) {
+      spellEffects[effect] = 0;
+    }
+  }
+
   const spellSchool = spell.system.type;
   const actorEffects = actor.system.effects?.[spellSchool] || {};
+  const normalizedActorEffects = Object.fromEntries(
+    Object.entries(actorEffects).map(([k, v]) => [k.toLowerCase(), v]),
+  );
 
   for (const [key, effectValue] of Object.entries(spellEffects)) {
     // 0 = ignore completely
-    if (effectValue === 0) continue;
+    if (effectValue === 0 && !(key in perkEffects)) continue;
 
     let finalEffectName = "";
 
     // 1. Handle Built-in Effects
-    if (key === "stagger" || key === "bleed") {
+    const builtinEffects = ["burn", "slow", "stagger", "bleed"];
+    if (builtinEffects.includes(key)) {
       finalEffectName = key.charAt(0).toUpperCase() + key.slice(1);
     }
 
@@ -581,15 +678,12 @@ export async function finalizeRollsAndPostChat(
 
     if (!finalEffectName || key.startsWith("effectName")) continue;
 
-    // Normalize actor effects once per loop (you may want to move this outside later)
-    const normalizedActorEffects = Object.fromEntries(
-      Object.entries(actorEffects).map(([k, v]) => [k.toLowerCase(), v]),
-    );
-
     const actorBonus =
       normalizedActorEffects[finalEffectName.toLowerCase()] || 0;
 
-    const totalEffectValue = effectValue + actorBonus;
+    const bonusModifier = effectModifiers?.[finalEffectName.toLowerCase()] || 0;
+    console.log("Effect bonuses:", effectModifiers);
+    const totalEffectValue = effectValue + actorBonus + bonusModifier;
 
     // ----------------------------------
     // AUTO SUCCESS (-1 sentinel)

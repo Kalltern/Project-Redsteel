@@ -145,6 +145,25 @@ export async function combatAbilities() {
 
     let paid;
 
+    if (ability.system.class === "stance") {
+      const key = ability.system.key;
+
+      if (!key) {
+        ui.notifications.warn("Stance missing key.");
+        return;
+      }
+
+      const existing = actor.effects.find((e) => e.statuses?.has(key));
+
+      // Turning OFF → free
+      if (existing) {
+        await existing.delete();
+        return;
+      }
+
+      // Turning ON → cost will be paid
+    }
+
     if (lockedMultiAttackAbility?.id === ability.id) {
       // Already in multiattack mode → only pay modifiers
       paid = await game.tos.deductAbilityCost(actor, selectedModifiers);
@@ -156,6 +175,10 @@ export async function combatAbilities() {
       ]);
     }
     if (!paid) return;
+    if (ability.system.class === "stance") {
+      await game.tos.applyEffect(actor, ability.system.key);
+      return;
+    }
     const isStandalone = ability.system.standalone;
     if (ability.system.type === "other") {
       await runUtilityAbility(actor, ability, selectedModifiers);

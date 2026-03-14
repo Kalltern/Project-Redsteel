@@ -9,6 +9,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     actor = selectedToken.actor;
   }
 
+  const hasGuard = actor.effects.some(
+    (e) =>
+      e.getFlag("core", "statusId") === "guard" || e.statuses?.has("guard"),
+  );
+
   /* -------------------------------------------- */
   /*  SHARED CSS                                  */
   /* -------------------------------------------- */
@@ -92,18 +97,47 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
           rangedDefense({ overwhelm });
         },
       },
+    };
 
-      dodge: {
-        label: "Dodge",
+    if (hasGuard) {
+      buttons.guardMelee = {
+        label: "Melee Guard",
         callback: (html) => {
           const overwhelm = Number(
             html.find('input[name="overwhelm"]:checked').val(),
           );
-          dodgeDefense({ overwhelm });
+
+          meleeDefense({
+            overwhelm,
+            ability: { system: { defense: -10 } },
+          });
         },
+      };
+
+      buttons.guardRanged = {
+        label: "Ranged Guard",
+        callback: (html) => {
+          const overwhelm = Number(
+            html.find('input[name="overwhelm"]:checked').val(),
+          );
+
+          rangedDefense({
+            overwhelm,
+            ability: { system: { rangedDefense: -10 } },
+          });
+        },
+      };
+    }
+
+    buttons.dodge = {
+      label: "Dodge",
+      callback: (html) => {
+        const overwhelm = Number(
+          html.find('input[name="overwhelm"]:checked').val(),
+        );
+        dodgeDefense({ overwhelm });
       },
     };
-
     // Add spell defense if actor can use magic
     if (actor.system.magicPotential || actor.system.priest) {
       buttons.spell = {

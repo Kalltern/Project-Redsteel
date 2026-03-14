@@ -207,6 +207,7 @@
       "Weapon": {
         "FIELDS": {
           "offhand": { "label": "Can be held offhand" },
+          "key": { "label": "Key" },
           "twoHandGrip": { "label": "Can Two hand grip" },
           "rollFormula": { "label": "Roll Formula" },
           "diceNum": { "label": "Number of dices" },
@@ -277,7 +278,7 @@
           "aimed": { "label": "Single target" },
           "burn": { "label": "Burn" },
           "freeze": { "label": "Freeze" },
-          "stun": { "label": "Stun" },
+          "stagger": { "label": "Stagger" },
           "quantity": { "label": "Quantity" }
         }
       },

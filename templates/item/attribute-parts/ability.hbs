@@ -33,7 +33,21 @@
           data-dtype="Number"
         />
          </div>
-          {{#if (eq system.class "defense") }} 
+          {{#if (or (eq system.class "defense") (eq system.class "stance"))}}
+          {{#if  (eq system.class "stance")}}
+            <div class="grid-span-1">
+        <label class="resource-label">{{localize
+            "TOS.Item.Weapon.FIELDS.key.label"
+          }}</label>
+        <input
+          type="text"
+          name="system.key"
+          value="{{system.key}}"
+          data-dtype="text"
+        />
+      </div>
+       {{/if}}
+
       <div class="grid-span-1">
         <label class="resource-label">{{localize
             "TOS.Item.Weapon.FIELDS.defense.label"
@@ -70,7 +84,7 @@
         />
       </div>
        {{/if}}
-      {{#unless (eq system.class "defense")}}
+      {{#unless (or (eq system.class "defense") (eq system.class "stance"))}}
             <div class="grid-span-1">
         <label class="resource-label">{{localize
             "TOS.Item.Weapon.FIELDS.breakthrough.label"

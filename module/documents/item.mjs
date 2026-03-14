@@ -101,6 +101,7 @@ export class ToSItem extends Item {
 
       if (this.type === "ability") {
         this.system.typeOptions = ["melee", "ranged", "other"];
+        this.system.classOptions = ["movement", "attack", "defense", "stance"];
       }
     }
 
