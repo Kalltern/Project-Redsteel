@@ -488,6 +488,88 @@ TOS.effectDefinitions = {
       },
     },
   },
+  fire_weapon: {
+    name: "Fire Weapon",
+    img: "icons/magic/fire/dagger-rune-enchant-flame-orange.webp",
+    statuses: ["fire_weapon"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+
+      damageBonus: 3,
+      damageTypeMode: "expand",
+      damageTypes: ["magic", "fire"],
+
+      extraEffects: {
+        burning: 5,
+      },
+    },
+  },
+  poisoned_weapon: {
+    name: "Poisoned Weapon",
+    img: "icons/magic/fire/dagger-rune-enchant-green.webp",
+    statuses: ["poisoned_weapon"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+
+      damageTypeMode: "expand",
+      damageTypes: ["poison"],
+
+      extraEffects: {
+        poison: 10,
+      },
+    },
+  },
+  acid_weapon: {
+    name: "Acid Weapon",
+    img: "icons/magic/fire/dagger-rune-enchant-flame-green.webp",
+    statuses: ["acid_weapon"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+
+      damageBonus: 1,
+
+      damageTypeMode: "expand",
+      damageTypes: ["acid"],
+
+      extraEffects: {
+        corrosion: 35,
+      },
+    },
+  },
+  dark_weapon: {
+    name: "Dark Weapon",
+    img: "icons/magic/fire/dagger-rune-enchant-flame-green.webp",
+    statuses: ["dark_weapon"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+
+      damageBonus: 2,
+      penetrationBonus: 2,
+
+      damageTypeMode: "expand",
+      damageTypes: ["magic", "dark"],
+
+      extraEffects: {
+        corrosion: 35,
+      },
+    },
+  },
+  whetstone: {
+    name: "Whetstone",
+    img: "icons/commodities/stone/paver-cobble-white.webp",
+    statuses: ["whetstone"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+      extraEffects: {
+        bleed: 10,
+      },
+    },
+  },
   defensive_stance: {
     name: "Defensive stance",
     img: "icons/skills/melee/shield-block-gray-yellow.webp",

@@ -338,7 +338,7 @@ Hooks.once("ready", async () => {
   // Prevent re-adding macros every load
   if (game.user.getFlag("tos", "hotbarInitialized")) return;
 
-  // Define your preset macros
+  // Define preset macros
   const macroData = [
     {
       name: "Attack actions",
@@ -364,17 +364,10 @@ Hooks.once("ready", async () => {
       img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
       slot: 4,
     },
-
     {
       name: "First aid",
       command: `game.tos.firstAid();`,
       img: "icons/magic/life/cross-yellow-green.webp",
-      slot: 7,
-    },
-    {
-      name: "Rest",
-      command: `game.tos.restAndRecover();`,
-      img: "icons/consumables/plants/tearthumb-halberd-leaf-green.webp",
       slot: 8,
     },
     {
@@ -389,12 +382,17 @@ Hooks.once("ready", async () => {
       img: "icons/magic/time/hourglass-brown-orange.webp",
       slot: 10,
     },
-    {
+  ];
+
+  // GM-only macro
+  if (game.user.isGM) {
+    macroData.push({
       name: "Effect manager",
       command: `await game.tos.statusEffectManager();`,
       img: "icons/sundries/documents/document-sealed-signatures-red.webp",
-    },
-  ];
+      slot: 7,
+    });
+  }
 
   for (const data of macroData) {
     let macro = game.macros.getName(data.name);

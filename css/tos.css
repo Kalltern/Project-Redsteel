@@ -425,6 +425,7 @@ prose-mirror {
     url("headertextureTest7.JPG");
 }
 .tos .sheet-npc-header {
+  min-height: 460px;
   max-height: 460px;
 }
 
@@ -612,7 +613,7 @@ prose-mirror {
 }
 
 .tos .inventory-weapons .item-formula {
-  flex: 3;
+  flex: 3.5;
 }
 
 .tos .inventory-gear .item {
@@ -641,7 +642,17 @@ prose-mirror {
 
 .tos .inventory-consumable .item-quantity {
   flex: 1;
-  margin-right: 80px;
+  margin-right: 77px;
+}
+
+.tos .inventory-items .item-formula {
+  flex: 0 0 120px;
+  text-align: center;
+}
+
+.tos .inventory-items .item-quantity {
+  flex: 0 0 300px;
+  text-align: center;
 }
 
 .tos .items-header .item-name {
@@ -1032,6 +1043,10 @@ prose-mirror {
   overflow-y: auto; /* Scrollbar for long content */
 }
 
+.spells h2 {
+  margin-top: 12px;
+}
+
 .button-container {
   margin-top: 6px;
   display: grid;
@@ -1133,7 +1148,9 @@ input[data-class="stat-input"] {
     0 1px 2px rgb(0 0 0);
 }
 
-.stat-input.stat-max {
+.stat-input.stat-max,
+.attribute input.stat-input,
+.grid.grid-9col.spells .spell-value {
   background: radial-gradient(
     circle at 30% 30%,
     #191412,
@@ -1570,6 +1587,8 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
 .weapon-loadouts {
   display: flex;
   gap: 2rem;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .weapon-loadouts.horizontal {

@@ -253,44 +253,60 @@
 
     <hr>
 
-    <div class="stats">
-      <div class="stat-row">
-        {{#each system.stats as |stat key|}}
-          {{#if (or (eq key "graveWounds") (eq key "fatigue") (eq key "corruption") (eq key "mind") (eq key "insanity"))}}
-          <div class="attribute">
-            <label>{{localize (concat 'TOS.Actor.Character.stats.' key '.value.label')}}</label>
-            <div class="stat-values">
-              <input
-                type="text"
-                class="stat-input stat-current"
-                name="system.stats.{{key}}.value"
-                value="{{stat.value}}"
-                data-value="{{stat.value}}"
-              />
-              <input
-                type="text"
-                class="stat-input stat-max"
-                value="{{stat.max}}"
-                data-value="{{stat.max}}"
-                readonly
-              />
-            </div>
-          </div>
-          {{/if}}
-        {{/each}}
+<div class="stats">
+  <div class="stat-row">
 
-        <div class="attribute-armor">
-          <label class="resource-label">{{localize "Armor"}}</label>
+    {{#each system.stats as |stat key|}}
+      {{#if (or (eq key "graveWounds") (eq key "fatigue") (eq key "corruption") (eq key "mind") (eq key "insanity"))}}
+      <div class="attribute">
+        <label>{{localize (concat 'TOS.Actor.Character.stats.' key '.value.label')}}</label>
+        <div class="stat-values">
           <input
             type="text"
-            value="{{system.armor.total}}"
-            data-dtype="Number"
-            class="stat-input"
+            class="stat-input stat-current"
+            name="system.stats.{{key}}.value"
+            value="{{stat.value}}"
+            data-value="{{stat.value}}"
+          />
+          <input
+            type="text"
+            class="stat-input stat-max"
+            value="{{stat.max}}"
+            data-value="{{stat.max}}"
             readonly
           />
         </div>
       </div>
+      {{/if}}
+    {{/each}}
+
+    <!-- Armor -->
+    <div class="attribute">
+      <label class="resource-label">{{localize "Armor"}}</label>
+      <input
+        type="text"
+        value="{{system.armor.total}}"
+        data-dtype="Number"
+        class="stat-input"
+        readonly
+      />
     </div>
+
+    <!-- Detection -->
+    <div class="attribute">
+      <label>{{localize "Detection"}}</label>
+      <input
+        type="text"
+        name="system.detection"
+        value="{{system.detection}}"
+        data-dtype="Number"
+        class="stat-input"
+        readonly
+      />
+    </div>
+
+  </div>
+</div>
 
   </div>
 </header>
@@ -417,6 +433,14 @@
       {{/if}}
 
     </div>
+
+          <div class="checkbox-row">
+        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.mage.label"}}</label>
+        <input type="checkbox" name="system.magicPotential" {{checked system.magicPotential}} />
+
+        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.priest.label"}}</label>
+        <input type="checkbox" name="system.priest" {{checked system.priest}} />
+      </div>
   </div>
 
   <div class="header-fields">
@@ -755,13 +779,7 @@
         </div>
       </div>
 
-      <div class="checkbox-row">
-        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.mage.label"}}</label>
-        <input type="checkbox" name="system.magicPotential" {{checked system.magicPotential}} />
 
-        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.priest.label"}}</label>
-        <input type="checkbox" name="system.priest" {{checked system.priest}} />
-      </div>
 
     </div>
   </div>

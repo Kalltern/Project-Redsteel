@@ -329,24 +329,29 @@
 
  <br>
 <ol class="items-list inventory-weapons">
-  <li class="item flexrow items-header">
-    <div class="item-name">{{localize "Weapon"}}</div>
-    <div class="item-formula">
-      {{localize "TOS.Item.Weapon.FIELDS.rollFormula.label"}}
-    </div>
-    <div class="item-controls">
-      {{#if @root.editable}}
-        <a
-          class="item-control item-create"
-          data-action="createDoc"
-          data-document-class="Item"
-          data-type="weapon"
-        >
-          <i class="fas fa-plus"></i>
-        </a>
-      {{/if}}
-    </div>
-  </li>
+<li class="item flexrow items-header">
+  <div class="item-name">{{localize "Weapon"}}</div>
+
+  <div class="item-grip"></div>
+  <div class="item-offhand"></div>
+
+  <div class="item-formula">
+    {{localize "TOS.Item.Weapon.FIELDS.rollFormula.label"}}
+  </div>
+
+  <div class="item-controls">
+    {{#if @root.editable}}
+      <a
+        class="item-control item-create"
+        data-action="createDoc"
+        data-document-class="Item"
+        data-type="weapon"
+      >
+        <i class="fas fa-plus"></i>
+      </a>
+    {{/if}}
+  </div>
+</li>
 
   {{#each weapon as |item|}}
 
@@ -423,25 +428,26 @@
         </div>
 
       </div>
-{{#if item.system.twoHandGrip}}
+<div class="item-grip">
+  {{#if item.system.twoHandGrip}}
   <i
     class="grip-toggle fa-duotone fa-solid fa-hands
       {{#if (eq item.system.gripMode "two")}}active{{/if}}"
     data-action="toggleTwoHandGrip"
     data-item-id="{{item._id}}"
-    title="Toggle two-handed grip"
   ></i>
-{{/if}}
+  {{/if}}
+</div>
 
-{{#if (eq actor.type "npc")}}
-<i
-  class="npc-offhand-toggle fas fa-hand-paper {{#if item.system.npcOffhand}}active{{/if}}"
-  data-action="toggleNpcOffhand"
-  data-item-id="{{item._id}}"
-  title="Toggle Offhand"
-></i>
-{{/if}}
-
+<div class="item-offhand">
+  {{#if (eq actor.type "npc")}}
+  <i
+    class="npc-offhand-toggle fas fa-hand-paper {{#if item.system.npcOffhand}}active{{/if}}"
+    data-action="toggleNpcOffhand"
+    data-item-id="{{item._id}}"
+  ></i>
+  {{/if}}
+</div>
 
       <div class="item-formula item-prop">
         {{item.system.formula}}
@@ -585,71 +591,86 @@
 
 
  <br>
+ </ol>
 
-   <ol class="items-list inventory-items">
-    <li class="item flexrow items-header">
-      <div class="item-name">{{localize "Items"}}</div>
-        <div class="item-quantity">{{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}</div>
 
-      <div class="item-controls">
-        {{#if @root.editable}}
-          <a
-            class="item-control item-create"
-            title="{{localize 'DOCUMENT.Create' type="Item"}}"
-            data-action="createDoc"
-            data-document-class="Item"
-            data-type="item"
-          >
-            <i class="fas fa-plus"></i>
-            {{localize "DOCUMENT.New" type="item"}}
-          </a>
-        {{/if}}
-      </div>
-        </li>
  
-    {{#each items as |item id|}}
-      <li
-        class="item flexrow"
-        data-item-id="{{item._id}}"
-        data-drag="true"
+<ol class="items-list inventory-items">
+<li class="item flexrow items-header">
+  <div class="item-name">{{localize "Items"}}</div>
+
+  <div class="item-formula"></div>
+
+  <div class="item-quantity">
+    {{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}
+  </div>
+
+  <div class="item-controls">
+    {{#if @root.editable}}
+      <a
+        class="item-control item-create"
+        title="{{localize 'DOCUMENT.Create' type="Item"}}"
+        data-action="createDoc"
         data-document-class="Item"
+        data-type="item"
       >
-        <div class="item-name">
-          <div class="item-image">
-            <a class="rollable" data-roll-type="item" data-action="roll">
-              <img
-                src="{{item.img}}"
-                class="item-icon" 
-                data-item-id="{{item.id}}"
-                width="24"
-                height="24"
-              />
-            </a>
-          </div>
-          <div>{{item.name}}</div>
-        </div>
-         <div class="item-formula item-prop">{{item.system.quantity}}</div>
-        <div class="item-controls">
-          <a
-            class="item-control item-edit"
-            title="{{localize 'DOCUMENT.Update' type="Item"}}"
-            data-action="viewDoc"
-          >
-            <i class="fas fa-edit"></i>
-          </a>
-          {{#if @root.editable}}
-            <a
-              class="item-control item-delete"
-              title="{{localize 'DOCUMENT.Delete' type="Item"}}"
-              data-action="deleteDoc"
-            >
-              <i class="fas fa-trash"></i>
-            </a>
-          {{/if}}
-        </div>
-      </li>
-    {{/each}}
-  </ol>
+        <i class="fas fa-plus"></i>
+        {{localize "DOCUMENT.New" type="item"}}
+      </a>
+    {{/if}}
+  </div>
+</li>
+
+{{#each items as |item id|}}
+<li
+  class="item flexrow"
+  data-item-id="{{item._id}}"
+  data-drag="true"
+  data-document-class="Item"
+>
+  <div class="item-name">
+    <div class="item-image">
+      <a class="rollable" data-roll-type="item" data-action="roll">
+        <img
+          src="{{item.img}}"
+          class="item-icon"
+          data-item-id="{{item.id}}"
+          width="24"
+          height="24"
+        />
+      </a>
+    </div>
+    <div>{{item.name}}</div>
+  </div>
+
+  <div class="item-formula item-prop"></div>  <!-- spacer -->
+
+  <div class="item-quantity item-prop">
+    {{item.system.quantity}}
+  </div>
+
+  <div class="item-controls">
+    <a
+      class="item-control item-edit"
+      title="{{localize 'DOCUMENT.Update' type="Item"}}"
+      data-action="viewDoc"
+    >
+      <i class="fas fa-edit"></i>
+    </a>
+
+    {{#if @root.editable}}
+      <a
+        class="item-control item-delete"
+        title="{{localize 'DOCUMENT.Delete' type="Item"}}"
+        data-action="deleteDoc"
+      >
+        <i class="fas fa-trash"></i>
+      </a>
+    {{/if}}
+  </div>
+</li>
+{{/each}}
+</ol>
 
   
   
