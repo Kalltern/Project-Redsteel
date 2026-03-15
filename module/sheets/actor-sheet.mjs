@@ -13,6 +13,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     super(options);
     console.log("Actor sheet loaded");
     this.#dragDrop = this.#createDragDropHandlers();
+    this._boundRightClick = this._onRightClick.bind(this);
   }
 
   /** @override */
@@ -474,6 +475,9 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     const itemId = itemRow.dataset.itemId;
     if (!itemId) return;
 
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "weapon") return;
+
     this._openWeaponEquipMenuFromItem(itemId);
   }
 
@@ -482,6 +486,8 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     if (!set || !hand) return;
 
     const path = `system.combat.weaponSets.${set}.${hand}`;
+
+    console.log("Clearing slot:", path);
 
     return this.actor.update({
       [path]: null,
@@ -882,12 +888,11 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
 
-    if (!this._weaponContextBound) {
-      this.element.addEventListener(
-        "contextmenu",
-        this._onRightClick.bind(this),
-      );
-      this._weaponContextBound = true;
+    const root =
+      this.element instanceof HTMLElement ? this.element : this.element[0];
+    if (root) {
+      root.removeEventListener("contextmenu", this._boundRightClick);
+      root.addEventListener("contextmenu", this._boundRightClick);
     }
 
     this._activateItemTooltips();

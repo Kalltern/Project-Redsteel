@@ -364,12 +364,7 @@ Hooks.once("ready", async () => {
       img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
       slot: 4,
     },
-    {
-      name: "Spell defense",
-      command: `game.tos.spellDefense();`,
-      img: "icons/magic/defensive/shield-barrier-blades-teal.webp",
-      slot: 5,
-    },
+
     {
       name: "First aid",
       command: `game.tos.firstAid();`,
@@ -394,6 +389,11 @@ Hooks.once("ready", async () => {
       img: "icons/magic/time/hourglass-brown-orange.webp",
       slot: 10,
     },
+    {
+      name: "Effect manager",
+      command: `await game.tos.statusEffectManager();`,
+      img: "icons/sundries/documents/document-sealed-signatures-red.webp",
+    },
   ];
 
   for (const data of macroData) {
@@ -417,6 +417,19 @@ Hooks.once("ready", async () => {
 /* -------------------------------------------- */
 /*  Hooks for Dynamic initiative if enabled     */
 /* -------------------------------------------- */
+Hooks.once("ready", () => {
+  game.socket.on("system.tos", async (data) => {
+    if (!game.user.isGM) return;
+
+    if (data.type === "dynamicInitiativeNextRound") {
+      const combat = game.combats.get(data.combatId);
+      if (!combat) return;
+
+      // GM advances round
+      await combat.nextRound();
+    }
+  });
+});
 
 Hooks.on("ready", () => {
   const SYS_ID = "tos";
@@ -433,29 +446,23 @@ Hooks.on("ready", () => {
 
     Combat.prototype.nextRound = async function () {
       if (isDynamicInitEnabled()) {
-        try {
+        if (!game.user.isGM) {
+          game.socket.emit("system.tos", {
+            type: "dynamicInitiativeNextRound",
+            combatId: this.id,
+          });
+          return;
+        } else {
           const combat = this;
 
           const combatantUpdates = combat.combatants.map((c) => ({
             _id: c.id,
-            flags: { [SYS_ID]: { PreviousRoundInitiative: c.initiative } },
+            flags: { tos: { PreviousRoundInitiative: c.initiative } },
           }));
 
           await Combatant.updateDocuments(combatantUpdates, { parent: combat });
           await combat.resetAll();
           await combat.rollAll();
-        } catch (err) {
-          // Translate permission error for players
-          if (!game.user.isGM) {
-            ui.notifications.warn(
-              "Dynamic Initiative: the GM must advance to the next round.",
-            );
-            return;
-          }
-
-          // Preserve original error behavior for GM / unexpected cases
-
-          throw err;
         }
       }
 
@@ -489,7 +496,7 @@ Hooks.on("ready", () => {
                 initiative: previousInit,
               });
 
-              combatant.unsetFlag(SYS_ID, "PreviousRoundInitiative");
+              await combatant.unsetFlag(SYS_ID, "PreviousRoundInitiative");
             }
           }
 
@@ -503,10 +510,12 @@ Hooks.on("ready", () => {
         } catch (err) {
           // Translate permission error for players
           if (!game.user.isGM) {
-            ui.notifications.warn(
-              "Dynamic Initiative: the GM must move to the previous round.",
-            );
-            return;
+            game.socket.emit("system.tos", {
+              type: "dynamicInitiativeNextRound",
+              combatId: this.id,
+            });
+
+            return; // IMPORTANT: stop player from advancing the round
           }
 
           throw err;

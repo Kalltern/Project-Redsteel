@@ -29,8 +29,6 @@ export class ToSCombat extends Combat {
             ? "2d12kh1 + @secondaryAttributes.ini.total + @secondaryAttributes.spd.total"
             : "1d12 + @secondaryAttributes.ini.total + @secondaryAttributes.spd.total";
 
-      // system.doctrines.rogue.value >= 7; "2d12kh1 + @secondaryAttributes.ini.total + @secondaryAttributes.spd.total"; for 7 level rogues
-
       const roll = new Roll(rollFormula, actor.getRollData());
       await roll.evaluate();
 
