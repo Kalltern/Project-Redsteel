@@ -1817,3 +1817,61 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   background-color: #d4b26a; /* or your theme border color */
   margin-bottom: 6px;
 }
+
+/* Help overlay */
+
+#tos-help-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 10000;
+  overflow-y: auto;
+}
+
+.help-board {
+  padding: 40px;
+}
+
+.help-category {
+  margin-bottom: 40px;
+}
+
+.category-title {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.category-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.help-card {
+  width: 280px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 16px;
+  color: white;
+}
+
+.card-header h3 {
+  margin: 0 0 6px 0;
+}
+
+.card-meta {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.help-board {
+  max-width: 1400px;
+  margin: auto;
+}

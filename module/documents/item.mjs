@@ -160,13 +160,9 @@ export class ToSItem extends Item {
             this.system.class !== "crossbow" &&
             this.system.class !== "bow"
           ) {
-            formula = `${diceNum}d${diceSize} + 1d4 ${
-              diceBonus ? `+${diceBonus} + @${attr} ` : ""
-            }`;
+            formula = `${diceNum}d${diceSize} + 1d4 ${diceBonus ? `+${diceBonus}` : ""} + @${attr}`;
           } else {
-            formula = `${diceNum}d${diceSize} ${
-              diceBonus ? `+${diceBonus} + @${attr} ` : ""
-            }`;
+            formula = `${diceNum}d${diceSize} ${diceBonus ? `+${diceBonus}` : ""} + @${attr}`;
           }
           if (this.actor.type === "npc") {
             formula = `${diceNum}d${diceSize}  ${

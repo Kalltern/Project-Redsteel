@@ -10,6 +10,62 @@
         "label": "This enables Initiative to be reset and rolled again automatically when entering next round"
       }
     },
+    "Help": {
+      "Category": {
+        "movement": "Movement",
+        "combat": "Combat",
+        "magic": "Magic",
+        "other": "Other"
+      },
+      "Action": {
+        "move": "Move",
+        "sprint": "Sprint",
+        "slowMove": "Slow Movement",
+        "disengage": "Disengage",
+        "aim": "Aim",
+        "improvedAim": "Improved Aim",
+        "attack": "Attack",
+        "sneakAttack": "Sneak Attack",
+        "multiAttack": "Multiple Attack",
+        "opportunityAttack": "Opportunity Attack",
+        "action": "Action",
+        "dodge": "Dodge",
+        "rest": "Rest",
+        "reload": "Reload",
+        "castSpell": "Cast Spell",
+        "reactionSpell": "Reaction Cast",
+        "focus": "Focus"
+      },
+
+      "Cost": {
+        "oneAction": "1 Action",
+        "twoActions": "2 Actions",
+        "freeAction": "Free Action",
+        "reaction": "1 Reaction",
+        "variable": "X Actions",
+        "reload": "1–2 Actions"
+      },
+
+      "Description": {
+        "move": "Move up to a number of hexes equal to Speed. Moving around an enemy always costs 1 hex and may be interrupted by a successful Opportunity Attack. Movement may trigger a Reaction. The final movement may be affected by terrain. When an Opportunity Attack is triggered by movement, the character does not have the right to Defense.",
+        "sprint": "Run a distance of Speed * 2 hexes. Increases Ranged defense by 15% and reduces Defense by 25%. Maximum running distance is 12 hexes. If an Opportunity Attack is triggered by moving away from an opponent, the character cannot use Defense. Final movement may be affected by terrain",
+        "slowMove": "Move up to a number of hexes equal to Speed/2, rounded down. Moving around an enemy always costs 1 hex and may be interrupted by a successful Opportunity Attack. Movement may trigger a Reaction. When an Opportunity Attack is triggered by movement, the character has the right to Defense.",
+        "disengage": "Break free from enemy without provoking an Opportunity Attack and move Speed/2 (rounded down) hexes away from the enemy. This movement cannot be used to move around an enemy or to end adjacent to another enemy.",
+        "aim": "Increases Hit chance (Ranged and Melee) by +10% for the next attack. The action may be repeated to stack the bonus; a maximum of 4 Aiming stacks can be applied to a target. Special rules apply for bows (see Armory). Aiming can only be performed on a target within range.",
+        "improvedAim": "Increases Hit chance by +10% for the next attack. The action may be repeated to stack the bonus, up to a maximum of +40%. A target can be aimed at any distance. If the attacker has four Aiming stacks on a target, they gain Armor Penetration +10. (Duelist II – A hit reduces Aiming by only one level; a Critical Hit preserves all Aiming stacks.)",
+        "attack": "Makes an attack against a target within reach. This action cannot be performed more than once per round, nor combined with another offensive action. When Shooting or Throwing from contact range, it triggers a free Opportunity Attack.",
+        "sneakAttack": "Attack modification. Damage +1d6. Applies against surprised or undefending targets, or in doctrine-defined situations. For effect upgrades see Armory or Doctrine. Can be applied multiple times per round; however, it can only be applied once per round against the same opponent.",
+        "multiAttack": "Perform as many attacks as you are capable of. The attacks can be directed at one or multiple targets.",
+        "opportunityAttack": "An attack triggered by a specific action of an adjacent enemy, most commonly movement, casting, or shooting.",
+        "action": "Draw a weapon, take something out of a pocket, switch weapons, drink a potion, stand up from the ground, mount a horse, and similar actions. Some actions may provoke an Opportunity Attack. Drinking a potion does not provoke an Opportunity Attack if the potion was “at hand.”",
+        "dodge": "Alternative form of defense, a Dodge vs Test against the opponent’s Hit. On success, ignores Penetration. Base success threshold is 50.",
+        "rest": "Restores 5 Stamina. This action can be used multiple times per round.",
+        "reload": "Reloads a weapon. The number of actions required depends on the Reload type of the weapon.",
+        "castSpell": "Casts a spell. Cannot be combined with Offensive actions. Casting at contact range may trigger an Opportunity Attack. The required actions and mana cost depend on the spell.",
+        "reactionSpell": "Casts a spell that can be paid for with a reaction. A Speed Test must be made to determine whether the caster is fast enough; on a failure, the reaction is resolved afterward.",
+        "focus": "Follows the Casting. Reduces the spell’s Difficulty by 10%. The action may be repeated. The spell’s Difficulty cannot be reduced into positive values. This bonus does not apply to Magical Attack. It does not reduce the penalty for insufficient School level. The spell may be cast immediately after resolving the Focus action."
+      }
+    },
     "Actor": {
       "Tabs": {
         "Biography": "Biography",

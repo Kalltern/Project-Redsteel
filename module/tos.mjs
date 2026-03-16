@@ -3,6 +3,7 @@ import { ToSActor } from "./documents/actor.mjs";
 import { ToSItem } from "./documents/item.mjs";
 import { ToSCombat } from "./documents/combat.mjs";
 import { ToSActiveEffect } from "./documents/effects.mjs";
+import { HelpOverlay } from "./documents/helpOverlay.mjs";
 // Import sheet classes.
 import { ToSActorSheet } from "./sheets/actor-sheet.mjs";
 import { ToSItemSheet } from "./sheets/item-sheet.mjs";
@@ -84,6 +85,7 @@ Hooks.once("init", function () {
   CONFIG.TOS = TOS;
 
   game.tos = game.tos || {};
+  game.tos.helpOverlay = HelpOverlay;
   game.tos.statusEffectManager = statusEffectManager;
   game.tos.getActorCombatModifiers = getActorCombatModifiers;
   game.tos.applyEffect = ToSActiveEffect.applyEffect.bind(ToSActiveEffect);
@@ -148,6 +150,15 @@ Hooks.once("init", function () {
   Items.registerSheet("tos", ToSItemSheet, {
     makeDefault: true,
     label: "TOS.SheetLabels.Item",
+  });
+
+  game.keybindings.register("tos-system", "helpScreen", {
+    name: "Show Help Screen",
+    editable: [{ key: "KeyH" }],
+    onDown: () => {
+      game.tos.helpOverlay.toggle();
+      return true;
+    },
   });
 });
 
