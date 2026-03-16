@@ -928,23 +928,32 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
         if (!item) return;
 
         tooltip.innerHTML = this.constructor.buildTooltipForItem(item);
-
-        tooltip.classList.remove("hidden");
-      });
-
-      icon.addEventListener("mouseenter", (ev) => {
-        const itemId = ev.currentTarget.dataset.itemId;
-        const item = this.actor.items.get(itemId);
-        if (!item) return;
-
-        tooltip.innerHTML = this.constructor.buildTooltipForItem(item);
-
         tooltip.classList.remove("hidden");
 
         const rect = ev.currentTarget.getBoundingClientRect();
 
-        tooltip.style.left = `${rect.right + 12}px`;
-        tooltip.style.top = `${rect.top - 100}px`;
+        let left = rect.right + 12;
+        let top = rect.top;
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+
+        const tipRect = tooltip.getBoundingClientRect();
+
+        if (tipRect.right > window.innerWidth) {
+          left = rect.left - tipRect.width - 12;
+        }
+
+        if (tipRect.bottom > window.innerHeight) {
+          top = window.innerHeight - tipRect.height - 10;
+        }
+
+        if (top < 10) {
+          top = 10;
+        }
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
       });
 
       icon.addEventListener("mouseleave", () => {
