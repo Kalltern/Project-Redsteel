@@ -175,8 +175,17 @@ export function showSpellSelectionDialogs(actor) {
           <input type="checkbox" name="freeCast">
           Free Cast
         </label>
-      </div>
-    </div>
+        <label>
+          <input type="checkbox" name="ignoreChanneling">
+          No Channeling Evaluation
+        </label>
+
+        <label>
+          <input type="checkbox" name="maintainChanneling">
+          Maintain spell
+        </label>
+           </div>
+       </div>
 
     <!-- SPELL TABS -->
     <div class="spell-tabs">
@@ -215,6 +224,12 @@ export function showSpellSelectionDialogs(actor) {
             const selectedSpell = allSpells.find((s) => s.id === selectedId);
             // Check if the cast is for free
             const freeCast = html.find('input[name="freeCast"]').is(":checked");
+            const ignoreChanneling = html
+              .find('input[name="ignoreChanneling"]')
+              .is(":checked");
+            const maintainChanneling = html
+              .find('input[name="maintainChanneling"]')
+              .is(":checked");
             const focusSpent = Number(
               html.find('input[name="focus"]').val() || 0,
             );
@@ -224,6 +239,8 @@ export function showSpellSelectionDialogs(actor) {
               spell: selectedSpell,
               freeCast,
               focusSpent,
+              ignoreChanneling,
+              maintainChanneling,
             });
           });
         },
@@ -508,9 +525,15 @@ function getEffectiveDifficulty(spell, focusSpent) {
   return base > 0 ? base : Math.min(0, base + focusBonus);
 }
 
-export async function performAttackRoll(actor, spell, bonus, focusSpent) {
+export async function performAttackRoll(
+  actor,
+  spell,
+  bonus,
+  focusSpent,
+  options = {},
+) {
   const effectiveDifficulty = getEffectiveDifficulty(spell, focusSpent);
-
+  const { ignoreChanneling = false } = options;
   const critSuccessThreshold =
     actor.system.combatSkills.channeling.criticalSuccessThreshold;
   const critFailureThreshold =
@@ -526,14 +549,23 @@ export async function performAttackRoll(actor, spell, bonus, focusSpent) {
   const attackRoll = new Roll(attackRollFormula, rollData);
   await attackRoll.evaluate();
   const rollResult = attackRoll.dice[0].results[0].result;
+  const displayCritSuccess = rollResult <= critSuccessThreshold;
+  const displayCritFailure = rollResult >= critFailureThreshold;
 
-  const critSuccess = rollResult <= critSuccessThreshold;
-  const critFailure = rollResult >= critFailureThreshold;
+  let critSuccess = false;
+  let critFailure = false;
+
+  if (!ignoreChanneling) {
+    critSuccess = rollResult <= critSuccessThreshold;
+    critFailure = rollResult >= critFailureThreshold;
+  }
 
   return {
     attackRoll,
     critSuccess,
     critFailure,
+    displayCritSuccess,
+    displayCritFailure,
   };
 }
 
@@ -551,9 +583,20 @@ export async function finalizeRollsAndPostChat(
   spell,
   bonuses,
   attackResults,
+  options = {},
 ) {
-  const { attackRoll, critSuccess, critFailure } = attackResults;
+  const { ignoreChanneling = false, maintainChanneling = false } = options;
+  const {
+    attackRoll,
+    critSuccess,
+    critFailure,
+    displayCritSuccess,
+    displayCritFailure,
+  } = attackResults;
   const { damageBonus, effectModifiers } = bonuses;
+  const showCrit = ignoreChanneling
+    ? displayCritSuccess || displayCritFailure
+    : critSuccess || critFailure;
 
   // --- Roll Data Setup (needed for Damage/Description) ---
   const rollData = {
@@ -566,6 +609,7 @@ export async function finalizeRollsAndPostChat(
 
   const spellAttributeTestName = spell.system.attributeTest || 0;
   const spellTestModifier = spell.system.testModifier || 0;
+  const effectiveCritSuccess = ignoreChanneling ? false : critSuccess;
 
   const attributeMap = {
     strength: "str",
@@ -726,6 +770,21 @@ export async function finalizeRollsAndPostChat(
     };
   }
 
+  // 1.a Handle Mana deduction effect
+  const costPerRound = Number(spell.system.perRound) || 0;
+
+  if (maintainChanneling && costPerRound > 0) {
+    const effect = await game.tos.applyEffect(actor, "channeling");
+
+    if (effect) {
+      await effect.setFlag("tos", "costPerRound", costPerRound);
+    }
+  }
+
+  if (maintainChanneling && costPerRound <= 0) {
+    ui.notifications.warn(`${spell.name} does not allow prolonged channeling.`);
+  }
+
   // --- CRITICAL SCORE ROLL ---
   const critScoreRoll = new Roll(`1d20`);
   await critScoreRoll.evaluate();
@@ -764,7 +823,7 @@ export async function finalizeRollsAndPostChat(
     : "";
 
   const hasDamage = typeof damageTotal === "number" && damageTotal > 0;
-  const hasCritDamage = critSuccess === true;
+  const hasCritDamage = effectiveCritSuccess === true;
   const showDamageTable = hasDamage;
   const damageHeaders = [
     "<th>Damage</th>",
@@ -799,7 +858,7 @@ export async function finalizeRollsAndPostChat(
     : "";
 
   const hasPenetration = spell.system.penetration > 0;
-  const hasCrit = critSuccess === true;
+  const hasCrit = showCrit === true;
   const showTable = hasPenetration || hasCrit;
   const headers = [
     hasPenetration ? "<th>Penetration</th>" : "",
@@ -880,7 +939,7 @@ export async function finalizeRollsAndPostChat(
       effects: mechanicalEffects,
     };
 
-    if (critSuccess) {
+    if (!ignoreChanneling && critSuccess) {
       attackFlag.critical = {
         damage: critDamageTotal,
         penetration: critBonusPenetration,
@@ -908,13 +967,19 @@ export async function finalizeRollsAndPostChat(
         <hr>
         <table style="width: 100%; text-align: center;font-size: 15px;">
         <p style="text-align: center; font-size: 20px;"><b>
-            ${
-              critSuccess
-                ? "Critical Success!"
-                : critFailure
-                  ? "Critical Failure!"
-                  : ""
-            }
+        ${
+          ignoreChanneling
+            ? displayCritSuccess
+              ? "Critical Success!"
+              : displayCritFailure
+                ? "Critical Failure!"
+                : ""
+            : critSuccess
+              ? "Critical Success!"
+              : critFailure
+                ? "Critical Failure!"
+                : ""
+        }
         </b></p>
             <tr><th>Description:</th></tr>
             <tr><td><br>${renderedDescription}</td></tr>
@@ -937,24 +1002,27 @@ export async function finalizeRollsAndPostChat(
     },
   });
 
-  if (critFailure && spell.system.type) {
-    const table = game.tables.find(
-      (t) => t.getFlag("tos", "critTable") === spell.system.type,
-    );
-
-    if (table) {
-      const rankModifier = {
-        wild: -10,
-        apprentice: -2,
-        expert: 2,
-        master: 4,
-        grandmaster: 5,
-      };
-      const modifier = rankModifier[spell.system.rank] ?? 0;
-      const formula = `1d23 + ${modifier}`;
-      const roll = await new Roll(formula).evaluate();
-      await table.draw({ roll });
-    }
+  if (!ignoreChanneling && critFailure && spell.system.type) {
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: `
+<div class="crit-warning">
+  <p><b>${actor.name}'s channeling is becoming unstable...</b></p>
+  <button class="crit-fail-accept" data-action="acceptCritFail">
+    Accept Critical Failure
+  </button>
+</div>
+    `,
+      flags: {
+        tos: {
+          type: "critFailPrompt",
+          actorId: actor.id,
+          spellId: spell.id,
+          spellType: spell.system.type,
+          spellRank: spell.system.rank,
+        },
+      },
+    });
   }
   //tables -> Flag: "tos.critTable: fire"
 }

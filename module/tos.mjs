@@ -1613,3 +1613,43 @@ Hooks.once("ready", async () => {
 
   console.log("Stun → Stagger migration complete");
 });
+// Magic crit fails evaluation
+Hooks.on("renderChatMessage", (message, html) => {
+  html.find(".crit-fail-accept").click(async (event) => {
+    const button = event.currentTarget;
+
+    const msg = game.messages.get(message.id);
+    const data = msg.flags.tos;
+
+    if (!data || data.type !== "critFailPrompt") return;
+
+    const actor = game.actors.get(data.actorId);
+    const spellType = data.spellType;
+    const spellRank = data.spellRank;
+
+    // --- EXISTING LOGIC ---
+    const table = game.tables.find(
+      (t) => t.getFlag("tos", "critTable") === spellType,
+    );
+
+    if (!table) return;
+
+    const rankModifier = {
+      wild: -10,
+      apprentice: -2,
+      expert: 2,
+      master: 4,
+      grandmaster: 5,
+    };
+
+    const modifier = rankModifier[spellRank] ?? 0;
+    const formula = `1d23 + ${modifier}`;
+    const roll = await new Roll(formula).evaluate();
+
+    await table.draw({ roll });
+
+    // Disable button after use
+    button.disabled = true;
+    button.innerText = "Resolved";
+  });
+});

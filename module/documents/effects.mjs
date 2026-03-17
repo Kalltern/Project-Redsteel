@@ -394,6 +394,10 @@ export class ToSActiveEffect extends ActiveEffect {
       return this._handleFearTest();
     }
 
+    if (trigger.custom === "channelingDrain") {
+      return this._handleChannelingDrain();
+    }
+
     if (trigger.custom === "fearRound") {
       return this._handleFearRound();
     }
@@ -435,5 +439,34 @@ export class ToSActiveEffect extends ActiveEffect {
     if (!effectId) return;
 
     await ToSActiveEffect._removeCombatModifiers(actor, effectId);
+  }
+
+  async _handleChannelingDrain() {
+    const actor = this.parent;
+    if (!actor) return;
+
+    const costPerRound = this.getFlag("tos", "costPerRound") ?? 0;
+    if (!costPerRound) return;
+
+    const currentMana = actor.system.stats.mana?.value ?? 0;
+    const newMana = Math.max(currentMana - costPerRound, 0);
+
+    await actor.update({
+      "system.stats.mana.value": newMana,
+    });
+
+    ui.notifications.info(
+      `<p><b>Maintaining Channeling:</b> -${costPerRound} Mana</p>`,
+    );
+
+    // Break if no mana
+    if (newMana <= 0) {
+      await this.delete();
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `<p><b>Channeling Broken (No Mana)</b></p>`,
+      });
+    }
   }
 }

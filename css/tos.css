@@ -1875,3 +1875,24 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   max-width: 1400px;
   margin: auto;
 }
+
+/* Magic crit fail button */
+.crit-warning {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* THIS centers the button horizontally */
+  text-align: center;
+}
+.crit-fail-accept {
+  margin-top: 6px;
+  padding: 6px 12px;
+  font-weight: bold;
+  color: #747474; /* bright text */
+  border: 1px solid #922b21;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.crit-fail-accept:hover {
+  background: #e74c3c; /* brighter on hover */
+}

@@ -16,7 +16,8 @@ export async function castSpell() {
     return;
   }
 
-  const { spell, freeCast, focusSpent } = result;
+  const { spell, freeCast, focusSpent, ignoreChanneling, maintainChanneling } =
+    result;
 
   // --- 3. Mana Deduction ---
   if (!freeCast) {
@@ -32,9 +33,16 @@ export async function castSpell() {
     actor,
     spell,
     bonuses.attackBonus,
-    focusSpent
+    focusSpent,
+    { ignoreChanneling },
   );
 
   // --- 6. Finalization ---
-  await game.tos.finalizeRollsAndPostChat(actor, spell, bonuses, attackResults);
+  await game.tos.finalizeRollsAndPostChat(
+    actor,
+    spell,
+    bonuses,
+    attackResults,
+    { ignoreChanneling, maintainChanneling },
+  );
 }

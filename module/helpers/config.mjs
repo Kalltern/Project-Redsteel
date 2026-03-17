@@ -73,6 +73,11 @@ TOS.statusEffects = [
     img: "icons/magic/fire/flame-burning-embers-yellow.webp",
     statuses: ["burn"],
   },
+  {
+    id: "channeling",
+    name: "Channeling",
+    img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
+  },
 ];
 
 TOS.effectDefinitions = {
@@ -488,6 +493,23 @@ TOS.effectDefinitions = {
       },
     },
   },
+  lightning_weapon: {
+    name: "Lightning Weapon",
+    img: "icons/magic/fire/dagger-rune-enchant-flame-blue-yellow.webp",
+    statuses: ["lightning_weapon"],
+
+    combatModifiers: {
+      exclusiveGroup: "weaponEnchant",
+      penetrationBonus: 4,
+
+      damageTypeMode: "expand",
+      damageTypes: ["magic", "lightning"],
+
+      extraEffects: {
+        stagger: 10,
+      },
+    },
+  },
   fire_weapon: {
     name: "Fire Weapon",
     img: "icons/magic/fire/dagger-rune-enchant-flame-orange.webp",
@@ -541,7 +563,7 @@ TOS.effectDefinitions = {
   },
   dark_weapon: {
     name: "Dark Weapon",
-    img: "icons/magic/fire/dagger-rune-enchant-flame-green.webp",
+    img: "icons/magic/fire/dagger-rune-enchant-flame-purple.webp",
     statuses: ["dark_weapon"],
 
     combatModifiers: {
@@ -552,10 +574,6 @@ TOS.effectDefinitions = {
 
       damageTypeMode: "expand",
       damageTypes: ["magic", "dark"],
-
-      extraEffects: {
-        corrosion: 35,
-      },
     },
   },
   whetstone: {
@@ -599,5 +617,17 @@ TOS.effectDefinitions = {
     img: "icons/skills/melee/shield-block-gray-yellow.webp",
     statuses: ["guard"],
     defaultTurns: 1,
+  },
+
+  channeling: {
+    name: "Channeling",
+    img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
+    statuses: ["channeling"],
+
+    triggers: {
+      onRoundStart: {
+        custom: "channelingDrain",
+      },
+    },
   },
 };
