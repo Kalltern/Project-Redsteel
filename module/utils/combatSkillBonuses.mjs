@@ -797,32 +797,53 @@ export async function getEffectRolls(
   let totalBleeds = 0;
   let regularBleedRolls = [];
   let sharpBleedRolls = [];
-
   if (critScore > 1) {
     critBleeds += 1;
-  } // --- 1. Process Fixed Effects (Stagger) ---
+  }
+
+  // --- 1. Process Fixed Effects (Stagger) ---
 
   const fixedEffectNames = ["stagger"];
 
   for (const effectName of fixedEffectNames) {
+    let modifierBonus = 0;
+    for (const mod of selectedModifiers) {
+      if (!mod?.system?.effects) continue;
+
+      for (let i = 1; i <= 3; i++) {
+        const name = getEffectName(mod.system, mod.system.effects, i);
+        const value = mod.system.effects[`extra${i}`] ?? 0;
+
+        if (!name) continue;
+
+        if (name.toLowerCase() === effectName) {
+          if (value === -1) {
+            modifierBonus = -1; // auto overrides everything
+            break;
+          }
+
+          modifierBonus += value;
+        }
+      }
+    }
     const baseValue = weaponEffects[effectName] || 0;
     const modifier = actorEffects[effectName] || 0;
     const abilityBonus = abilityEffects[effectName] || 0;
     const offValue = offProps?.effects?.[effectName] || 0;
-    let totalBaseValue = baseValue + offValue + abilityBonus;
+    let totalBaseValue = baseValue + offValue + abilityBonus + modifierBonus;
 
     let isAuto = baseValue === -1 || offValue === -1 || abilityBonus === -1;
 
     let shouldProcess = isAuto || totalBaseValue > 0;
 
     if (shouldProcess) {
-      let modifiedEffectValue = offValue + baseValue + modifier + abilityBonus;
+      let modifiedEffectValue =
+        offValue + baseValue + modifier + abilityBonus + modifierBonus;
 
       if (effectName === "stagger") {
         modifiedEffectValue =
           modifiedEffectValue +
           doctrineStaggerBonus +
-          (offProps?.effects?.stagger || 0) +
           sneakEffect +
           weaponSkillEffect +
           (critScore > 1 && critSuccess ? 100 : 0);
@@ -841,11 +862,14 @@ export async function getEffectRolls(
         const d100Roll = new Roll("1d100");
         await d100Roll.evaluate();
         const roundedModifiedValue = Math.floor(modifiedEffectValue);
+        const displayName =
+          effectName.charAt(0).toUpperCase() + effectName.slice(1);
         const successText =
           d100Roll.total <= roundedModifiedValue
             ? `<i class="fa-sharp-duotone fa-solid fa-star-christmas" style="--fa-primary-color: #c4c700; --fa-secondary-color: #5c5400;"></i> SUCCESS`
             : ``;
-        effectsRollResults += `<p><b>| Stagger: </b>${d100Roll.total} | < ${roundedModifiedValue}% ${successText}</p>`;
+
+        effectsRollResults += `<p><b>| ${displayName}: </b>${d100Roll.total} | < ${roundedModifiedValue}% ${successText}</p>`;
         mechanicalEffects["stagger"] = {
           chance: roundedModifiedValue,
           roll: d100Roll.total,
@@ -892,6 +916,8 @@ export async function getEffectRolls(
   const customEffectRolls = new Map();
 
   for (const { name, value } of effectContributions) {
+    const key = name.toLowerCase();
+    if (fixedEffectNames.includes(key)) continue;
     if (customEffectRolls.has(name)) {
       const existing = customEffectRolls.get(name);
 
@@ -930,7 +956,8 @@ export async function getEffectRolls(
     const roundedModifiedValue = Math.floor(value);
     const successText = d100Roll.total <= roundedModifiedValue ? "SUCCESS" : "";
 
-    effectsRollResults += `<p><b>${name}:</b> ${d100Roll.total} < ${roundedModifiedValue}% ${successText}</p>`;
+    const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+    effectsRollResults += `<p><b>${displayName}:</b> ${d100Roll.total} < ${roundedModifiedValue}% ${successText}</p>`;
 
     mechanicalEffects[name] = {
       chance: roundedModifiedValue,
@@ -1176,7 +1203,8 @@ function collectExtrasFromSource(systemMap, effectMap, collector) {
 
     if (value === 0) continue;
 
-    const name = getEffectName(systemMap, effectMap, i);
+    const rawName = getEffectName(systemMap, effectMap, i);
+    const name = rawName?.toLowerCase();
     if (!name || name.trim() === "") continue;
 
     collector.push({ name, value });
@@ -1244,7 +1272,8 @@ export function getActorCombatModifiers(actor, weapon = null) {
 
     if (group.extraEffects) {
       for (const [k, v] of Object.entries(group.extraEffects)) {
-        result.extraEffects[k] = (result.extraEffects[k] ?? 0) + v;
+        const key = k.toLowerCase();
+        result.extraEffects[key] = (result.extraEffects[key] ?? 0) + v;
       }
     }
   }

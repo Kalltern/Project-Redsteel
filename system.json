@@ -40,8 +40,8 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/tos/assets/anvil-impact.png",
-      "thumbnail": "systems/tos/assets/anvil-impact.png"
+      "url": "systems/tos/assets/start_screen.png",
+      "thumbnail": "systems/tos/assets/start_screen.png"
     }
   ],
   "version": "0.7.2",

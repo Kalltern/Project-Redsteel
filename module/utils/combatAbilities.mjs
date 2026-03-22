@@ -724,8 +724,7 @@ ${critHTML}
 <tr><td>${concatRollAndDescription}</td></tr>
 </table>
  </div>
-
-<hr>
+ <hr>
 <p style="text-align:center; font-size:20px;">
   <b>${critSuccess ? "Critical Success!" : critFailure ? "Critical Failure!" : ""}</b>
 </p>
@@ -1081,7 +1080,7 @@ ${damageLine}
       await attributeRoll.evaluate({ async: true });
 
       concatRollAndDescription += `
-<hr>
+
 <b>${abilityAttributeTestName} Test ${totalModifier}%</b><br>
 Margin of Success: ${attributeRoll.total}
 `;

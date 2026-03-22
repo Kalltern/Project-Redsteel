@@ -387,6 +387,7 @@ ${
   ${concatDescription}
   ${attributeTestHTML}
  </div>
+ <hr>
 
 
 <p style="text-align:center; font-size:20px;">
