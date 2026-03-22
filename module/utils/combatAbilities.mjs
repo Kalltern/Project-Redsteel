@@ -859,6 +859,12 @@ ${damageLine}
     abilityCritFail,
     halfDamage,
   ) {
+    let totalHalfDamage = Boolean(halfDamage);
+    for (const mod of selectedModifiers) {
+      if (mod.system?.roll?.halfDamage) {
+        totalHalfDamage = true;
+      }
+    }
     const weapon = weaponContext?.weapon ?? null;
     // ─── AMMO CHECK ───
     let ammo = null;
@@ -1118,7 +1124,7 @@ Margin of Success: ${attributeRoll.total}
       concatRollAndDescription,
       mechanicalEffects,
       damageProfile,
-      halfDamage,
+      halfDamage: totalHalfDamage,
     });
     // ─── AMMO DEDUCTION ───
     if (ammo) {

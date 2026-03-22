@@ -110,7 +110,13 @@ export async function universalAttackLogic({
     let customCritRange = 0;
     let customCritChance = 0;
     let concatDescription = "";
+    let halfDamage = false;
 
+    for (const mod of selectedModifiers) {
+      if (mod.system?.roll?.halfDamage) {
+        halfDamage = true;
+      }
+    }
     for (const mod of selectedModifiers) {
       if (mod.system.description) {
         concatDescription += `<b>${mod.name}</b><br>${mod.system.description}`;
@@ -413,14 +419,21 @@ ${damageLine}
           type: "attack",
           damageProfile,
           effects: mechanicalEffects,
-          normal: { damage: damageTotal, penetration: penetration },
+          normal: {
+            damage: damageTotal,
+            penetration: penetration,
+            halfDamage: halfDamage,
+          },
+
           critical: {
             damage: critDamageTotal,
             penetration: critBonusPenetration,
+            halfDamage: halfDamage,
           },
           breakthrough: {
             damage: breakthroughRollResult,
             penetration: penetration,
+            halfDamage: halfDamage,
           },
         },
       },

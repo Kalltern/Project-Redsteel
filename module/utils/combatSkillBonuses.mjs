@@ -133,7 +133,7 @@ export async function getNonWeaponAbility(actor, ability) {
   let rollName = ability.name;
   const damageTotal = Math.floor(damageRoll.total);
   const penetration = system.penetration;
-  const halfDamage = system.roll.halfDamage;
+  const halfDamage = system.roll.halfDamage || false;
   const attackHTML = await attributeTestRoll.render();
   const damageHTML = await damageRoll.render();
   // Send the combined chat message
@@ -1079,98 +1079,6 @@ In total :(${totalBleeds}) due to Crit score: ${critScore}
     mechanicalEffects,
   };
 }
-export function evaluateDmgVsArmor({
-  damage,
-  penetration,
-  damageProfile = { expression: [] },
-  armor,
-  hp,
-  tempHp,
-  halfDamage = false,
-  shield = 0,
-}) {
-  const { expression } = damageProfile;
-  const armorTable = armor ?? {};
-
-  /* 1️⃣ Shields */
-  let baseDamage = damage;
-  const shieldLoss = Math.min(shield, baseDamage);
-  baseDamage -= shieldLoss;
-
-  /* 2️⃣ Normal Armor */
-  const normalArmor = armorTable?.total ?? 0;
-  baseDamage = Math.max(baseDamage - normalArmor, 0);
-
-  /* 3️⃣ Penetration Floor */
-  baseDamage = Math.max(baseDamage, penetration ?? 0);
-
-  /* 4️⃣ Build damage type modifiers */
-  const modifiers = {};
-
-  for (const token of expression) {
-    if (token === "and" || token === "or") continue;
-
-    let modifier = 1;
-
-    if (armorTable?.[token]?.immunity) {
-      modifier = 0;
-    } else {
-      if (armorTable?.[token]?.resistance) {
-        modifier *= 0.5;
-      }
-
-      if (armorTable?.[token]?.vulnerability) {
-        modifier *= 2;
-      }
-    }
-
-    modifiers[token] = modifier;
-  }
-
-  /* 5️⃣ Split into OR branches */
-  const branches = [];
-  let currentBranch = [];
-
-  for (const token of expression) {
-    if (token === "or") {
-      if (currentBranch.length > 0) {
-        branches.push(currentBranch);
-        currentBranch = [];
-      }
-    } else if (token !== "and") {
-      currentBranch.push(token);
-    }
-  }
-
-  if (currentBranch.length > 0) {
-    branches.push(currentBranch);
-  }
-
-  /* 6️⃣ Multiply modifiers inside each AND branch */
-  const branchResults = branches.map((branch) =>
-    branch.reduce((product, token) => {
-      return product * (modifiers[token] ?? 1);
-    }, 1),
-  );
-
-  /* 7️⃣ OR chooses highest branch */
-  const finalModifier =
-    branchResults.length > 0 ? Math.max(...branchResults) : 1;
-
-  /* 8️⃣ Apply modifier to base damage */
-  let finalDamage = Math.floor(baseDamage * finalModifier);
-
-  /* 9️⃣ External half damage */
-  if (halfDamage) {
-    finalDamage = Math.floor(finalDamage * 0.5);
-  }
-
-  /* 🔟 Apply to HP */
-  return {
-    shieldLoss,
-    ...applyToHp(finalDamage, hp, tempHp),
-  };
-}
 
 function applyToHp(damage, hp, tempHp) {
   const tempHpLoss = Math.min(tempHp, damage);
@@ -1341,4 +1249,97 @@ function knifeMasterCheck(actor, weapon) {
     ws.class === "sword" &&
     actor.system.knifemaster === true
   );
+}
+
+export function evaluateDmgVsArmor({
+  damage,
+  penetration,
+  damageProfile = { expression: [] },
+  armor,
+  hp,
+  tempHp,
+  halfDamage = false,
+  shield = 0,
+}) {
+  const { expression } = damageProfile;
+  const armorTable = armor ?? {};
+
+  /* 1️⃣ Shields */
+  let baseDamage = damage;
+  const shieldLoss = Math.min(shield, baseDamage);
+  baseDamage -= shieldLoss;
+
+  /* 2️⃣ Normal Armor */
+  const normalArmor = armorTable?.total ?? 0;
+  baseDamage = Math.max(baseDamage - normalArmor, 0);
+
+  /* 3️⃣ Penetration Floor */
+  baseDamage = Math.max(baseDamage, penetration ?? 0);
+
+  /* 4️⃣ Build damage type modifiers */
+  const modifiers = {};
+
+  for (const token of expression) {
+    if (token === "and" || token === "or") continue;
+
+    let modifier = 1;
+
+    if (armorTable?.[token]?.immunity) {
+      modifier = 0;
+    } else {
+      if (armorTable?.[token]?.resistance) {
+        modifier *= 0.5;
+      }
+
+      if (armorTable?.[token]?.vulnerability) {
+        modifier *= 2;
+      }
+    }
+
+    modifiers[token] = modifier;
+  }
+
+  /* 5️⃣ Split into OR branches */
+  const branches = [];
+  let currentBranch = [];
+
+  for (const token of expression) {
+    if (token === "or") {
+      if (currentBranch.length > 0) {
+        branches.push(currentBranch);
+        currentBranch = [];
+      }
+    } else if (token !== "and") {
+      currentBranch.push(token);
+    }
+  }
+
+  if (currentBranch.length > 0) {
+    branches.push(currentBranch);
+  }
+
+  /* 6️⃣ Multiply modifiers inside each AND branch */
+  const branchResults = branches.map((branch) =>
+    branch.reduce((product, token) => {
+      return product * (modifiers[token] ?? 1);
+    }, 1),
+  );
+
+  /* 7️⃣ OR chooses highest branch */
+  const finalModifier =
+    branchResults.length > 0 ? Math.max(...branchResults) : 1;
+
+  /* 8️⃣ Apply modifier to base damage */
+  let finalDamage = Math.floor(baseDamage * finalModifier);
+
+  /* 9️⃣ External half damage */
+  if (halfDamage) {
+    finalDamage = Math.floor(finalDamage * 0.5);
+  }
+
+  /* 🔟 Apply to HP */
+  return {
+    shieldLoss,
+    ...applyToHp(finalDamage, hp, tempHp),
+  };
 }

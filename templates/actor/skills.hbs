@@ -164,7 +164,7 @@
               type="text"
               class="skill-rating"
               data-dtype="Number"
-              value="{{skill.rating}}"
+              value="{{#if (eq key 'throwing')}}{{#if (gt skill.finesseRating skill.rating)}}{{skill.finesseRating}}{{else}}{{skill.rating}}{{/if}}{{else}}{{skill.rating}}{{/if}}"
               readonly
             />
         </div>
