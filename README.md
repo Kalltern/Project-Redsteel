@@ -1,6 +1,6 @@
 # ToS System
 
-![Foundry v13](https://img.shields.io/badge/foundry-v13green)
+Compatible with Foundry v13
 
 ToS is tabletop RPG system developed on digital tabletops like Roll20 and FoundryVTT
 
