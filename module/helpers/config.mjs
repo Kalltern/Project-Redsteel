@@ -708,4 +708,9 @@ TOS.effectDefinitions = {
     defaultTurns: 3,
     useDuration: true,
   },
+  nourishing_rest: {
+    name: "Nourishing rest",
+    img: "icons/magic/nature/cornucopia-orange.webp",
+    statuses: ["nourishing_rest"],
+  },
 };

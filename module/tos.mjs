@@ -360,52 +360,68 @@ Hooks.once("ready", async () => {
       command: `game.tos.attackActions();`,
       img: "icons/skills/melee/hand-grip-sword-white-brown.webp",
       slot: 1,
+      shared: true,
     },
     {
       name: "Defense actions",
       command: `game.tos.defenseRoll();`,
       img: "icons/equipment/shield/shield-round-boss-wood-brown.webp",
       slot: 2,
+      shared: true,
     },
     {
       name: "Combat abilities",
       command: `game.tos.combatAbilities();`,
       img: "icons/skills/melee/weapons-crossed-swords-yellow.webp",
       slot: 3,
+      shared: true,
     },
     {
       name: "Channeling",
       command: `game.tos.castSpell();`,
       img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
       slot: 4,
+      shared: true,
     },
     {
       name: "First aid",
       command: `game.tos.firstAid();`,
       img: "icons/magic/life/cross-yellow-green.webp",
       slot: 8,
+      shared: true,
     },
     {
       name: "Potions",
       command: `game.tos.usePotion();`,
       img: "icons/consumables/potions/bottle-round-label-cork-red.webp",
       slot: 9,
+      shared: true,
     },
     {
       name: "Delay turn",
       command: `game.tos.delayTurn();`,
       img: "icons/magic/time/hourglass-brown-orange.webp",
       slot: 10,
+      shared: true,
     },
   ];
 
   // GM-only macro
   if (game.user.isGM) {
     macroData.push({
+      name: "Long Rest",
+      scope: "global",
+      command: `game.tos.longRest();`,
+      img: "icons/magic/time/day-night-sunset-sunrise.webp",
+      slot: 6,
+      shared: false,
+    });
+    macroData.push({
       name: "Effect manager",
       command: `await game.tos.statusEffectManager();`,
       img: "icons/sundries/documents/document-sealed-signatures-red.webp",
       slot: 7,
+      shared: false,
     });
   }
 
@@ -420,7 +436,11 @@ Hooks.once("ready", async () => {
         img: data.img,
       });
     }
-
+    if (game.user.isGM && data.shared) {
+      await macro.update({
+        ownership: { default: 2 },
+      });
+    }
     await game.user.assignHotbarMacro(macro, data.slot);
   }
 

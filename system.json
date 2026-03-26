@@ -80,7 +80,7 @@
   "socket": true,
   "manifest": "https://raw.githubusercontent.com/Kalltern/tos/refs/heads/main/system.json",
   "download": "https://github.com/Kalltern/tos/releases/latest/download/tos.zip",
-  "background": "systems/tos/assets/anvil-impact.png",
+  "background": "systems/tos/assets/start_screen.png",
   "grid": {
     "type": 1,
     "distance": 1.5,

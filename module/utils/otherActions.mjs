@@ -150,9 +150,13 @@ export async function longRest() {
   // Ensure a token is selected
   const context = game.tos.selectToken({ notifyFallback: true });
   if (!context) return;
-
   const { actor, token } = context;
   const system = actor.system;
+  const nourishingEffect = actor.effects.find((e) =>
+    e.statuses?.has("nourishing_rest"),
+  );
+
+  const regenMultiplier = nourishingEffect ? 2 : 1;
 
   // ─── Stamina ───
   const stamina = system.stats.stamina.value ?? 0;
@@ -160,14 +164,18 @@ export async function longRest() {
 
   // ─── Health ───
   const health = system.stats.health.value ?? 0;
-  const newHealth = Math.max(0, health + 10 + system.attributes.end.total * 2);
+  const healthRegen = (10 + system.attributes.end.total * 2) * regenMultiplier;
+  const newHealth = Math.max(0, health + healthRegen);
 
   // ─── Toxicity ───
   const toxicity = system.stats.toxicity.value ?? 0;
-  const newToxicity = Math.max(
-    0,
-    toxicity - 5 - system.attributes.end.total * 2,
-  );
+  const toxicityReduction =
+    (5 + system.attributes.end.total * 2) * regenMultiplier;
+  const newToxicity = Math.max(0, toxicity - toxicityReduction);
+
+  // ─── Fatigue ───
+  const fatigue = system.stats.fatigue.value ?? 0;
+  const newFatigue = Math.max(0, fatigue - 1);
 
   // ─── Mind ───
   const mind = Number(system.stats.mind.value ?? 0);
@@ -177,8 +185,13 @@ export async function longRest() {
     "system.stats.stamina.value": newStamina,
     "system.stats.health.value": newHealth,
     "system.stats.toxicity.value": newToxicity,
+    "system.stats.fatigue.value": newFatigue,
     "system.stats.mind.value": newMind,
   });
+
+  if (nourishingEffect) {
+    await nourishingEffect.delete();
+  }
 
   // ─── Mana (Elementalist only) ───
   if (system.doctrines.elementalist.value > 0) {
