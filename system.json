@@ -44,7 +44,7 @@
       "thumbnail": "systems/tos/assets/start_screen.png"
     }
   ],
-  "version": "0.7.2",
+  "version": "0.8.0",
   "compatibility": {
     "minimum": "12.331",
     "verified": "13.351"
@@ -65,16 +65,46 @@
   ],
   "packs": [
     {
-      "name": "quickplay-spells",
-      "label": "Quickplay spells",
+      "name": "adventure-notes",
+      "label": "Adventure Notes",
+      "type": "JournalEntry",
+      "system": "tos"
+    },
+    {
+      "name": "critfail-tables",
+      "label": "Critical Failure Tables",
+      "type": "RollTable",
+      "system": "tos"
+    },
+    {
+      "name": "characters",
+      "label": "Characters",
+      "type": "Actor",
+      "system": "tos"
+    },
+    {
+      "name": "items",
+      "label": "Items",
       "type": "Item",
+      "system": "tos"
+    },
+    {
+      "name": "scenes",
+      "label": "Scenes",
+      "type": "Scene",
       "system": "tos"
     }
   ],
   "packFolders": [
     {
-      "name": "ToS - Quickplay",
-      "packs": ["quickplay-spells"]
+      "name": "ToS",
+      "packs": [
+        "adventure-notes",
+        "critfail-tables",
+        "characters",
+        "items",
+        "scenes"
+      ]
     }
   ],
   "socket": true,

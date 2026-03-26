@@ -1,3 +1,8 @@
+Copyright for ToS System
+Copyright (c) All rights reserved to ToS team.
+
+
+Boilerplate Copyright
 MIT License
 
 Copyright (c) 2020 Asacolips Projects / Foundry Mods
