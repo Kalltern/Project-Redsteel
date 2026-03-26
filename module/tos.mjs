@@ -1647,7 +1647,7 @@ Hooks.on("renderChatMessage", (message, html) => {
     };
 
     const modifier = rankModifier[spellRank] ?? 0;
-    const formula = `1d23 + ${modifier}`;
+    const formula = `1d20 + ${modifier}`;
     const roll = await new Roll(formula).evaluate();
 
     await table.draw({ roll });

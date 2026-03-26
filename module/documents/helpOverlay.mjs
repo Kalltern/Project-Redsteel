@@ -215,19 +215,61 @@ export class HelpOverlay {
 
       <div class="category-row">
 
-        <div class="help-card">
-          <div class="card-header">
-            <h3>${t("Rules.DelayTitle")}</h3>
-          </div>
-          <div class="card-body">
-            ${t("Rules.DelayText1")}<br><br>
-            ${t("Rules.DelayText2")}<br>
-            ${t("Rules.DelayText3")}
-          </div>
-        </div>
+ <div class="help-card">
+  <div class="card-header">
+    <h3>${t("Rules.DelayTurn.DelayTitle")}</h3>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>${t("Rules.DelayTurn.DelayText1")}</li>
+      <li>${t("Rules.DelayTurn.DelayText2")}</li>
+      <li>${t("Rules.DelayTurn.DelayText3")}</li>
+    </ul>
+  </div>
+</div>
 
-      </div>
+<div class="help-card">
+  <div class="card-header">
+    <h3>${t("Rules.Difficulties.DifficultyTitle")}</h3>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>${t("Rules.Difficulties.DifficultyText1")}</li>
+      <li>${t("Rules.Difficulties.DifficultyText2")}</li>
+      <li>${t("Rules.Difficulties.DifficultyText3")}</li>
+      <li>${t("Rules.Difficulties.DifficultyText4")}</li>
+      <li>${t("Rules.Difficulties.DifficultyText5")}</li>
+      <li>${t("Rules.Difficulties.DifficultyText6")}</li>
+    </ul>
+  </div>
+</div>
 
+<div class="help-card">
+  <div class="card-header">
+    <h3>${t("Rules.VersusTests.VersusTitle")}</h3>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>${t("Rules.VersusTests.VersusText1")}</li>
+      <li>${t("Rules.VersusTests.VersusText2")}</li>
+      <li>${t("Rules.VersusTests.VersusText3")}</li>
+      <li>${t("Rules.VersusTests.VersusText4")}</li>      
+    </ul>
+  </div>
+</div>
+
+<div class="help-card">
+  <div class="card-header">
+    <h3>${t("Rules.Rerolls.RerollsTitle")}</h3>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>${t("Rules.Rerolls.RerollsText1")}</li>
+      <li>${t("Rules.Rerolls.RerollsText2")}</li>
+      <li>${t("Rules.Rerolls.RerollsText3")}</li>
+    </ul>
+  </div>
+</div>
     </div>
   `;
   }

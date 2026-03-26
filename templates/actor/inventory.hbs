@@ -435,17 +435,21 @@
       {{#if (eq item.system.gripMode "two")}}active{{/if}}"
     data-action="toggleTwoHandGrip"
     data-item-id="{{item._id}}"
+    title="{{localize "TOS.Item.Weapon.FIELDS.twoHandGrip.label"}}"
   ></i>
   {{/if}}
 </div>
 
 <div class="item-offhand">
   {{#if (eq actor.type "npc")}}
+    {{#if item.system.offhand}}
   <i
     class="npc-offhand-toggle fas fa-hand-paper {{#if item.system.npcOffhand}}active{{/if}}"
     data-action="toggleNpcOffhand"
     data-item-id="{{item._id}}"
+    title="{{localize "TOS.Item.Weapon.FIELDS.offhand.label"}}"
   ></i>
+    {{/if}}
   {{/if}}
 </div>
 

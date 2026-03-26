@@ -73,6 +73,20 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     ? renderWeaponLoadoutsDialog(actor)
     : "";
 
+  let hasLongReach = false;
+
+  // Try active weapon first (PC flow)
+  const context = game.tos.resolveWeaponContext(actor, ability);
+  const activeWeapon = context?.weapon;
+
+  if (activeWeapon?.system?.longReach) {
+    hasLongReach = true;
+  } else if (actor.type !== "character") {
+    hasLongReach = actor.items.some(
+      (i) => i.type === "weapon" && i.system?.longReach,
+    );
+  }
+
   if (!ability) {
     const buttons = {
       melee: {
@@ -81,7 +95,13 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
           const overwhelm = Number(
             html.find('input[name="overwhelm"]:checked').val(),
           );
-          meleeDefense({ overwhelm });
+          const longReachPenalty = html
+            .find('[name="longReachPenalty"]')
+            .is(":checked")
+            ? -5
+            : 0;
+
+          meleeDefense({ overwhelm, longReachPenalty });
         },
       },
 
@@ -138,7 +158,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     // Add spell defense if actor can use magic
     if (actor.system.magicPotential || actor.system.priest) {
       buttons.spell = {
-        label: "Spell",
+        label: "Magic defense",
         callback: (html) => {
           const overwhelm = Number(
             html.find('input[name="overwhelm"]:checked').val(),
@@ -166,6 +186,19 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
           )
           .join("")}
       </div>
+
+        ${
+          hasLongReach
+            ? `
+      <div style="margin-top:6px;">
+        <label>
+          <input type="checkbox" name="longReachPenalty">
+          Long Reach penalty (-5)
+        </label>
+      </div>
+    `
+            : ""
+        }
     `,
       buttons: buttons,
       default: "melee",
@@ -230,6 +263,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     ability = null,
     weapon = null,
     overwhelm = 0,
+    longReachPenalty = 0,
   } = {}) {
     const resolveWithContext = async (context) => {
       const weapon = context.weapon;
@@ -263,10 +297,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
         doctrineDefenseBonus,
         abilityDefense,
         overwhelmPenalty,
+        longReachPenalty,
       };
 
       const roll = new Roll(
-        "@defenseRating + @weaponDefense + @doctrineDefenseBonus + @abilityDefense + @overwhelmPenalty - 1d100",
+        "@defenseRating + @weaponDefense + @doctrineDefenseBonus + @abilityDefense + @overwhelmPenalty + @longReachPenalty - 1d100",
         rollData,
       );
 

@@ -122,7 +122,11 @@ export async function combatAbilities() {
 
   async function onAbilityChosen(ability, container, dialog, actor) {
     const html = $(container);
-
+    const longReachPenalty = container.querySelector(
+      '[name="longReachPenalty"]',
+    )?.checked
+      ? -5
+      : 0;
     const aimValue =
       parseInt(html.find('input[name="aim"]:checked').val()) || 0;
 
@@ -140,6 +144,7 @@ export async function combatAbilities() {
       sneak: useSneak,
       flanking: useFlanking,
       modifiers: selectedModifiers,
+      longReachPenalty,
     };
     const isDefenseRoll = ability.system.class === "defense";
     const keepOpen = container.querySelector("#keep-open")?.checked;
@@ -273,6 +278,18 @@ export async function combatAbilities() {
     ? renderWeaponLoadoutsDialog(actor)
     : "";
 
+  let hasLongReach = false;
+
+  const contextWeapon = game.tos.resolveWeaponContext(actor);
+  const activeWeapon = contextWeapon?.weapon;
+
+  if (activeWeapon?.system?.longReach) {
+    hasLongReach = true;
+  } else if (actor.type !== "character") {
+    hasLongReach = actor.items.some(
+      (i) => i.type === "weapon" && i.system?.longReach,
+    );
+  }
   const modifierCheckboxHtml = modifierAbilities
     .map(
       (mod) => `
@@ -318,7 +335,18 @@ export async function combatAbilities() {
 <label>
   Sneak Attack <input type="checkbox" id="sneak-attack-checkbox" />
   Flanking <input type="checkbox" id="flanking-attack-checkbox" />
+  ${
+    hasLongReach
+      ? `
+  <label>
+    Long Reach <input type="checkbox" name="longReachPenalty" />
+  </label>
+`
+      : ""
+  }
 </label>
+
+
 </div>
 <div class="attack-modifiers">
   ${modifierCheckboxHtml}
@@ -442,6 +470,7 @@ export async function combatAbilities() {
         abilityCritChance,
         abilityCritFail,
         halfDamage,
+        intent.longReachPenalty,
       );
     }
 
@@ -517,6 +546,7 @@ export async function combatAbilities() {
           abilityCritChance,
           abilityCritFail,
           halfDamage,
+          intent.longReachPenalty,
         );
       }
     };
@@ -867,6 +897,7 @@ ${damageLine}
     abilityCritChance,
     abilityCritFail,
     halfDamage,
+    longReachPenalty = 0,
   ) {
     let totalHalfDamage = Boolean(halfDamage);
     for (const mod of selectedModifiers) {
@@ -986,6 +1017,7 @@ ${damageLine}
       abilityAttack,
       weaponContext,
       abilityCritFail,
+      longReachPenalty,
     );
 
     const { damageRoll, damageTotal, breakthroughRollResult } =

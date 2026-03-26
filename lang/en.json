@@ -58,7 +58,7 @@
         "slowMove": "Slow Movement",
         "disengage": "Disengage",
         "aim": "Aim",
-        "improvedAim": "Improved Aim",
+        "improvedAim": "Improved Aim (Duelist)",
         "attack": "Attack",
         "sneakAttack": "Sneak Attack",
         "multiAttack": "Multiple Attack",
@@ -74,37 +74,61 @@
 
       "Round": {
         "Step1": {
-          "Title": "1. Začátek kola",
-          "Effects": "Vyhodnocují se aktivní efekty automaticky (např. krvácení, regenerace).",
-          "Initiative": "Foundry automaticky určí pořadí tahu."
+          "Title": "1. Start of the Round",
+          "Effects": "Active effects are resolved automatically (e.g. bleeding, regeneration).",
+          "Initiative": "Foundry automatically determines turn order."
         },
         "Step2": {
-          "Title": "2. Tahy postav",
-          "Intro": "Postavy hrají podle pořadí.",
-          "YouHave": "Ve svém tahu máš:",
-          "Actions": "2 akce",
-          "FreeActions": "libovolný počet volných akcí",
-          "Limit": "během tahu můžeš provést maximálně 1 pohybovou akci a 1 útočnou akci"
+          "Title": "2. Character Turns",
+          "Intro": "Characters act in order.",
+          "YouHave": "On your turn you have:",
+          "Actions": "2 actions",
+          "FreeActions": "any number of free actions",
+          "Limit": "during your turn you may perform a maximum of 1 movement action and 1 attack action"
         },
         "Step3": {
-          "Title": "3. Reakce",
-          "Intro": "Mimo svůj tah máš 1 reakci:",
-          "Opportunity": "příležitostný útok",
-          "Counter": "odvetné akce (Protiútok)",
-          "Spell": "reakční čarování (pouze některá kouzla)"
+          "Title": "3. Reactions",
+          "Intro": "Outside your turn you have 1 reaction:",
+          "Opportunity": "opportunity attack",
+          "Counter": "counter actions (Counterattack)",
+          "Spell": "reaction casting (only some spells)"
         },
         "Step4": {
-          "Title": "4. Konec kola",
-          "End": "Jakmile všichni odehrají svůj tah, kolo končí.",
-          "NoEnemies": "Pokud nejsou nepřátelé, může skončit boj.",
-          "EarlyEnd": "Boj může skončit i dříve, pokud už nemá význam."
+          "Title": "4. End of the Round",
+          "End": "Once everyone has taken their turn, the round ends.",
+          "NoEnemies": "If there are no enemies, combat may end.",
+          "EarlyEnd": "Combat may also end earlier if it no longer makes sense to continue."
         },
         "Rules": {
-          "Title": "Klíčová pravidla",
-          "DelayTitle": "Odložení tahu",
-          "DelayText1": "Na začátku svého tahu můžeš odložit svůj tah, abys odehrál své akce později v tomto kole.",
-          "DelayText2": "Nemůžeš odložit tah za protivníka, který ho již odložil, aby hrál po tobě.",
-          "DelayText3": "Nevyužité akce propadají na konci kola."
+          "Title": "Selected Rules",
+          "DelayTurn": {
+            "DelayTitle": "Delaying a Turn",
+            "DelayText1": "At the start of your turn, you may delay your turn to act later in the same round.",
+            "DelayText2": "You cannot delay your turn behind an opponent who has already delayed theirs to act after you.",
+            "DelayText3": "Unused actions are lost at the end of the round."
+          },
+          "Difficulties": {
+            "DifficultyTitle": "Difficulties",
+            "DifficultyText1": "Very easy: +30%",
+            "DifficultyText2": "Easy: +20%",
+            "DifficultyText3": "Normal: 0%",
+            "DifficultyText4": "Hard: -20%",
+            "DifficultyText5": "Very hard: -30%",
+            "DifficultyText6": "Legendary: -60%"
+          },
+          "VersusTests": {
+            "VersusTitle": "Versus Tests",
+            "VersusText1": "A difference of 60 MoS turns a success into a critical success",
+            "VersusText2": "Ties are won by the attacker",
+            "VersusText3": "If both sides roll a natural critical success, the lower d100 roll wins, but the result is only a standard success",
+            "VersusText4": "If the defender does not defend, it counts as a critical failure for the defender"
+          },
+          "Rerolls": {
+            "RerollsTitle": "Rerolls",
+            "RerollsText1": "A roll can only be rerolled once per test, and rerolls cannot be used on a natural critical failure.",
+            "RerollsText2": "Rerolls that can be used on a natural critical failure may also be used even after a previous reroll.",
+            "RerollsText3": "The ability to reroll refreshes daily, unless stated otherwise."
+          }
         }
       },
 
@@ -337,6 +361,7 @@
           "offhand": { "label": "Can be held offhand" },
           "key": { "label": "Key" },
           "twoHandGrip": { "label": "Can Two hand grip" },
+          "longReach": { "label": "Long reach" },
           "rollFormula": { "label": "Roll Formula" },
           "diceNum": { "label": "Dice count" },
           "dieSize": { "label": "Die size" },

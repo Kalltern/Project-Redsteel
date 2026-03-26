@@ -36,7 +36,18 @@ export async function attackActions() {
   const activeSetPreview = hasActiveSet
     ? renderWeaponLoadoutsDialog(actor)
     : "";
+  let hasLongReach = false;
 
+  const contextWeapon = game.tos.resolveWeaponContext(actor);
+  const activeWeapon = contextWeapon?.weapon;
+
+  if (activeWeapon?.system?.longReach) {
+    hasLongReach = true;
+  } else if (actor.type !== "character") {
+    hasLongReach = actor.items.some(
+      (i) => i.type === "weapon" && i.system?.longReach,
+    );
+  }
   const modifierAbilities = actor.items.filter(
     (i) => i.type === "ability" && i.system.modifiesAttack === true,
   );
@@ -60,13 +71,31 @@ export async function attackActions() {
     </div>
   </div>
 
-  <div class="form-group">
-    <label>
-      Sneak Attack <input type="checkbox" id="sneak-attack-checkbox" />
-      Flanking <input type="checkbox" id="flanking-attack-checkbox" />
-    </label>
-  </div>
+<div class="form-group attack-options-row">
+  <label>
+    <input type="checkbox" id="sneak-attack-checkbox" />
+    Sneak Attack
+  </label>
+
+  <label>
+    <input type="checkbox" id="flanking-attack-checkbox" />
+    Flanking
+  </label>
+
+  ${
+    hasLongReach
+      ? `
+  <label>
+    <input type="checkbox" name="longReachPenalty" />
+    Long Reach (-5)
+  </label>
+  `
+      : ""
+  }
+</div>
+
 </form>
+
 <div class="attack-modifiers">
   ${modifierAbilities
     .map(
@@ -91,6 +120,11 @@ export async function attackActions() {
       callback: async (html) => {
         const useSneak = html.find("#sneak-attack-checkbox")[0]?.checked;
         const useFlanking = html.find("#flanking-attack-checkbox")[0]?.checked;
+        const longReachPenalty = html
+          .find('[name="longReachPenalty"]')
+          .is(":checked")
+          ? -5
+          : 0;
         const aimValue =
           parseInt(html.find('input[name="aim"]:checked').val()) || 0;
 
@@ -125,11 +159,39 @@ export async function attackActions() {
           actor,
           token,
           selectedModifiers,
+          longReachPenalty,
         });
       },
     };
   }
+  // Inject CSS once
+  if (!document.getElementById("tos-attack-dialog-styles")) {
+    const style = document.createElement("style");
+    style.id = "tos-attack-dialog-styles";
 
+    style.textContent = `
+  .attack-options-row {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .attack-options-row label {
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .attack-options-row input[type="checkbox"] {
+    margin: 0;
+  }
+`;
+
+    document.head.appendChild(style);
+  }
   const dialog = new Dialog({
     title: "Select Attack Action",
     content,
@@ -273,6 +335,7 @@ export async function autoAttack(options = {}) {
     return game.tos.meleeAttack({
       context: options.weaponContext,
       selectedModifiers: options.selectedModifiers ?? [],
+      longReachPenalty: options.longReachPenalty ?? 0,
     });
   }
 
@@ -312,6 +375,7 @@ export async function autoAttack(options = {}) {
       return game.tos.meleeAttack({
         context,
         selectedModifiers: options.selectedModifiers ?? [],
+        longReachPenalty: options.longReachPenalty ?? 0,
       });
     }
 
@@ -332,5 +396,6 @@ export async function autoAttack(options = {}) {
   //
   return game.tos.meleeAttack({
     selectedModifiers: options.selectedModifiers ?? [],
+    longReachPenalty: options.longReachPenalty ?? 0,
   });
 }

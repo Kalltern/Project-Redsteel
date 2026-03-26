@@ -430,9 +430,13 @@ export async function getAttackRolls(
   abilityAttack = 0,
   weaponContext = null,
   customCritFail = 0,
+  longReachPenalty = 0,
 ) {
   const ws = weapon?.system ?? {};
-  let totalWeaponAttack = Number(doctrineBonus || 0) + Number(ws.attack || 0);
+  let totalWeaponAttack =
+    Number(doctrineBonus || 0) +
+    Number(ws.attack || 0) +
+    Number(longReachPenalty || 0);
   let criticalSuccessThreshold = 0;
   let criticalFailureThreshold = 0;
   const offProps = getOffhandProps(weaponContext);
@@ -708,7 +712,7 @@ export async function getCriticalRolls(
       sneakCritPenetration +
       deadlyLungeBonus +
       penetration +
-      (weapon.system.critPenetration || 0) +
+      (weapon?.system.critPenetration || 0) +
       weaponSkillCritPen +
       doctrineSkillCritPen || 0;
 
@@ -717,7 +721,7 @@ export async function getCriticalRolls(
     deadlyLungeBonus +
     perBonus +
     actorCritBonus +
-    (weapon.system.critDamage || 0) +
+    (weapon?.system.critDamage || 0) +
     damageTotal +
     doctrineCritDmg;
 
@@ -1261,19 +1265,33 @@ export function evaluateDmgVsArmor({
   const { expression } = damageProfile;
   const armorTable = armor ?? {};
 
-  /* 1️⃣ Shields */
+  /* 1️. Shields */
   let baseDamage = damage;
   const shieldLoss = Math.min(shield, baseDamage);
   baseDamage -= shieldLoss;
 
-  /* 2️⃣ Normal Armor */
+  /* 2. Normal Armor */
   const normalArmor = armorTable?.total ?? 0;
   baseDamage = Math.max(baseDamage - normalArmor, 0);
 
-  /* 3️⃣ Penetration Floor */
+  /* 3. Penetration Floor */
   baseDamage = Math.max(baseDamage, penetration ?? 0);
 
-  /* 4️⃣ Build damage type modifiers */
+  /* 4. Specialized Armor Reduction */
+  let specializedReduction = 0;
+
+  for (const token of expression) {
+    if (token === "and" || token === "or") continue;
+
+    const typeArmor = armorTable?.[token]?.total ?? 0;
+
+    // Option B (recommended): take highest protection
+    specializedReduction = Math.max(specializedReduction, typeArmor);
+  }
+
+  baseDamage = Math.max(baseDamage - specializedReduction, 0);
+
+  /* 5. Build damage type modifiers */
   const modifiers = {};
 
   for (const token of expression) {
@@ -1296,7 +1314,7 @@ export function evaluateDmgVsArmor({
     modifiers[token] = modifier;
   }
 
-  /* 5️⃣ Split into OR branches */
+  /* 6. Split into OR branches */
   const branches = [];
   let currentBranch = [];
 
@@ -1315,26 +1333,26 @@ export function evaluateDmgVsArmor({
     branches.push(currentBranch);
   }
 
-  /* 6️⃣ Multiply modifiers inside each AND branch */
+  /* 7. Multiply modifiers inside each AND branch */
   const branchResults = branches.map((branch) =>
     branch.reduce((product, token) => {
       return product * (modifiers[token] ?? 1);
     }, 1),
   );
 
-  /* 7️⃣ OR chooses highest branch */
+  /* 8. OR chooses highest branch */
   const finalModifier =
     branchResults.length > 0 ? Math.max(...branchResults) : 1;
 
-  /* 8️⃣ Apply modifier to base damage */
+  /* 9. Apply modifier to base damage */
   let finalDamage = Math.floor(baseDamage * finalModifier);
 
-  /* 9️⃣ External half damage */
+  /* 10. External half damage */
   if (halfDamage) {
     finalDamage = Math.floor(finalDamage * 0.5);
   }
 
-  /* 🔟 Apply to HP */
+  /* 11. Apply to HP */
   return {
     shieldLoss,
     ...applyToHp(finalDamage, hp, tempHp),

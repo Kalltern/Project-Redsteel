@@ -6,6 +6,7 @@ export async function universalAttackLogic({
   showBreakthrough = false,
   context: preResolvedContext = null,
   selectedModifiers = [],
+  longReachPenalty = 0,
 }) {
   const context = game.tos.selectToken({ notifyFallback: true });
   if (!context) return;
@@ -260,6 +261,8 @@ export async function universalAttackLogic({
       weaponSkillCrit,
       customAttack,
       resolvedContext,
+      0,
+      longReachPenalty,
     );
 
     const {
@@ -527,5 +530,6 @@ export async function meleeAttack(options = {}) {
       game.tos.getWeaponSkillBonuses(actor, weapon),
     context: options.context ?? null,
     selectedModifiers: options.selectedModifiers ?? [],
+    longReachPenalty: options.longReachPenalty ?? 0,
   });
 }

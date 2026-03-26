@@ -1,0 +1,509 @@
+{
+  "TOS": {
+    "SheetLabels": {
+      "Actor": "List Actor ToS",
+      "Item": "List Item ToS"
+    },
+    "UI": {
+      "name": "Jméno",
+      "option": "Možnost",
+      "type": "Typ",
+      "selectType": "-- Vyber typ --",
+      "selectClass": "-- Vyber třídu --",
+      "selectLayer": "-- Vyber vrstvu --",
+      "selectRank": "-- Vyber hodnost --",
+      "selectSchool": "-- Vyber školu --",
+
+      "weaponClass": "Zbraňová třída",
+      "weaponType": "Typ zbraně",
+
+      "abilityClass": "Třída schopnosti",
+      "abilityType": "Typ schopnosti",
+
+      "costType": "Typ ceny",
+      "testType": "Typ testu",
+      "testModifier": "Modifikátor testu",
+
+      "gearLayer": "Vrstva zbroje",
+
+      "potionType": "Typ lektvaru",
+
+      "school": "Škola",
+      "rank": "Stupeň"
+    },
+    "Config": {
+      "Initiative": {
+        "name": "Dynamická iniciativa",
+        "label": "Toto umožní, že iniciativa se bude měnit během boje podle aktuální situace. Počet hodů pro iniciativu se bude odvíjet od rychlosti postavy a dalších faktorů, jako jsou efekty a vybavení. Tato možnost přidává do boje více dynamiky a nečekaných zvratů."
+      }
+    },
+    "Help": {
+      "Category": {
+        "movement": "Pohybové akce",
+        "combat": "Bojové akce",
+        "magic": "Magické akce",
+        "other": "Ostatní akce",
+        "cost": "Cena"
+      },
+      "CombatRound": {
+        "Title": "Průběh kola"
+      },
+      "Tab": {
+        "GeneralActions": "Obecné akce",
+        "CombatRound": "Kolo souboje"
+      },
+      "Action": {
+        "move": "Pohyb",
+        "sprint": "Sprint",
+        "slowMove": "Pomalý pohyb",
+        "disengage": "Odpoutání",
+        "aim": "Míření",
+        "improvedAim": "Vylepšené míření",
+        "attack": "Útok",
+        "sneakAttack": "Zákeřný útok",
+        "multiAttack": "Vícenásobný útok",
+        "opportunityAttack": "Příležitostný útok",
+        "action": "Akce",
+        "dodge": "Úhyb",
+        "rest": "Odpočinek",
+        "reload": "Přebít",
+        "castSpell": "Čarování",
+        "reactionSpell": "Vyrušení",
+        "focus": "Soustředění"
+      },
+
+      "Round": {
+        "Step1": {
+          "Title": "1. Začátek kola",
+          "Effects": "Vyhodnocují se aktivní efekty automaticky (např. krvácení, regenerace).",
+          "Initiative": "Foundry automaticky určí pořadí tahu."
+        },
+        "Step2": {
+          "Title": "2. Tahy postav",
+          "Intro": "Postavy hrají podle pořadí.",
+          "YouHave": "Ve svém tahu máš:",
+          "Actions": "2 akce",
+          "FreeActions": "libovolný počet volných akcí",
+          "Limit": "během tahu můžeš provést maximálně 1 pohybovou akci a 1 útočnou akci"
+        },
+        "Step3": {
+          "Title": "3. Reakce",
+          "Intro": "Mimo svůj tah máš 1 reakci:",
+          "Opportunity": "příležitostný útok",
+          "Counter": "odvetné akce (Protiútok)",
+          "Spell": "reakční čarování (pouze některá kouzla)"
+        },
+        "Step4": {
+          "Title": "4. Konec kola",
+          "End": "Jakmile všichni odehrají svůj tah, kolo končí.",
+          "NoEnemies": "Pokud nejsou nepřátelé, může skončit boj.",
+          "EarlyEnd": "Boj může skončit i dříve, pokud už nemá význam."
+        },
+        "Rules": {
+          "Title": "Vybraná pravidla",
+          "DelayTurn": {
+            "DelayTitle": "Odložení tahu",
+            "DelayText1": "Na začátku svého tahu můžeš odložit svůj tah, abys odehrál své akce později v tomto kole.",
+            "DelayText2": "Nemůžeš odložit tah za protivníka, který ho již odložil, aby hrál po tobě.",
+            "DelayText3": "Nevyužité akce propadají na konci kola."
+          },
+          "Difficulties": {
+            "DifficultyTitle": "Obtížnosti",
+            "DifficultyText1": "Velmi lehká: +30%",
+            "DifficultyText2": "Lehká: +20%",
+            "DifficultyText3": "Normální: 0%",
+            "DifficultyText4": "Těžká: -20%",
+            "DifficultyText5": "Velmi těžká: -30%",
+            "DifficultyText6": "Legendární: -60%"
+          },
+          "VersusTests": {
+            "VersusTitle": "Versus testy",
+            "VersusText1": "Rozdíl SÚ 60 promění úspěch na kritický úspěch",
+            "VersusText2": "Remízy vyhrává útočník",
+            "VersusText3": "Pokud obě strany mají přirozený kritický úspěch. Vyhrává nižší číslo na d100. Výsledek je však obyčejný úspěch",
+            "VersusText4": "Obránce se nebrání -> Kritický neúspěch obránce"
+          },
+          "Rerolls": {
+            "RerollsTitle": "Opakování hodů",
+            "RerollsText1": "Hod lze opakovat jen jednou za test a opakování nemůže být použito na přirozený kritický neúspěch.",
+            "RerollsText2": "Opakování, které lze použít na kritický neúspěch, lze použít i po předchozím opakování hodu.",
+            "RerollsText3": "Možnost opakovat hod se obnovuje za den, není-li uvedeno jinak."
+          }
+        }
+      },
+
+      "Cost": {
+        "oneAction": "1 Akce",
+        "twoActions": "2 Akce",
+        "freeAction": "Bezplatná Akce",
+        "reaction": "1 Reakce",
+        "variable": "X Akcí",
+        "reload": "1–2 Akce"
+      },
+
+      "Description": {
+        "move": "Pohne se maximálně o tolik hex, kolik je Rychlost. Pohyb okolo nepřítele je vždy jedna a může být přerušen úspěšným Příležitostným útokem. Pohyb může vyvolat Reakci. Výsledný pohyb může být ovlivněn terénem. Při Příležitostném útoku vyvolaném pohybem od oponenta nemá právo na Obranu.",
+        "sprint": "Běh o vzdálenosti Rychlost*2 hex. Zvyšuje Kryt o 15%, snižuje Obranu o -25%. Maximální vzdálenost běhu je 12 hex. Výsledný pohyb může být ovlivněn terénem. Při Příležitostném útoku vyvolaném pohybem od oponenta nemá právo na Obranu.",
+        "slowMove": "Pohne se až o tolik hex, kolik je Rychlost/2, zaokrouhlujeme dolů. Pohyb okolo nepřítele je vždy jedna a může být přerušen úspěšným Příležitostným útokem. Pohyb může vyvolat Reakci. Při Příležitostném útoku vyvolaném pohybem od oponenta má právo na Obranu.",
+        "disengage": "Odpoutá se od souboje, nevyprovokuje příležitostný útok a pohne se o Rychlost/2 (zaokrouhleno dolů) hex od nepřítele. Tímto pohybem se nelze pohybovat okolo nepřítele ani u jiného nepřítele skončit.",
+        "aim": "Zvyšuje šanci na Zásah (Střelba i Souboj) o +10% na příští útok. Na cíli lze mít maximálně 4 Míření a bonus +40%. V případě luků se uplatňují speciální pravidla (viz Zbrojnice). Mířit lze pouze na cíl v dosahu.",
+        "improvedAim": "Zvyšuje šanci na Zásah o +10% na příští útok. Akci lze opakovat a navyšovat tak bonus, hranice +40%. Mířit lze na cíle v libovolné vzdálenosti. Pokud má na cíli čtyři Míření, získává Průbojnost +10. (Doktrína II - Zásah redukuje míření pouze o jeden stupeň; Kritický zásah zachová všechna míření)",
+        "attack": "Provede útok na cíl v dosahu. Tuto akci nelze provést vícekrát za kolo, ani v kombinaci s jinou útočnou akcí. V případě Střelby a Vrhu z kontaktní vzdálenosti vyvolává Příležitostný útok zdarma.",
+        "sneakAttack": "Modifikace útoku. Zranění +1d6. Uplatňuje se na překvapení, nebránící se cíle nebo na doktrínou stanovené situace. Efekty viz Zbrojnice či Doktrína. Lze aplikovat vícekrát za kolo, na stejného soupeře lze však uplatnit pouze jednou za kolo.",
+        "multiAttack": "Provede tolik útoků, kolik je schopen. Útoky může vést na jeden nebo více cílů.",
+        "opportunityAttack": "Útok, který vyvolá specifická akce sousedícího nepřítele, zejména pohyb, čarování nebo střelba.",
+        "action": "Tasit zbraň, vytáhnout něco z kapsy, přezbrojit, vypít lektvar, vstát ze země, vysednout na koně, zkrátka podobné věci. Některé akce mohou vyvolat Příležitostný útok. Pití lektvaru nevyvolá Příležitostný útok pokud byl “po ruce”.",
+        "dodge": "Alternativní forma obrany, versus Test Úhybu proti Zásahu oponenta. Při úspěchu ignoruje Průraznost. V základu je hranice úspěchu 50. Šance na úspěch se počítá jako Úhyb + Obratnost*3 + Rysy + Odbornosti - Štít - Zbroj.",
+        "rest": "Obnovuje 5 Výdrže. Tuto akci lze použít vícekrát za kolo.",
+        "reload": "Přebije zbraň s vlastností Rychlé / Dlouhé přebíjení. Počet akcí nutných k přebití záleží na zbrani.",
+        "castSpell": "Sešle kouzlo. Nelze kombinovat s Útočnými akcemi. Čarování v kontaktní vzdálenosti může vyvolat Příležitostný útok.",
+        "reactionSpell": "Možnost využít rychlé kouzlo na přerušení čarování / útoku / pohybu. Musí proběhnout hod na Rychlost, zda-li stíhá, při neúspěchu provede svou reakci až poté. Počítá se jako obranná akce",
+        "focus": "Navazuje na akci Čarování. Snižuje Obtížnost kouzla o 10%. Akci lze opakovat. Nelze snižovat Obtížnost kouzla do kladných hodnot. Tento bonus se nepočítá na Magický útok. Nesnižuje postih za nedostatečný stupeň Školy. Kouzlo lze seslat ihned po vyhodnocení akce Soustředění."
+      }
+    },
+    "Actor": {
+      "Tabs": {
+        "Biography": "Životopis",
+        "TestTab": "TestTab",
+        "Skills": "Dovednosti",
+        "Features": "Rysy",
+        "Inventory": "Inventář",
+        "Spells": "Kouzla",
+        "Miracles": "Zázraky",
+        "Abilities": "Schopnosti",
+        "OffHand": "Druhá ruka",
+        "Effects": "Efekty",
+        "Config": "Nastavení"
+      },
+      "base": {
+        "FIELDS": {
+          "biography": { "label": "Životopis" },
+          "actionCost": { "label": "Akční cena" }
+        }
+      },
+      "Character": {
+        "stats": {
+          "health": {
+            "value": { "label": "Životy" },
+            "max": { "label": "Maximální životy" }
+          },
+          "graveWounds": {
+            "value": { "label": "Vážná zranění" },
+            "max": { "label": "Maximální vážná zranění" },
+            "treated": { "label": "Ošetřená vážná zranění" }
+          },
+          "stamina": {
+            "value": { "label": "Výdrž" },
+            "max": { "label": "Maximální výdrž" }
+          },
+          "toxicity": {
+            "value": { "label": "Toxicita" },
+            "max": { "label": "Maximální toxicita" }
+          },
+          "mana": {
+            "value": { "label": "Mana" },
+            "max": { "label": "Maximální Mana" }
+          },
+          "mind": {
+            "value": { "label": "Mentální životy" },
+            "max": { "label": "Maximální mentální životy" }
+          },
+          "insanity": {
+            "value": { "label": "Body šílenství" },
+            "max": { "label": "Hranice šílenství" }
+          },
+          "corruption": {
+            "value": { "label": "Korupce" },
+            "max": { "label": "Maximální korupce" }
+          },
+          "fatigue": {
+            "value": { "label": "Únava" },
+            "max": { "label": "Maximální únava" }
+          },
+          "holyEnergy": {
+            "value": { "label": "Svatá energie" },
+            "max": { "label": "Maximální svatá energie" }
+          }
+        },
+        "Attribute": {
+          "Str": { "long": "Síla", "abbr": "str" },
+          "End": { "long": "Odolnost", "abbr": "end" },
+          "Dex": { "long": "Obratnost", "abbr": "dex" },
+          "Int": { "long": "Inteligence", "abbr": "int" },
+          "Wil": { "long": "Vůle", "abbr": "wil" },
+          "Cha": { "long": "Charisma", "abbr": "cha" },
+          "Per": { "long": "Vnímání", "abbr": "per" }
+        },
+        "SecondaryAttribute": {
+          "Spd": { "long": "Rychlost", "abbr": "spd" },
+          "Lck": { "long": "Štěstí", "abbr": "lck" },
+          "Res": { "long": "Nervy", "abbr": "res" },
+          "Fth": { "long": "Víra", "abbr": "fth" },
+          "Sin": { "long": "Hříšnost", "abbr": "sin" },
+          "Vis": { "long": "Vzhled", "abbr": "vis" },
+          "Ini": { "long": "Iniciativa", "abbr": "ini" }
+        },
+        "skills": {
+          "athletics": { "label": "Atletika" },
+          "muscles": { "label": "Svaly" },
+          "smithing": { "label": "Kovářství" },
+          "swimming": { "label": "Plavání" },
+          "blend": { "label": "Splývání v davu" },
+          "brawler": { "label": "Rváč" },
+          "acrobacy": { "label": "Akrobacie" },
+          "craft": { "label": "Řemeslo" },
+          "dancing": { "label": "Taneční" },
+          "lockpicking": { "label": "Odemykání zámků" },
+          "nimbleness": { "label": "Hbitost" },
+          "pickpocketing": { "label": "Kapsářství" },
+          "riding": { "label": "Jezdectví" },
+          "sailing": { "label": "Mořeplavba" },
+          "stealth": { "label": "Plížení" },
+          "drinking": { "label": "Pijáctví" },
+          "alchemy": { "label": "Alchymie" },
+          "arcana": { "label": "Arcana" },
+          "art": { "label": "Umělecká tvorba" },
+          "engineering": { "label": "Inženýrství" },
+          "firstAid": { "label": "První pomoc" },
+          "logic": { "label": "Logika" },
+          "research": { "label": "Výzkum" },
+          "tactics": { "label": "Taktika" },
+          "augury": { "label": "Věštění" },
+          "dreamwalker": { "label": "Chodec ve snu" },
+          "meditation": { "label": "Meditace" },
+          "rituals": { "label": "Rituály" },
+          "acting": { "label": "Herectví" },
+          "animalHandling": { "label": "Zacházení se zvířaty" },
+          "deception": { "label": "Klamání" },
+          "intimidation": { "label": "Zastrašování" },
+          "leadership": { "label": "Velení" },
+          "music": { "label": "Hudba" },
+          "painting": { "label": "Malování" },
+          "persuasion": { "label": "Přesvědčování" },
+          "temptation": { "label": "Pokoušení" },
+          "herbalism": { "label": "Bylinářství" },
+          "insight": { "label": "Vhled" },
+          "traps": { "label": "Pasti" },
+          "survival": { "label": "Přežití" }
+        },
+        "combatSkills": {
+          "throwing": { "label": "Vrh" },
+          "meleeDefense": { "label": "Obrana" },
+          "rangedDefense": { "label": "Kryt" },
+          "dodge": { "label": "Úhyb" },
+          "combat": { "label": "Souboj" },
+          "archery": { "label": "Střelba" },
+          "channeling": { "label": "Usměrňování" },
+          "ranger": { "label": "Hraničář" },
+          "damageBonus": { "label": "Bonus do zranění" }
+        },
+        "doctrines": {
+          "swordsman": { "label": "Šermíř" },
+          "shieldbearer": { "label": "Štítonoš" },
+          "reaver": { "label": "Plenitel" },
+          "pikeman": { "label": "Pikenýr" },
+          "dimakerus": { "label": "Dimakerus" },
+          "duelist": { "label": "Duelista" },
+          "monk": { "label": "Mnich" },
+          "rogue": { "label": "Tulák" },
+          "rider": { "label": "Jezdec" },
+          "archer": { "label": "Lukostřelec" },
+          "arbalest": { "label": "Kušník" },
+          "peltast": { "label": "Peltast" },
+          "juggler": { "label": "Kejklíř" },
+          "musketeer": { "label": "Mušketýr" },
+          "cordinas": { "label": "Cordinas" },
+          "elymas": { "label": "Elymas" },
+          "incantator": { "label": "Incantator" },
+          "veneficus": { "label": "Veneficus" },
+          "elementalist": { "label": "Elementalista" }
+        },
+        "weaponSkills": {
+          "swords": { "label": "Meče" },
+          "axes": { "label": "Sekery" },
+          "blunt": { "label": "Tupé" },
+          "polearms": { "label": "Dřevcové" }
+        },
+        "schools": {
+          "fire": { "label": "Oheň" },
+          "water": { "label": "Voda" },
+          "earth": { "label": "Země" },
+          "air": { "label": "Vzduch" },
+          "spirit": { "label": "Duch" },
+          "body": { "label": "Tělo" },
+          "darkness": { "label": "Temnota" },
+          "blood": { "label": "Krev" },
+          "gnosis": { "label": "Gnóze" },
+          "spellPower": { "label": "Síla kouzla" }
+        }
+      },
+      "NPC": {
+        "FIELDS": {
+          "cr": { "label": "CR" },
+          "mov": { "label": "Pohyb" },
+          "mage": { "label": "Čaroděj" },
+          "priest": { "label": "Kněz" }
+        },
+        "xp": { "label": "Zkušenosti" }
+      }
+    },
+    "Item": {
+      "Tabs": {
+        "Attributes": "Vlastnosti",
+        "Description": "Popis",
+        "Doctrines": "Doktríny",
+        "Effects": "Efekty",
+        "combatEffects": "Bojové efekty",
+        "OffHand": "Druhá ruka"
+      },
+      "Weapon": {
+        "FIELDS": {
+          "offhand": { "label": "Může být drženo v druhé ruce" },
+          "key": { "label": "Klíč" },
+          "twoHandGrip": { "label": "Může být drženo obouručně" },
+          "longReach": { "label": "Dlouhý dosah" },
+          "rollFormula": { "label": "Vzorec pro házení kostky" },
+          "diceNum": { "label": "Počet kostek" },
+          "dieSize": { "label": "Velikost kostek" },
+          "rollMod": { "label": "Modifikátor hodu" },
+          "finesse": { "label": "Finesa" },
+          "sharp": { "label": "Ostrá" },
+          "thrown": { "label": "Vrhací" },
+          "stagger": { "label": "Omráčení" },
+          "bleed": { "label": "Krvácení" },
+          "attack": { "label": "Útok" },
+          "defense": { "label": "Obrana" },
+          "critRange": { "label": "Kritický rozsah" },
+          "critChance": { "label": "Kritický úspěch" },
+          "critPenetration": { "label": "Kritická průbojnost" },
+          "critDamage": { "label": "Kritické poškození" },
+          "critFail": { "label": "Kritický neúspěch" },
+          "critDefense": { "label": "Kritická obrana" },
+          "critDodge": { "label": "Kritický úhyb" },
+          "dodge": { "label": "Úhyb" },
+          "weight": { "label": "Váha" },
+          "penetration": { "label": "Průbojnost" },
+          "breakthrough": { "label": "Průraznost" },
+          "sneakDamage": { "label": "Zákeřný útok" },
+          "extra1": { "label": "Extra Efekt 1" },
+          "extra2": { "label": "Extra Efekt 2" },
+          "extra3": { "label": "Extra Efekt 3" }
+        }
+      },
+      "Gear": {
+        "FIELDS": {
+          "armor": { "label": "KZ" },
+          "armorTotal": { "label": "Celkové KZ" },
+          "weight": { "label": "Váha" },
+          "acid": { "label": "Kyselinové KZ" },
+          "fire": { "label": "Ohnivé KZ" },
+          "frost": { "label": "Mrazivé KZ" },
+          "lightning": { "label": "Bleskové KZ" },
+          "dark": { "label": "Temnotné KZ" },
+          "poison": { "label": "Jedovaté KZ" },
+          "holy": { "label": "Svaté KZ" },
+          "magic": { "label": "Magické KZ" },
+          "equipped": { "label": "Vybaveno" },
+          "layer": { "label": "Vrstva zbroje" },
+          "helmet": { "label": "Má helmu" },
+          "shield": { "label": "Je štít" },
+          "durability": { "label": "Životy zbroje" },
+          "swimPenalty": { "label": "Postih na plavání" },
+          "dodgePenalty": { "label": "Postih na úhyb" },
+          "castPenalty": { "label": "Postih na usměrňování" },
+          "acroPenalty": { "label": "Postih na akrobacii" },
+          "stealthPenalty": { "label": "Postih na plížení" },
+          "iniPenalty": { "label": "Postih na iniciativu" },
+          "maxSpeed": { "label": "Maximální rychlost" },
+          "rangedDefense": { "label": "Kryt" },
+          "defense": { "label": "Obrana" },
+          "healthBonus": { "label": "Životy" },
+          "critDefense": { "label": "Kritická obrana" },
+          "rangedCritDefense": { "label": "Kritický kryt" },
+          "archeryPenalty": { "label": "Postih do střelby" },
+          "perPenalty": { "label": "Postih na vnímání" }
+        }
+      },
+      "Consumable": {
+        "FIELDS": {
+          "toxicity": { "label": "Toxicita" },
+          "bleed": { "label": "Šance na zastavení krvácení" },
+          "aimed": { "label": "Jeden cíl" },
+          "burn": { "label": "Podpálení" },
+          "freeze": { "label": "Zmražení" },
+          "stagger": { "label": "Omráčení" },
+          "quantity": { "label": "Množství" }
+        }
+      },
+      "Ability": {
+        "FIELDS": {
+          "modifier": { "label": "Úprava" },
+          "costType": { "label": "Typ ceny" },
+          "cost": { "label": "Cena" },
+          "actionCost": { "label": "Akční cena" },
+          "damage": { "label": "Poškození" },
+          "attributeTest": { "label": "Test vlastnosti" },
+          "weaponAbility": { "label": "Zbraňová akce" },
+          "modifiesAttack": { "label": "Modifikace útoku" },
+          "standalone": { "label": "Samostatná akce" },
+          "multiAttack": { "label": "Více útoků" },
+          "resourceCost": { "label": "Spotřeba munice" }
+        }
+      },
+      "Spell": {
+        "FIELDS": {
+          "isOffensive": { "label": "Útočné" },
+          "sustained": { "label": "Udržovací" },
+          "difficulty": { "label": "Obtížnost" },
+          "cost": { "label": "Cena" },
+          "perRound": { "label": "Cena za kolo" },
+          "headerRank": { "label": "Stupeň" },
+          "headerCost": { "label": "Cena / Za kolo" },
+          "headerActions": { "label": "Akční náklady | K" },
+          "headerRange": { "label": "Dosah" },
+          "holyPower": { "label": "Svatá energie" },
+          "domain": { "label": "Doména" },
+          "shepherdsWill": { "label": "Pastýřova vůlel" },
+          "headerType": { "label": "Typ poškození" },
+          "wild": { "label": "Divoká" },
+          "apprentice": { "label": "Učedník" },
+          "expert": { "label": "Expert" },
+          "master": { "label": "Mistr" },
+          "grandmaster": { "label": "Velmistr" }
+        }
+      }
+    },
+    "Effect": {
+      "Source": "Zdroj",
+      "Toggle": "Spustit efekt",
+      "Temporary": "Dočasný efekt",
+      "Passive": "Pasivní efekt",
+      "Inactive": "Neaktivní efekt",
+      "Custom": {
+        "name1": "Název extra efektu 1 ",
+        "name2": "Název extra efektu 2 ",
+        "name3": "Název extra efektu 3 "
+      },
+      "type1": "Extra Efekt typ 1",
+      "type2": "Extra Efekt typ 2",
+      "type3": "Extra Efekt typ 3"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Postava",
+      "npc": "NPC"
+    },
+    "Item": {
+      "weapon": "Zbraň",
+      "item": "Předmět",
+      "gear": "Výbava",
+      "race": "Rasa",
+      "consumable": "Konzumovatelný",
+      "ability": "Schopnost",
+      "ammunition": "Munice",
+      "feature": "Rys",
+      "spell": "Kouzlo"
+    }
+  }
+}
