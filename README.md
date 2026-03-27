@@ -4,7 +4,9 @@ Compatible with Foundry v13
 
 ToS is tabletop RPG system developed on digital tabletops like Roll20 and FoundryVTT
 
-System on Foundry was developed from the boilerplate template. Special thanks to Boilerplate creators!
+System on Foundry was developed from the boilerplate template. Special thanks to Boilerplate creators as well as Adrian Haberecht for Barbrawl and Status Icon counters!
+
+The system uses Barbrawl and Status Icon counters as dependencies.
 
 ## Status
 
