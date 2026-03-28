@@ -16,7 +16,5 @@ The system contains Lite version of the ToS ruleset and a Quickplay scenario for
 
 All original game content (rules, text, setting) is © ToS Team, all rights reserved.
 
-Authors of the ToS ruleset (ToS team): 
-Karkan, 
-Kalltern, 
-Fafner 
+Authors of the ToS ruleset (ToS team): Karkan, Kalltern, Fafner.
+ToS is an original, unpublished digital tabletop RPG created by the ToS Team.
