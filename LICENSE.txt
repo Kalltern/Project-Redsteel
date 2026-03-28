@@ -1,6 +1,14 @@
-Copyright for ToS System
-Copyright (c) All rights reserved to ToS team.
+ToS System
 
+Copyright (c) 2026 ToS Team
+
+This project includes code derived from the Foundry VTT Boilerplate,
+which is licensed under the MIT License (see below).
+
+All original ToS game content (rules, text, compendiums) is © ToS Team,
+all rights reserved, and is not covered by the MIT License.
+
+-----------------------------------------------------------------------------
 
 Boilerplate Copyright
 MIT License
