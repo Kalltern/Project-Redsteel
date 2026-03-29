@@ -44,7 +44,7 @@
       "thumbnail": "systems/tos/assets/start_screen.png"
     }
   ],
-  "version": "0.8.0",
+  "version": "0.8.1",
   "compatibility": {
     "minimum": "12.331",
     "verified": "13.351"
@@ -59,7 +59,7 @@
     },
     {
       "lang": "cs",
-      "name": "Czech",
+      "name": "Čeština",
       "path": "lang/cs.json"
     }
   ],
