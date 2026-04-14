@@ -10,6 +10,9 @@ System on Foundry was developed from the boilerplate template. Special thanks to
 
 The system uses Barbrawl and Status Icon counters as dependencies.
 
+###
+For battlemap creation of the Quickplay scenario, DungeonDraft was used together with ForgottenAdventures mapmaking assets and their free token assets.
+
 ## Status
 
 The system contains Lite version of the Redsteel ruleset and a Quickplay scenario for beginners.
