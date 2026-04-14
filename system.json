@@ -1,7 +1,7 @@
 {
-  "id": "tos",
-  "title": "ToS",
-  "description": "The ToS system for FoundryVTT!",
+  "id": "redsteel",
+  "title": "Redsteel",
+  "description": "Project: Redsteel system for FoundryVTT!",
   "authors": [
     {
       "name": "Kalltern",
@@ -40,8 +40,8 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/tos/assets/start_screen.png",
-      "thumbnail": "systems/tos/assets/start_screen.png"
+      "url": "systems/redsteel/assets/start_screen.png",
+      "thumbnail": "systems/redsteel/assets/start_screen.png"
     }
   ],
   "version": "0.8.1",
@@ -49,8 +49,8 @@
     "minimum": "12.331",
     "verified": "13.351"
   },
-  "esmodules": ["module/tos.mjs"],
-  "styles": ["css/tos.css"],
+  "esmodules": ["module/redsteel.mjs"],
+  "styles": ["css/redsteel.css"],
   "languages": [
     {
       "lang": "en",
@@ -68,36 +68,36 @@
       "name": "adventure-notes",
       "label": "Adventure Notes",
       "type": "JournalEntry",
-      "system": "tos"
+      "system": "redsteel"
     },
     {
       "name": "critfail-tables",
       "label": "Critical Failure Tables",
       "type": "RollTable",
-      "system": "tos"
+      "system": "redsteel"
     },
     {
       "name": "characters",
       "label": "Characters",
       "type": "Actor",
-      "system": "tos"
+      "system": "redsteel"
     },
     {
       "name": "items",
       "label": "Items",
       "type": "Item",
-      "system": "tos"
+      "system": "redsteel"
     },
     {
       "name": "scenes",
       "label": "Scenes",
       "type": "Scene",
-      "system": "tos"
+      "system": "redsteel"
     }
   ],
   "packFolders": [
     {
-      "name": "ToS",
+      "name": "Redsteel",
       "packs": [
         "adventure-notes",
         "critfail-tables",
@@ -108,9 +108,9 @@
     }
   ],
   "socket": true,
-  "manifest": "https://raw.githubusercontent.com/Kalltern/tos/refs/heads/main/system.json",
-  "download": "https://github.com/Kalltern/tos/releases/latest/download/tos.zip",
-  "background": "systems/tos/assets/start_screen.png",
+  "manifest": "https://raw.githubusercontent.com/Kalltern/Project-Redsteel/refs/heads/main/system.json",
+  "download": "https://github.com/Kalltern/Project-Redsteel/releases/latest/download/redsteel.zip",
+  "background": "systems/redsteel/assets/start_screen.png",
   "grid": {
     "type": 1,
     "distance": 1.5,

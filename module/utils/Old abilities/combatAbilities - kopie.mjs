@@ -23,7 +23,7 @@ export async function combatAbilities() {
   // 2. CSS INJECTION
   // ====================================================================
 
-  if (!document.getElementById("tos-ability-dialog-styles")) {
+  if (!document.getElementById("redsteel-ability-dialog-styles")) {
     const css = `
         #ability-list .ability-choice {
             position: relative;
@@ -45,7 +45,7 @@ export async function combatAbilities() {
         #keep-open { margin-right: 5px; }
     `;
     const styleSheet = document.createElement("style");
-    styleSheet.id = "tos-ability-dialog-styles";
+    styleSheet.id = "redsteel-ability-dialog-styles";
     styleSheet.type = "text/css";
     styleSheet.innerText = css;
     document.head.appendChild(styleSheet);
@@ -89,7 +89,7 @@ export async function combatAbilities() {
       }
       // Non-Weapon Melee Abilities
       else {
-        await game.tos.getNonWeaponAbility(actor, ability);
+        await game.redsteel.getNonWeaponAbility(actor, ability);
       }
     } catch (err) {
       console.error("Error using ability:", err);
@@ -203,7 +203,7 @@ export async function combatAbilities() {
 
       if (mode === "defense") {
         // defenseRoll function
-        await game.tos.defenseRoll({ actor, weapon, ability });
+        await game.redsteel.defenseRoll({ actor, weapon, ability });
       } else {
         const abilityDamage = ability.system.roll.diceBonusFormula || 0;
         const halfDamage = ability.system.roll.halfDamage;
@@ -333,23 +333,23 @@ export async function combatAbilities() {
     )?.checked;
 
     if (useSneak) {
-      await actor.setFlag("tos", "useSneakAttack", true);
-      await actor.setFlag("tos", "sneakAccessCounter", 0);
+      await actor.setFlag("redsteel", "useSneakAttack", true);
+      await actor.setFlag("redsteel", "sneakAccessCounter", 0);
     } else {
-      await actor.unsetFlag("tos", "useSneakAttack");
-      await actor.unsetFlag("tos", "sneakAccessCounter");
+      await actor.unsetFlag("redsteel", "useSneakAttack");
+      await actor.unsetFlag("redsteel", "sneakAccessCounter");
     }
 
     if (useFlanking) {
-      await actor.setFlag("tos", "useFlankingAttack", true);
+      await actor.setFlag("redsteel", "useFlankingAttack", true);
     } else {
-      await actor.unsetFlag("tos", "useFlankingAttack");
+      await actor.unsetFlag("redsteel", "useFlankingAttack");
     }
 
     if (aimValue > 0) {
-      await actor.setFlag("tos", "aimCount", aimValue);
+      await actor.setFlag("redsteel", "aimCount", aimValue);
     } else {
-      await actor.unsetFlag("tos", "aimCount");
+      await actor.unsetFlag("redsteel", "aimCount");
     }
   }
 
@@ -441,7 +441,7 @@ export async function combatAbilities() {
       doctrineSkillCritPen,
       doctrineCritDmg,
       doctrineBleedBonus,
-    } = await game.tos.getDoctrineBonuses(actor, weapon);
+    } = await game.redsteel.getDoctrineBonuses(actor, weapon);
 
     doctrineBonus += abilityCritChance;
     doctrineCritRangeBonus += abilityCritRange;
@@ -451,7 +451,7 @@ export async function combatAbilities() {
       weaponSkillCrit,
       weaponSkillCritDmg,
       weaponSkillCritPen,
-    } = await game.tos.getWeaponSkillBonuses(actor, weapon);
+    } = await game.redsteel.getWeaponSkillBonuses(actor, weapon);
 
     const penetration = (weapon.system.penetration || 0) + abilityPenetration;
 
@@ -462,7 +462,7 @@ export async function combatAbilities() {
       critFailure,
       criticalSuccessThreshold,
       criticalFailureThreshold,
-    } = await game.tos.getAttackRolls(
+    } = await game.redsteel.getAttackRolls(
       actor,
       weapon,
       doctrineBonus,
@@ -473,7 +473,7 @@ export async function combatAbilities() {
     );
 
     const { damageRoll, damageTotal, breakthroughRollResult } =
-      await game.tos.getDamageRolls(
+      await game.redsteel.getDamageRolls(
         actor,
         weapon,
         abilityDamage,
@@ -485,7 +485,7 @@ export async function combatAbilities() {
       critScoreResult,
       critBonusPenetration,
       critDamageTotal,
-    } = await game.tos.getCriticalRolls(
+    } = await game.redsteel.getCriticalRolls(
       actor,
       weapon,
       doctrineCritRangeBonus,
@@ -499,7 +499,7 @@ export async function combatAbilities() {
     );
 
     const { allBleedRollResults, bleedChanceDisplay, effectsRollResults } =
-      await game.tos.getEffectRolls(
+      await game.redsteel.getEffectRolls(
         actor,
         weapon,
         doctrineBleedBonus,
@@ -614,7 +614,7 @@ export async function combatAbilities() {
 
     `,
       flags: {
-        tos: {
+        redsteel: {
           rollName,
           criticalSuccessThreshold,
           criticalFailureThreshold,

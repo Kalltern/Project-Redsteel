@@ -2,17 +2,17 @@ async function getSneakDamageFormula(actor, weapon, weaponContext = null) {
   const ws = weapon?.system ?? {};
   const offProps = weaponContext ? getOffhandProps(weaponContext) : null;
   const offhandSneakDamage = offProps?.sneakDamage ?? 0;
-  const useSneak = (await actor.getFlag("tos", "useSneakAttack")) || false;
+  const useSneak = (await actor.getFlag("redsteel", "useSneakAttack")) || false;
   if (!useSneak)
     return { sneakDamage: "", sneakEffect: 0, sneakCritPenetration: 0 };
 
-  let counter = (await actor.getFlag("tos", "sneakAccessCounter")) || 0;
+  let counter = (await actor.getFlag("redsteel", "sneakAccessCounter")) || 0;
   counter++;
-  await actor.setFlag("tos", "sneakAccessCounter", counter);
+  await actor.setFlag("redsteel", "sneakAccessCounter", counter);
 
   if (counter >= 3) {
-    await actor.unsetFlag("tos", "useSneakAttack");
-    await actor.unsetFlag("tos", "sneakAccessCounter");
+    await actor.unsetFlag("redsteel", "useSneakAttack");
+    await actor.unsetFlag("redsteel", "sneakAccessCounter");
     //console.log("Sneak attack fully consumed, flags cleared.");
   } else {
     console.log(`Sneak used by ${counter}/3 systems`);
@@ -107,7 +107,7 @@ export async function getNonWeaponAbility(actor, ability) {
 
   // --- Custom Effects ---
   const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
-    await game.tos.getEffectRolls(
+    await game.redsteel.getEffectRolls(
       actor,
       null, // no weapon
       null, // no weaponContext
@@ -153,7 +153,7 @@ export async function getNonWeaponAbility(actor, ability) {
 `,
     rolls: [attributeTestRoll, damageRoll].filter((r) => r),
     flags: {
-      tos: {
+      redsteel: {
         rollName,
       },
       attack: {
@@ -451,15 +451,15 @@ export async function getAttackRolls(
   const finesse = actor.system.combatSkills.combat.finesseRating;
   const normalCombat = actor.system.combatSkills.combat.rating;
   let attackRollFormula = 0;
-  const useFlanking = actor.getFlag("tos", "useFlankingAttack");
+  const useFlanking = actor.getFlag("redsteel", "useFlankingAttack");
   if (useFlanking) {
     abilityAttack += 10;
-    await actor.unsetFlag("tos", "useFlankingAttack");
+    await actor.unsetFlag("redsteel", "useFlankingAttack");
   }
-  const aimValue = actor.getFlag("tos", "aimCount");
+  const aimValue = actor.getFlag("redsteel", "aimCount");
   if (aimValue > 0) {
     abilityAttack += aimValue * 10;
-    await actor.unsetFlag("tos", "aimCount");
+    await actor.unsetFlag("redsteel", "aimCount");
   }
 
   if (ws.class === "bow" || ws.class === "crossbow") {

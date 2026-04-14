@@ -1,5 +1,5 @@
 export async function statusEffectManager() {
-  const STATUS_EFFECTS = Object.entries(CONFIG.TOS.effectDefinitions)
+  const STATUS_EFFECTS = Object.entries(CONFIG.REDSTEEL.effectDefinitions)
     .map(([id, def]) => ({
       id,
       name: def.name,
@@ -26,7 +26,7 @@ export async function statusEffectManager() {
     if (!actors.length) return;
 
     await Promise.all(
-      actors.map((actor) => game.tos.applyEffect(actor, effectId)),
+      actors.map((actor) => game.redsteel.applyEffect(actor, effectId)),
     );
   }
 
@@ -51,7 +51,7 @@ export async function statusEffectManager() {
         const existing = getEffect(actor, effectId);
         if (!existing) return;
 
-        const stacks = existing.getFlag("tos", "stacks") ?? 0;
+        const stacks = existing.getFlag("redsteel", "stacks") ?? 0;
 
         // If no stacks tracked → just delete
         if (!stacks || stacks <= 1) {
@@ -60,7 +60,7 @@ export async function statusEffectManager() {
         }
 
         // Otherwise reduce by 1
-        await existing.setFlag("tos", "stacks", stacks - 1);
+        await existing.setFlag("redsteel", "stacks", stacks - 1);
       }),
     );
   }
@@ -71,11 +71,11 @@ export async function statusEffectManager() {
 
     await Promise.all(
       actors.map(async (actor) => {
-        const tosEffects = actor.effects.filter((e) =>
+        const redsteelEffects = actor.effects.filter((e) =>
           e.getFlag("core", "statusId"),
         );
 
-        for (const effect of [...tosEffects]) {
+        for (const effect of [...redsteelEffects]) {
           await effect.delete();
         }
       }),
@@ -88,19 +88,19 @@ export async function statusEffectManager() {
 
   let content = `
 <style>
-.tos-status-wrapper {
+.redsteel-status-wrapper {
   display:flex;
   flex-direction:column;
   gap:6px;
 }
 
-.tos-scroll {
+.redsteel-scroll {
   max-height:400px;
   overflow-y:auto;
   padding-right:4px;
 }
 
-.tos-row {
+.redsteel-row {
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -108,54 +108,54 @@ export async function statusEffectManager() {
   padding:4px 0;
 }
 
-.tos-effect-info {
+.redsteel-effect-info {
   display:flex;
   align-items:center;
   gap:6px;
 }
 
-.tos-effect-icon {
+.redsteel-effect-icon {
   width:18px;
   height:18px;
   object-fit:contain;
 }
 
-.tos-effect-name {
+.redsteel-effect-name {
   transition:0.15s;
 }
 
-.tos-row.hovering .tos-effect-name {
+.redsteel-row.hovering .redsteel-effect-name {
   color:#ff4d4d;
 
 }
 
-.tos-actions span {
+.redsteel-actions span {
   cursor:pointer;
   margin-left:6px;
   transition:0.15s;
 }
 
-.tos-actions span:hover {
+.redsteel-actions span:hover {
   color:#ff4d4d;
 }
 </style>
 
-<div class="tos-status-wrapper">
+<div class="redsteel-status-wrapper">
   <button data-action="removeAll" style="background:#5a1d1d;color:white;">
     🗑 Remove All Status Effects
   </button>
   <hr/>
-  <div class="tos-scroll">
+  <div class="redsteel-scroll">
 `;
 
   for (const effect of STATUS_EFFECTS) {
     content += `
-<div class="tos-row" data-effect-row="${effect.id}">
-  <div class="tos-effect-info">
-    <img src="${effect.icon}" class="tos-effect-icon"/>
-    <span class="tos-effect-name">${effect.name}</span>
+<div class="redsteel-row" data-effect-row="${effect.id}">
+  <div class="redsteel-effect-info">
+    <img src="${effect.icon}" class="redsteel-effect-icon"/>
+    <span class="redsteel-effect-name">${effect.name}</span>
   </div>
-  <div class="tos-actions">
+  <div class="redsteel-actions">
         <span data-apply="${effect.id}">APPLY</span> |
         <span data-reduce="${effect.id}">REDUCE</span> |
         <span data-remove="${effect.id}">REMOVE</span>
@@ -201,7 +201,7 @@ export async function statusEffectManager() {
           await removeEffectFromAll(effectId);
         });
       });
-      root.querySelectorAll(".tos-row").forEach((row) => {
+      root.querySelectorAll(".redsteel-row").forEach((row) => {
         const apply = row.querySelector("[data-apply]");
         const reduce = row.querySelector("[data-reduce]");
         const remove = row.querySelector("[data-remove]");

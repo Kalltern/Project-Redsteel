@@ -8,7 +8,7 @@ export async function universalAttackLogic({
   selectedModifiers = [],
   longReachPenalty = 0,
 }) {
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -61,7 +61,7 @@ export async function universalAttackLogic({
 
     // ACTOR ENCHANT OVERRIDE
     if (actor) {
-      const actorMods = game.tos.getActorCombatModifiers(actor);
+      const actorMods = game.redsteel.getActorCombatModifiers(actor);
       console.log("Actor enchant mods:", actorMods);
       if (actorMods?.damageTypes?.length) {
         const baseExpression = weaponProfile.expression ?? [];
@@ -223,11 +223,11 @@ export async function universalAttackLogic({
       typeof flavorLabel === "function" ? flavorLabel(weapon) : flavorLabel;
 
     const resolvedContext =
-      preResolvedContext ?? game.tos.resolveWeaponContext(actor, null, weapon);
+      preResolvedContext ?? game.redsteel.resolveWeaponContext(actor, null, weapon);
 
     if (!resolvedContext) return;
 
-    const doctrine = await game.tos.getDoctrineBonuses(actor, weapon);
+    const doctrine = await game.redsteel.getDoctrineBonuses(actor, weapon);
 
     const skillData = getWeaponSkillData
       ? await getWeaponSkillData(actor, weapon, resolvedContext)
@@ -244,7 +244,7 @@ export async function universalAttackLogic({
           resolvedContext.offWeapon?.system?.offhandProperties?.penetration,
         ) || 0
       : 0;
-    const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+    const actorMods = game.redsteel.getActorCombatModifiers(actor, weapon);
     const penetration =
       mainPen + offPen + customPenetration + actorMods.penetrationBonus;
     const totalDoctrineBonus = doctrine.doctrineBonus;
@@ -253,7 +253,7 @@ export async function universalAttackLogic({
     const totalCritRangeBonus =
       doctrine.doctrineCritRangeBonus + customCritRange;
     // ─── Attack Roll ───
-    const attackData = await game.tos.getAttackRolls(
+    const attackData = await game.redsteel.getAttackRolls(
       actor,
       weapon,
       totalDoctrineBonus,
@@ -276,7 +276,7 @@ export async function universalAttackLogic({
 
     // ─── Damage Roll ───
     const { damageRoll, damageTotal, breakthroughRollResult } =
-      await game.tos.getDamageRolls(
+      await game.redsteel.getDamageRolls(
         actor,
         weapon,
         resolvedContext,
@@ -288,7 +288,7 @@ export async function universalAttackLogic({
       typeof breakthroughRollResult === "string" &&
       breakthroughRollResult.trim() !== "";
     // ─── Critical Roll ───
-    const critData = await game.tos.getCriticalRolls(
+    const critData = await game.redsteel.getCriticalRolls(
       actor,
       weapon,
       resolvedContext,
@@ -310,7 +310,7 @@ export async function universalAttackLogic({
     } = critData;
 
     // ─── Effects Roll ───
-    const effects = await game.tos.getEffectRolls(
+    const effects = await game.redsteel.getEffectRolls(
       actor,
       weapon,
       resolvedContext,
@@ -415,7 +415,7 @@ ${damageLine}
 <hr>
 `,
       flags: {
-        tos: {
+        redsteel: {
           rollName,
           criticalSuccessThreshold,
           criticalFailureThreshold,
@@ -511,7 +511,7 @@ export async function throwingAttack(options = {}) {
     showBreakthrough: true,
     weaponFilter: (i) => i.type === "weapon" && i.system.thrown === true,
     getWeaponSkillData: (actor, weapon) =>
-      game.tos.getWeaponSkillBonuses(actor, weapon),
+      game.redsteel.getWeaponSkillBonuses(actor, weapon),
     context: options.context ?? null,
     selectedModifiers: options.selectedModifiers ?? [],
   });
@@ -527,7 +527,7 @@ export async function meleeAttack(options = {}) {
       ["axe", "sword", "blunt", "polearm"].includes(i.system.class) &&
       i.system.thrown !== true,
     getWeaponSkillData: (actor, weapon) =>
-      game.tos.getWeaponSkillBonuses(actor, weapon),
+      game.redsteel.getWeaponSkillBonuses(actor, weapon),
     context: options.context ?? null,
     selectedModifiers: options.selectedModifiers ?? [],
     longReachPenalty: options.longReachPenalty ?? 0,

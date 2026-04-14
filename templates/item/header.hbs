@@ -13,7 +13,7 @@
 
   <div class="header-fields">
     <div class="document-name">
-      <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'TOS.UI.name'}}" />
+      <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'REDSTEEL.UI.name'}}" />
     </div>
     {{!-- =====================
          AMMUNITION
@@ -22,7 +22,7 @@
       <div class="grid-span-1">
         <label for="ammunition-option">Option:</label>
         <select name="system.option" id="ammunition-option">
-          <option value="">{{localize "TOS.UI.selectType"}}</option>
+          <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
           {{#each system.options as |option|}}
             <option value="{{option}}" {{#if (eq ../system.option option)}}selected{{/if}}>
               {{option}}
@@ -32,7 +32,7 @@
       </div>
       <div class="grid grid-2col">
       <div class="grid-span-1">
-        <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}</label>
+        <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.quantity.label"}}</label>
         <input
           type="number"
           name="system.quantity"
@@ -43,7 +43,7 @@
        {{#if (or (eq system.option "arrows") (eq system.option "bolts"))}}
         
       <div class="grid-span-1">
-        <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+        <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.penetration.label"}}</label>
         <input
           type="number"
           name="system.penetration"
@@ -53,7 +53,7 @@
       </div>
 
      <div class="grid-span-1">
-        <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.bleed.label"}}</label>
+        <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.bleed.label"}}</label>
         <input
           type="number"
           name="system.bleed"
@@ -71,7 +71,7 @@
       <div class="grid-span-1">
         <label for="feature-option">Option:</label>
         <select name="system.option" id="feature-option">
-          <option value="">{{localize "TOS.UI.selectType"}}</option>
+          <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
           {{#each system.options as |option|}}
             <option value="{{option}}" {{#if (eq ../system.option option)}}selected{{/if}}>
               {{option}}
@@ -90,7 +90,7 @@
         {{!-- Weapon dice fields --}}
         {{#if (eq item.type "weapon")}}
           <div class="grid-span-1">
-            <label for="damage-dice">{{localize "TOS.Item.Weapon.FIELDS.diceNum.label"}}:</label>
+            <label for="damage-dice">{{localize "REDSTEEL.Item.Weapon.FIELDS.diceNum.label"}}:</label>
             <input
               type="text"
               name="system.roll.diceNum"
@@ -100,7 +100,7 @@
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.dieSize.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.dieSize.label"}}</label>
             <input
               type="text"
               name="system.roll.diceSize"
@@ -112,7 +112,7 @@
 
         {{!-- Shared fields --}}
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.rollMod.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.rollMod.label"}}</label>
           <input
             type="text"
             name="system.roll.diceBonus"
@@ -123,7 +123,7 @@
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.penetration.label"}}</label>
           <input
             type="number"
             name="system.penetration"
@@ -135,9 +135,9 @@
         {{!-- Weapon-only fields --}}
         {{#if (eq item.type "weapon")}}
           <div class="grid-span-1">
-            <label for="weapon-class">{{localize "TOS.UI.weaponClass"}}:</label>
+            <label for="weapon-class">{{localize "REDSTEEL.UI.weaponClass"}}:</label>
             <select name="system.class" id="weapon-class">
-              <option value="">{{localize "TOS.UI.selectClass"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectClass"}}</option>
               {{#each system.classOptions as |classOption|}}
                 <option value="{{classOption}}" {{#if (eq ../system.class classOption)}}selected{{/if}}>
                   {{classOption}}
@@ -147,9 +147,9 @@
           </div>
 
           <div class="grid-span-1">
-            <label for="weapon-type">{{localize "TOS.UI.weaponType"}}:</label>
+            <label for="weapon-type">{{localize "REDSTEEL.UI.weaponType"}}:</label>
             <select name="system.type" id="weapon-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.typeOptions as |typeOption|}}
                 <option value="{{typeOption}}" {{#if (eq ../system.type typeOption)}}selected{{/if}}>
                   {{typeOption}}
@@ -162,9 +162,9 @@
         {{!-- Ability-only fields --}}
         {{#if (eq item.type "ability")}}
           <div class="grid-span-1">
-            <label for="ability-class">{{localize "TOS.UI.abilityClass"}}:</label>
+            <label for="ability-class">{{localize "REDSTEEL.UI.abilityClass"}}:</label>
             <select name="system.class" id="ability-class">
-              <option value="">{{localize "TOS.UI.selectClass"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectClass"}}</option>
               {{#each system.classOptions as |classOption|}}
                 <option value="{{classOption}}" {{#if (eq ../system.class classOption)}}selected{{/if}}>
                   {{classOption}}
@@ -174,9 +174,9 @@
           </div>
 
           <div class="grid-span-1">
-            <label for="ability-type">{{localize "TOS.UI.abilityType"}}:</label>
+            <label for="ability-type">{{localize "REDSTEEL.UI.abilityType"}}:</label>
             <select name="system.type" id="ability-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.typeOptions as |typeOption|}}
                 <option value="{{typeOption}}" {{#if (eq ../system.type typeOption)}}selected{{/if}}>
                   {{typeOption}}
@@ -186,9 +186,9 @@
           </div>
 
           <div class="grid-span-1">
-            <label for="cost-type">{{localize "TOS.UI.costType"}}:</label>
+            <label for="cost-type">{{localize "REDSTEEL.UI.costType"}}:</label>
             <select name="system.costType" id="cost-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.costOptions as |costOption|}}
                 <option value="{{costOption}}" {{#if (eq ../system.costType costOption)}}selected{{/if}}>
                   {{costOption}}
@@ -198,9 +198,9 @@
           </div>
 
           <div class="grid-span-1">
-            <label for="test-type">{{localize "TOS.UI.testType"}}:</label>
+            <label for="test-type">{{localize "REDSTEEL.UI.testType"}}:</label>
             <select name="system.attributeTest" id="test-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.testOptions as |testOption|}}
                 <option value="{{testOption}}" {{#if (eq ../system.attributeTest testOption)}}selected{{/if}}>
                   {{testOption}}
@@ -210,32 +210,32 @@
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Spell.FIELDS.cost.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Spell.FIELDS.cost.label"}}</label>
             <input type="text" name="system.cost" value="{{system.cost}}" data-dtype="Number"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.UI.testModifier"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.UI.testModifier"}}</label>
             <input type="text" name="system.testModifier" value="{{system.testModifier}}" data-dtype="Number"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Ability.FIELDS.weaponAbility.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Ability.FIELDS.weaponAbility.label"}}</label>
             <input type="checkbox" name="system.weaponAbility" {{#if system.weaponAbility}}checked{{/if}} />
           </div>
 
             <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Ability.FIELDS.standalone.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Ability.FIELDS.standalone.label"}}</label>
             <input type="checkbox" name="system.standalone" {{#if system.standalone}}checked{{/if}} />
           </div>
 
           
             <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Ability.FIELDS.modifiesAttack.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Ability.FIELDS.modifiesAttack.label"}}</label>
             <input type="checkbox" name="system.modifiesAttack" {{#if system.modifiesAttack}}checked{{/if}} />
           </div>
                    <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Ability.FIELDS.multiAttack.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Ability.FIELDS.multiAttack.label"}}</label>
             <input type="checkbox" name="system.multiAttack" {{#if system.multiAttack}}checked{{/if}} />
           </div>
         {{/if}}
@@ -250,7 +250,7 @@
       <div class="grid grid-2col">
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.shield.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.shield.label"}}</label>
           <input type="checkbox" name="system.shield" {{#if system.shield}}checked{{/if}} />
         </div>
 
@@ -260,27 +260,27 @@
 
         {{#unless system.shield}}
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.helmet.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.helmet.label"}}</label>
             <input type="checkbox" name="system.helmet" {{#if system.helmet}}checked{{/if}} />
           </div>
         {{/unless}}
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.armor.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.armor.label"}}</label>
           <input type="text" name="system.armor.value" value="{{system.armor.value}}" data-dtype="Number"/>
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.durability.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.durability.label"}}</label>
           <input type="text" name="system.armor.durability" value="{{system.armor.durability}}" data-dtype="Number"/>
         </div>
 
 
         {{#unless system.shield}}
           <div class="grid-span-1">
-            <label for="gear-layer">{{localize "TOS.UI.gearLayer"}}:</label>
+            <label for="gear-layer">{{localize "REDSTEEL.UI.gearLayer"}}:</label>
             <select name="system.layer" id="gear-layer">
-              <option value="">{{localize "TOS.UI.selectLayer"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectLayer"}}</option>
               {{#each system.layerOptions as |layerOption|}}
                 <option value="{{layerOption}}" {{#if (eq ../system.layer layerOption)}}selected{{/if}}>
                   {{layerOption}}
@@ -301,7 +301,7 @@
         <div class="grid-span-1">
           <label for="consumable-option">Type:</label>
           <select name="system.option" id="consumable-option">
-            <option value="">{{localize "TOS.UI.selectType"}}</option>
+            <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
             {{#each system.options as |option|}}
               <option value="{{option}}" {{#if (eq ../system.option option)}}selected{{/if}}>{{option}}</option>
             {{/each}}
@@ -311,9 +311,9 @@
         {{!-- Potion --}}
         {{#if (eq item.system.option "potion")}}
           <div class="grid-span-1">
-            <label for="potion-type">{{localize "TOS.UI.potionType"}}:</label>
+            <label for="potion-type">{{localize "REDSTEEL.UI.potionType"}}:</label>
             <select name="system.type" id="potion-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.types as |type|}}
                 <option value="{{type}}" {{#if (eq ../system.type type)}}selected{{/if}}>{{type}}</option>
               {{/each}}
@@ -321,12 +321,12 @@
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.toxicity.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.toxicity.label"}}</label>
             <input type="text" name="system.toxicity" value="{{system.toxicity}}" data-dtype="Number"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.bleed.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.bleed.label"}}</label>
             <input type="text" name="system.bleed" value="{{system.bleed}}" data-dtype="Number"/>
           </div>
         {{/if}}
@@ -334,44 +334,44 @@
         {{!-- Explosive --}}
         {{#if (eq item.system.option "explosive")}}
           <div class="grid-span-1">
-            <label>{{localize "TOS.Item.Consumable.FIELDS.aimed.label"}}</label>
+            <label>{{localize "REDSTEEL.Item.Consumable.FIELDS.aimed.label"}}</label>
             <input type="checkbox" name="system.aimed" {{#if system.aimed}}checked{{/if}} />
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.penetration.label"}}</label>
             <input type="text" name="system.penetration" value="{{system.penetration}}" data-dtype="Number" placeholder="0"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.burn.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.burn.label"}}</label>
             <input type="text" name="system.burn" value="{{system.burn}}" data-dtype="Number" placeholder="0"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.freeze.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.freeze.label"}}</label>
             <input type="text" name="system.freeze" value="{{system.freeze}}" data-dtype="Number" placeholder="0"/>
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Consumable.FIELDS.stagger.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Consumable.FIELDS.stagger.label"}}</label>
             <input type="text" name="system.stagger" value="{{system.stagger}}" data-dtype="Number" placeholder="0"/>
           </div>
         {{/if}}
 
         {{!-- Dice fields --}}
         <div class="grid-span-1">
-          <label>{{localize "TOS.Item.Weapon.FIELDS.diceNum.label"}}:</label>
+          <label>{{localize "REDSTEEL.Item.Weapon.FIELDS.diceNum.label"}}:</label>
           <input type="text" name="system.roll.diceNum" value="{{system.roll.diceNum}}" data-dtype="Number" placeholder="0"/>
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.dieSize.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.dieSize.label"}}</label>
           <input type="text" name="system.roll.diceSize" value="{{system.roll.diceSize}}" data-dtype="String" placeholder="0"/>
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.rollMod.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.rollMod.label"}}</label>
           <input type="text" name="system.roll.diceBonus" value="{{system.roll.diceBonus}}" data-dtype="String" placeholder="e.g. 5+2d6"/>
         </div>
 
@@ -386,7 +386,7 @@
         <div class="grid-span-1">
           <label for="spell-option">Type:</label>
           <select name="system.option" id="spell-option">
-            <option value="">{{localize "TOS.UI.selectType"}}</option>
+            <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
             {{#each system.options as |option|}}
               <option value="{{option}}" {{#if (eq ../system.option option)}}selected{{/if}}>{{option}}</option>
             {{/each}}
@@ -396,9 +396,9 @@
         {{!-- Magic option --}}
         {{#if (eq item.system.option "magic")}}
           <div class="grid-span-1">
-            <label for="school-type">{{localize "TOS.UI.school"}}:</label>
+            <label for="school-type">{{localize "REDSTEEL.UI.school"}}:</label>
             <select name="system.type" id="school-type">
-              <option value="">{{localize "TOS.UI.selectSchool"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectSchool"}}</option>
               {{#each system.spellTypes as |type|}}
                 <option value="{{type}}" {{#if (eq ../system.type type)}}selected{{/if}}>{{type}}</option>
               {{/each}}
@@ -406,9 +406,9 @@
           </div>
 
           <div class="grid-span-1">
-            <label for="spell-rank">{{localize "TOS.UI.rank"}}:</label>
+            <label for="spell-rank">{{localize "REDSTEEL.UI.rank"}}:</label>
             <select name="system.rank">
-              <option value="">{{localize "TOS.UI.selectRank"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectRank"}}</option>
               {{#each system.spellRanks as |rank|}}
                 <option value="{{rank}}" {{#if (eq ../system.rank rank)}}selected{{/if}}>{{rank}}</option>
               {{/each}}
@@ -416,7 +416,7 @@
           </div>
 
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.Item.Spell.FIELDS.difficulty.label"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.Item.Spell.FIELDS.difficulty.label"}}</label>
             <input type="text" name="system.difficulty" value="{{system.difficulty}}" data-dtype="Number"/>
           </div>
         {{/if}}
@@ -424,9 +424,9 @@
         {{!-- Divine option --}}
         {{#if (eq item.system.option "divine")}}
           <div class="grid-span-1">
-            <label for="spell-rank">{{localize "TOS.UI.rank"}}:</label>
+            <label for="spell-rank">{{localize "REDSTEEL.UI.rank"}}:</label>
             <select name="system.rank">
-              <option value="">{{localize "TOS.UI.selectRank"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectRank"}}</option>
               {{#each system.miracleRanks as |rank|}}
                 <option value="{{rank}}" {{#if (eq ../system.rank rank)}}selected{{/if}}>{{rank}}</option>
               {{/each}}
@@ -436,23 +436,23 @@
 
         {{!-- Dice fields --}}
         <div class="grid-span-1">
-          <label>{{localize "TOS.Item.Weapon.FIELDS.diceNum.label"}}:</label>
+          <label>{{localize "REDSTEEL.Item.Weapon.FIELDS.diceNum.label"}}:</label>
           <input type="text" name="system.roll.diceNum" value="{{system.roll.diceNum}}" data-dtype="Number" placeholder="0"/>
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.dieSize.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.dieSize.label"}}</label>
           <input type="text" name="system.roll.diceSize" value="{{system.roll.diceSize}}" data-dtype="String" placeholder="0"/>
         </div>
 
         <div class="grid-span-2">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.rollMod.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.rollMod.label"}}</label>
           <input type="text" name="system.roll.diceBonus" value="{{system.roll.diceBonus}}" data-dtype="String" placeholder="e.g. @spellPower"/>
         </div>
        <div class="grid-span-1">
-            <label for="test-type">{{localize "TOS.UI.testType"}}:</label>
+            <label for="test-type">{{localize "REDSTEEL.UI.testType"}}:</label>
             <select name="system.attributeTest" id="test-type">
-              <option value="">{{localize "TOS.UI.selectType"}}</option>
+              <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>
               {{#each system.testOptions as |testOption|}}
                 <option value="{{testOption}}" {{#if (eq ../system.attributeTest testOption)}}selected{{/if}}>
                   {{testOption}}
@@ -462,23 +462,23 @@
        </div>
          
           <div class="grid-span-1">
-            <label class="resource-label">{{localize "TOS.UI.testModifier"}}</label>
+            <label class="resource-label">{{localize "REDSTEEL.UI.testModifier"}}</label>
             <input type="text" name="system.testModifier" value="{{system.testModifier}}" data-dtype="String" placeholder="e.g. @spellPower"/>
           </div>
          </div>
          <div class="grid grid-3col">
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.penetration.label"}}</label>
           <input type="text" name="system.penetration" value="{{system.penetration}}" data-dtype="Number" placeholder="0"/>
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Spell.FIELDS.cost.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Spell.FIELDS.cost.label"}}</label>
           <input type="text" name="system.cost" value="{{system.cost}}" data-dtype="Number"/>
         </div>
 
         <div class="grid-span-1">
-          <label>{{localize "TOS.Item.Spell.FIELDS.isOffensive.label"}}</label>
+          <label>{{localize "REDSTEEL.Item.Spell.FIELDS.isOffensive.label"}}</label>
           <input type="checkbox" name="system.isOffensive" {{#if system.isOffensive}}checked{{/if}} />
         </div>
 

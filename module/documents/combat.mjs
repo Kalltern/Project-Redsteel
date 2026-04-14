@@ -2,7 +2,7 @@
  * Extend the basic Combat with custom initiative handling.
  * @extends {Combat}
  */
-export class ToSCombat extends Combat {
+export class RedsteelCombat extends Combat {
   async rollInitiative(
     ids,
     { formula = null, updateTurn = true, messageOptions = {} } = {},

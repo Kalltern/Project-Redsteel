@@ -1,5 +1,5 @@
 export async function attackActions() {
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -38,7 +38,7 @@ export async function attackActions() {
     : "";
   let hasLongReach = false;
 
-  const contextWeapon = game.tos.resolveWeaponContext(actor);
+  const contextWeapon = game.redsteel.resolveWeaponContext(actor);
   const activeWeapon = contextWeapon?.weapon;
 
   if (activeWeapon?.system?.longReach) {
@@ -130,16 +130,16 @@ export async function attackActions() {
 
         // ─── Flags ───
         useSneak
-          ? await actor.setFlag("tos", "useSneakAttack", true)
-          : await actor.unsetFlag("tos", "useSneakAttack");
+          ? await actor.setFlag("redsteel", "useSneakAttack", true)
+          : await actor.unsetFlag("redsteel", "useSneakAttack");
 
         useFlanking
-          ? await actor.setFlag("tos", "useFlankingAttack", true)
-          : await actor.unsetFlag("tos", "useFlankingAttack");
+          ? await actor.setFlag("redsteel", "useFlankingAttack", true)
+          : await actor.unsetFlag("redsteel", "useFlankingAttack");
 
         aimValue > 0
-          ? await actor.setFlag("tos", "aimCount", aimValue)
-          : await actor.unsetFlag("tos", "aimCount");
+          ? await actor.setFlag("redsteel", "aimCount", aimValue)
+          : await actor.unsetFlag("redsteel", "aimCount");
 
         // ─── Collect Modifiers ───
         const selectedModifierIds = Array.from(
@@ -151,11 +151,11 @@ export async function attackActions() {
         );
 
         // ─── Deduct Costs ───
-        const paid = await game.tos.deductAbilityCost(actor, selectedModifiers);
+        const paid = await game.redsteel.deductAbilityCost(actor, selectedModifiers);
         if (!paid) return;
 
         // ─── Execute Attack ───
-        await game.tos[fnName]({
+        await game.redsteel[fnName]({
           actor,
           token,
           selectedModifiers,
@@ -165,9 +165,9 @@ export async function attackActions() {
     };
   }
   // Inject CSS once
-  if (!document.getElementById("tos-attack-dialog-styles")) {
+  if (!document.getElementById("redsteel-attack-dialog-styles")) {
     const style = document.createElement("style");
-    style.id = "tos-attack-dialog-styles";
+    style.id = "redsteel-attack-dialog-styles";
 
     style.textContent = `
   .attack-options-row {
@@ -215,7 +215,7 @@ export async function attackActions() {
 }
 
 function renderWeaponLoadoutsDialog(actor) {
-  const weaponSets = game.tos.buildWeaponSetView(actor);
+  const weaponSets = game.redsteel.buildWeaponSetView(actor);
   const activeSet = actor.system.combat.activeWeaponSet;
 
   return `
@@ -321,18 +321,18 @@ export async function autoAttack(options = {}) {
     const isRanged = ["bow", "crossbow"].includes(weapon.system.class);
 
     if (isThrown)
-      return game.tos.throwingAttack({
+      return game.redsteel.throwingAttack({
         context: options.weaponContext,
         selectedModifiers: options.selectedModifiers ?? [],
       });
 
     if (isRanged)
-      return game.tos.rangedAttack({
+      return game.redsteel.rangedAttack({
         context: options.weaponContext,
         selectedModifiers: options.selectedModifiers ?? [],
       });
 
-    return game.tos.meleeAttack({
+    return game.redsteel.meleeAttack({
       context: options.weaponContext,
       selectedModifiers: options.selectedModifiers ?? [],
       longReachPenalty: options.longReachPenalty ?? 0,
@@ -344,7 +344,7 @@ export async function autoAttack(options = {}) {
   //
   if (actor.type === "character") {
     const activeSet = actor.system.combat?.activeWeaponSet;
-    const weaponSets = game.tos.buildWeaponSetView(actor);
+    const weaponSets = game.redsteel.buildWeaponSetView(actor);
     const ws = weaponSets[activeSet];
 
     if (activeSet && ws?.main) {
@@ -361,18 +361,18 @@ export async function autoAttack(options = {}) {
       };
 
       if (isThrown)
-        return game.tos.throwingAttack({
+        return game.redsteel.throwingAttack({
           context,
           selectedModifiers: options.selectedModifiers ?? [],
         });
 
       if (isRanged)
-        return game.tos.rangedAttack({
+        return game.redsteel.rangedAttack({
           context,
           selectedModifiers: options.selectedModifiers ?? [],
         });
 
-      return game.tos.meleeAttack({
+      return game.redsteel.meleeAttack({
         context,
         selectedModifiers: options.selectedModifiers ?? [],
         longReachPenalty: options.longReachPenalty ?? 0,
@@ -380,13 +380,13 @@ export async function autoAttack(options = {}) {
     }
 
     // 🔥 Fallback if no main weapon
-    return game.tos.universalAttackLogic({
+    return game.redsteel.universalAttackLogic({
       attackType: "attack",
       flavorLabel: "Attack",
       showBreakthrough: true,
       weaponFilter: (i) => i.type === "weapon",
       getWeaponSkillData: (actor, weapon) =>
-        game.tos.getWeaponSkillBonuses(actor, weapon),
+        game.redsteel.getWeaponSkillBonuses(actor, weapon),
       selectedModifiers: options.selectedModifiers ?? [],
     });
   }
@@ -394,7 +394,7 @@ export async function autoAttack(options = {}) {
   //
   //  NPC fallback
   //
-  return game.tos.meleeAttack({
+  return game.redsteel.meleeAttack({
     selectedModifiers: options.selectedModifiers ?? [],
     longReachPenalty: options.longReachPenalty ?? 0,
   });

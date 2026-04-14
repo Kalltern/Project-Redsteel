@@ -781,10 +781,10 @@ export async function finalizeRollsAndPostChat(
       await existing.delete();
     }
 
-    const effect = await game.tos.applyEffect(actor, "channeling");
+    const effect = await game.redsteel.applyEffect(actor, "channeling");
 
     if (effect) {
-      await effect.setFlag("tos", "channelingData", {
+      await effect.setFlag("redsteel", "channelingData", {
         spellId: spell.id,
         rollContext: {
           focusSpent,
@@ -792,7 +792,7 @@ export async function finalizeRollsAndPostChat(
         isSustained: spell.system.sustained, // ✅ ADD THIS
       });
 
-      await effect.setFlag("tos", "costPerRound", costPerRound);
+      await effect.setFlag("redsteel", "costPerRound", costPerRound);
     }
   }
 
@@ -1005,7 +1005,7 @@ export async function finalizeRollsAndPostChat(
         ${effectsTable}
         `,
     flags: {
-      tos: {
+      redsteel: {
         rollName,
         criticalSuccessThreshold:
           actor.system.combatSkills.channeling.criticalSuccessThreshold,
@@ -1029,7 +1029,7 @@ export async function finalizeRollsAndPostChat(
 </div>
     `,
       flags: {
-        tos: {
+        redsteel: {
           type: "critFailPrompt",
           actorId: actor.id,
           spellId: spell.id,
@@ -1039,11 +1039,11 @@ export async function finalizeRollsAndPostChat(
       },
     });
   }
-  //tables -> Flag: "tos.critTable: fire"
+  //tables -> Flag: "redsteel.critTable: fire"
 }
 
 export async function resolveChannelingTick(actor, effect) {
-  const data = effect.getFlag("tos", "channelingData");
+  const data = effect.getFlag("redsteel", "channelingData");
   if (!data) return;
 
   // ✅ behavior decision lives here

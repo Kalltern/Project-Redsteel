@@ -1,9 +1,9 @@
 export async function castSpell() {
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
-  const result = await game.tos.showSpellSelectionDialogs(actor);
+  const result = await game.redsteel.showSpellSelectionDialogs(actor);
   if (!result) {
     ui.notifications.info("Spell casting canceled.");
     return;
@@ -13,13 +13,13 @@ export async function castSpell() {
     result;
 
   if (!freeCast) {
-    const ok = await game.tos.deductMana(actor, spell);
+    const ok = await game.redsteel.deductMana(actor, spell);
     if (!ok) return;
   }
 
-  const bonuses = game.tos.calculateAttackBonuses(actor, spell);
+  const bonuses = game.redsteel.calculateAttackBonuses(actor, spell);
 
-  const attackResults = await game.tos.performAttackRoll(
+  const attackResults = await game.redsteel.performAttackRoll(
     actor,
     spell,
     bonuses.attackBonus,
@@ -27,7 +27,7 @@ export async function castSpell() {
     { ignoreChanneling },
   );
 
-  await game.tos.finalizeRollsAndPostChat(
+  await game.redsteel.finalizeRollsAndPostChat(
     actor,
     spell,
     bonuses,

@@ -4,14 +4,14 @@ export function registerEffectSheetExtensions() {
     if (!durationTab) return;
 
     const effect = app.document;
-    const current = effect?.getFlag("tos", "actorTurns") ?? "";
+    const current = effect?.getFlag("redsteel", "actorTurns") ?? "";
 
     const field = `
       <div class="form-group">
         <label>Actor Turns</label>
         <div class="form-fields">
           <input type="number"
-                 name="flags.tos.actorTurns"
+                 name="flags.redsteel.actorTurns"
                  value="${current}"
                  min="0"
                  step="1"/>

@@ -2,7 +2,7 @@
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class ToSActor extends Actor {
+export class RedsteelActor extends Actor {
   /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
@@ -54,7 +54,7 @@ export class ToSActor extends Actor {
     const actorData = this;
     const systemData = actorData.system;
 
-    const flags = actorData.flags.tos || {};
+    const flags = actorData.flags.redsteel || {};
 
     systemData.rerolls = {};
     let skill = systemData.skills;
@@ -143,11 +143,11 @@ export class ToSActor extends Actor {
     for (let [key, attribute] of Object.entries(
       systemData.secondaryAttributes,
     )) {
-      // Calculate the attribute rating using ToS rules.
+      // Calculate the attribute rating using redsteel rules.
       attribute.total = attribute.value + (attribute.bonus ?? 0);
     }
     for (let [key, stat] of Object.entries(systemData.stats)) {
-      // Calculate the attribute rating using ToS rules.
+      // Calculate the attribute rating using redsteel rules.
       stat.max = (stat.base ?? 0) + (stat.bonus ?? 0);
     }
 
@@ -346,7 +346,7 @@ export class ToSActor extends Actor {
           globalMod;
       }
     }
-    // Calculate the attribute rating using ToS rules. Rework calculations for stun effects
+    // Calculate the attribute rating using redsteel rules. Rework calculations for stun effects
     for (let [key, attribute] of Object.entries(systemData.attributes)) {
       attribute.mod = Math.floor(
         15 +

@@ -35,7 +35,7 @@
         class="skill-label flexlarge align-left skill-name"  
         data-label="{{key}}"
       >
-        {{localize (concat 'TOS.Actor.Character.combatSkills.' key '.label')}}
+        {{localize (concat 'REDSTEEL.Actor.Character.combatSkills.' key '.label')}}
       </label>
 
       <input
@@ -75,7 +75,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.weaponSkills.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.weaponSkills.' key '.label')}}
           </label>
           <input
             type="text"
@@ -103,7 +103,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.doctrines.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.doctrines.' key '.label')}}
           </label>
           <input
             type="text"
@@ -131,7 +131,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.schools.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.schools.' key '.label')}}
           </label>
           <input
             type="text"
@@ -158,7 +158,7 @@
             data-action="roll"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.combatSkills.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.combatSkills.' key '.label')}}
           </label>
             <input
               type="text"
@@ -173,7 +173,7 @@
   {{/each}}
   </div>
 {{#if (hasVisibleSkillsOfId system.skills 0)}}  
-      <h5>{{localize "TOS.Actor.Character.Attribute.Str.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.Str.long"}}</h5>
 {{/if}}     
 {{#each system.skills as |skill key|}}
   {{#if (eq skill.id 0)}}
@@ -197,7 +197,7 @@
       data-roll-type="skill"
       data-label="{{key}}"
     >
-      {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+      {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
     </label>
 
     <input
@@ -227,7 +227,7 @@
     data-roll-type="skill"
     data-label="swimming"
   >
-      {{localize "TOS.Actor.Character.skills.swimming.label"}}
+      {{localize "REDSTEEL.Actor.Character.skills.swimming.label"}}
     </label>
 
     <input
@@ -246,7 +246,7 @@
   {{/if}}
 {{/each}}
 {{#if (hasVisibleSkillsOfId system.skills 1)}}
-      <h5>{{localize "TOS.Actor.Character.Attribute.Dex.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.Dex.long"}}</h5>
 {{/if}}      
       {{#each system.skills as |skill key|}}
         {{#if (eq skill.id 1)}}
@@ -267,7 +267,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-            {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+            {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
           </label>
             <input
               type="text"
@@ -289,7 +289,7 @@
       {{/each}}
       
 {{#if (hasVisibleSkillsOfId system.skills 2)}}
-      <h5>{{localize "TOS.Actor.Character.Attribute.End.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.End.long"}}</h5>
 {{/if}}      
       {{#each system.skills as |skill key|}}
         {{#if (eq skill.id 2)}}
@@ -310,7 +310,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-            {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+            {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
           </label>
             <input
               type="text"
@@ -335,7 +335,7 @@
     {{! Right Column }}
     <div class="skills-column">
 {{#if (hasVisibleSkillsOfId system.skills 3)}}  
-      <h5>{{localize "TOS.Actor.Character.Attribute.Int.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.Int.long"}}</h5>
 {{/if}}      
       {{#each system.skills as |skill key|}}
         {{#if (eq skill.id 3)}}
@@ -356,7 +356,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
           </label>
             <input
               type="text"
@@ -378,7 +378,7 @@
       {{/each}}
 
 {{#if (hasVisibleSkillsOfId system.skills 4)}}
-      <h5>{{localize "TOS.Actor.Character.Attribute.Wil.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.Wil.long"}}</h5>
 {{/if}}      
         {{#each system.skills as |skill key|}}
         {{#if (eq skill.id 4)}}
@@ -399,7 +399,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-             {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+             {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
           </label>
             <input
               type="text"
@@ -420,7 +420,7 @@
         {{/if}}
       {{/each}}
 {{#if (hasVisibleSkillsOfId system.skills 5)}}
-<h5>{{localize "TOS.Actor.Character.Attribute.Cha.long"}}</h5>
+<h5>{{localize "REDSTEEL.Actor.Character.Attribute.Cha.long"}}</h5>
 {{/if}}
 
 {{#each system.skills as |skill key|}}
@@ -444,7 +444,7 @@
         data-roll-type="skill"
         data-label="{{key}}"
       >
-        {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+        {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
       </label>
 
       <input
@@ -477,7 +477,7 @@
     data-roll-type="skill"
     data-label="blend"
   >
-    {{localize "TOS.Actor.Character.skills.blend.label"}}
+    {{localize "REDSTEEL.Actor.Character.skills.blend.label"}}
   </label>
 
   <input
@@ -491,7 +491,7 @@
 </div>
   {{/if}}
 {{#if (hasVisibleSkillsOfId system.skills 6)}}
-      <h5>{{localize "TOS.Actor.Character.Attribute.Per.long"}}</h5>
+      <h5>{{localize "REDSTEEL.Actor.Character.Attribute.Per.long"}}</h5>
 {{/if}}      
       {{#each system.skills as |skill key|}}
         {{#if (eq skill.id 6)}}
@@ -512,7 +512,7 @@
             data-roll-type="skill"
             data-label="{{key}}"
           >
-            {{localize (concat 'TOS.Actor.Character.skills.' key '.label')}}
+            {{localize (concat 'REDSTEEL.Actor.Character.skills.' key '.label')}}
           </label>
             <input
               type="text"

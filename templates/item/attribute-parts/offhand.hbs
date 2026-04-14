@@ -8,7 +8,7 @@
 
   <div class="resource">
     <label class="resource-label">{{localize
-        "TOS.Item.Weapon.FIELDS.rollFormula.label"
+        "REDSTEEL.Item.Weapon.FIELDS.rollFormula.label"
       }}:</label>
     <span>{{system.offhandProperties.formula}}</span>
 
@@ -16,7 +16,7 @@
 
       
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.rollMod.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.rollMod.label"}}</label>
           <input
             type="text"
             name="system.offhandProperties.diceBonus"
@@ -27,7 +27,7 @@
         </div>
 
         <div class="grid-span-1">
-          <label class="resource-label">{{localize "TOS.Item.Weapon.FIELDS.penetration.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Weapon.FIELDS.penetration.label"}}</label>
           <input
             type="number"
             name="system.offhandProperties.penetration"
@@ -38,7 +38,7 @@
         </div>
         <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.attack.label"
+            "REDSTEEL.Item.Weapon.FIELDS.attack.label"
           }}</label>
         <input
           type="number"
@@ -49,7 +49,7 @@
       </div>
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.defense.label"
+            "REDSTEEL.Item.Weapon.FIELDS.defense.label"
           }}</label>
         <input
           type="number"
@@ -61,7 +61,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.critRange.label"
+            "REDSTEEL.Item.Weapon.FIELDS.critRange.label"
           }}</label>
         <input
           type="number"
@@ -73,7 +73,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.critChance.label"
+            "REDSTEEL.Item.Weapon.FIELDS.critChance.label"
           }}</label>
         <input
           type="number"
@@ -85,7 +85,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.critFail.label"
+            "REDSTEEL.Item.Weapon.FIELDS.critFail.label"
           }}</label>
         <input
           type="number"
@@ -97,7 +97,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.critDefense.label"
+            "REDSTEEL.Item.Weapon.FIELDS.critDefense.label"
           }}</label>
         <input
           type="number"
@@ -108,7 +108,7 @@
       </div>
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.critDodge.label"
+            "REDSTEEL.Item.Weapon.FIELDS.critDodge.label"
           }}</label>
         <input
           type="number"
@@ -120,7 +120,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.dodge.label"
+            "REDSTEEL.Item.Weapon.FIELDS.dodge.label"
           }}</label>
         <input
           type="number"
@@ -132,7 +132,7 @@
 
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.breakthrough.label"
+            "REDSTEEL.Item.Weapon.FIELDS.breakthrough.label"
           }}</label>
         <input
           type="text"
@@ -144,7 +144,7 @@
       </div>
       <div class="grid-span-1">
         <label class="resource-label">{{localize
-            "TOS.Item.Weapon.FIELDS.sneakDamage.label"
+            "REDSTEEL.Item.Weapon.FIELDS.sneakDamage.label"
           }}</label>
         <input
           type="text"
@@ -182,7 +182,7 @@
 
     <div class="grid-span-1 effect-row">
       <label class="resource-label">
-        {{localize "TOS.Item.Weapon.FIELDS.stagger.label"}}
+        {{localize "REDSTEEL.Item.Weapon.FIELDS.stagger.label"}}
       </label>
       <input
         type="number"
@@ -194,7 +194,7 @@
 
     <div class="grid-span-1 effect-row">
       <label class="resource-label">
-        {{localize "TOS.Item.Weapon.FIELDS.bleed.label"}}
+        {{localize "REDSTEEL.Item.Weapon.FIELDS.bleed.label"}}
       </label>
       <input
         type="number"
@@ -210,7 +210,7 @@
          Customizable effect slot #1
     -------------------------- --}}
     <div class="grid-span-1">
-      <label class="resource-label">{{localize "TOS.Effect.type1"}}</label>
+      <label class="resource-label">{{localize "REDSTEEL.Effect.type1"}}</label>
       <select name="system.offhandProperties.effectType1">
         <option value="">-- Select a type --</option>
         {{#each system.effectTypes as |effectType|}}
@@ -224,7 +224,7 @@
 
     <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Item.Weapon.FIELDS.extra1.label"}}
+        {{localize "REDSTEEL.Item.Weapon.FIELDS.extra1.label"}}
       </label>
       <input
         type="number"
@@ -237,7 +237,7 @@
  {{#if (eq system.offhandProperties.effectType1 "Custom")}}
      <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Effect.Custom.name1"}}
+        {{localize "REDSTEEL.Effect.Custom.name1"}}
       </label>
       <input
         type="text"
@@ -256,7 +256,7 @@
          Customizable effect slot #2
     -------------------------- --}}
     <div class="grid-span-1">
-      <label class="resource-label">{{localize "TOS.Effect.type2"}}</label>
+      <label class="resource-label">{{localize "REDSTEEL.Effect.type2"}}</label>
       <select name="system.offhandProperties.effectType2">
         <option value="">-- Select a type --</option>
         {{#each system.effectTypes as |effectType|}}
@@ -270,7 +270,7 @@
 
     <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Item.Weapon.FIELDS.extra2.label"}}
+        {{localize "REDSTEEL.Item.Weapon.FIELDS.extra2.label"}}
       </label>
       <input
         type="number"
@@ -283,7 +283,7 @@
  {{#if (eq system.offhandProperties.effectType2 "Custom")}}
      <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Effect.Custom.name2"}}
+        {{localize "REDSTEEL.Effect.Custom.name2"}}
       </label>
       <input
         type="text"
@@ -303,7 +303,7 @@
          Customizable effect slot #3
     -------------------------- --}}
     <div class="grid-span-1">
-      <label class="resource-label">{{localize "TOS.Effect.type3"}}</label>
+      <label class="resource-label">{{localize "REDSTEEL.Effect.type3"}}</label>
       <select name="system.offhandProperties.effectType3">
         <option value="">-- Select a type --</option>
         {{#each system.effectTypes as |effectType|}}
@@ -317,7 +317,7 @@
 
     <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Item.Weapon.FIELDS.extra3.label"}}
+        {{localize "REDSTEEL.Item.Weapon.FIELDS.extra3.label"}}
       </label>
       <input
         type="number"
@@ -330,7 +330,7 @@
  {{#if (eq system.offhandProperties.effectType3 "Custom")}}
      <div class="grid-span-1">
       <label class="resource-label">
-        {{localize "TOS.Effect.Custom.name3"}}
+        {{localize "REDSTEEL.Effect.Custom.name3"}}
       </label>
       <input
         type="text"

@@ -183,7 +183,7 @@ ${damageLine}
       flavor,
 
       flags: {
-        tos: {
+        redsteel: {
           rollName,
           criticalSuccessThreshold,
           criticalFailureThreshold,

@@ -1,4 +1,4 @@
-export class ToSActiveEffect extends ActiveEffect {
+export class RedsteelActiveEffect extends ActiveEffect {
   /* -------------------------------------------- */
   /*  CHANGE STRUCTURE                            */
   /* -------------------------------------------- */
@@ -20,7 +20,7 @@ export class ToSActiveEffect extends ActiveEffect {
 
     Hooks.on("preCreateActiveEffect", (effect) => {
       const statusId = effect.getFlag("core", "statusId");
-      const def = CONFIG.TOS.effectDefinitions[statusId];
+      const def = CONFIG.REDSTEEL.effectDefinitions[statusId];
       if (!def) return;
 
       const hasStacks = !!def.maxStacks;
@@ -42,10 +42,10 @@ export class ToSActiveEffect extends ActiveEffect {
 
       // Default: duration unless explicitly stack-based
       const dataSource = useStacks
-        ? "flags.tos.stacks"
+        ? "flags.redsteel.stacks"
         : def.defaultRounds
-          ? "flags.tos.rounds"
-          : "flags.tos.actorTurns";
+          ? "flags.redsteel.rounds"
+          : "flags.redsteel.actorTurns";
 
       effect.updateSource({
         "flags.statuscounter.config.dataSource": dataSource,
@@ -55,12 +55,12 @@ export class ToSActiveEffect extends ActiveEffect {
 
     Hooks.on("updateActiveEffect", async (effect) => {
       const status = [...(effect.statuses ?? [])][0];
-      const def = CONFIG.TOS.effectDefinitions[status];
+      const def = CONFIG.REDSTEEL.effectDefinitions[status];
       if (!def?.maxStacks) return;
 
-      const stacks = effect.getFlag("tos", "stacks");
+      const stacks = effect.getFlag("redsteel", "stacks");
       if (stacks > def.maxStacks) {
-        await effect.setFlag("tos", "stacks", def.maxStacks);
+        await effect.setFlag("redsteel", "stacks", def.maxStacks);
       }
     });
   }
@@ -97,16 +97,16 @@ export class ToSActiveEffect extends ActiveEffect {
   }
 
   static async _onRoundStart(combat) {
-    const lastProcessed = combat.getFlag("tos", "lastProcessedRound");
+    const lastProcessed = combat.getFlag("redsteel", "lastProcessedRound");
 
     if (lastProcessed === combat.round) {
-      console.warn("TOS | Round already processed:", combat.round);
+      console.warn("Redsteel | Round already processed:", combat.round);
       return;
     }
 
-    await combat.setFlag("tos", "lastProcessedRound", combat.round);
+    await combat.setFlag("redsteel", "lastProcessedRound", combat.round);
 
-    console.log("TOS | Processing round:", combat.round);
+    console.log("Redsteel | Processing round:", combat.round);
 
     for (const combatant of combat.combatants.values()) {
       const actor = combatant.actor;
@@ -159,7 +159,7 @@ export class ToSActiveEffect extends ActiveEffect {
   }
 
   static async _removeCombatModifiers(actor, effectId) {
-    const def = CONFIG.TOS.effectDefinitions[effectId];
+    const def = CONFIG.REDSTEEL.effectDefinitions[effectId];
     if (!def?.combatModifiers) return;
 
     const group = def.combatModifiers.exclusiveGroup ?? "default";
@@ -173,7 +173,7 @@ export class ToSActiveEffect extends ActiveEffect {
   async updateCorrosionChange() {
     if (this.getFlag("core", "statusId") !== "corrosion") return;
 
-    const stacks = this.getFlag("tos", "stacks") ?? 1;
+    const stacks = this.getFlag("redsteel", "stacks") ?? 1;
     const penalty = -4 * stacks;
 
     const changes = this.changes.map((c) => {
@@ -192,7 +192,7 @@ export class ToSActiveEffect extends ActiveEffect {
   }
 
   static async applyEffect(actor, effectId, { stacks = 1, turns } = {}) {
-    const def = CONFIG.TOS.effectDefinitions[effectId];
+    const def = CONFIG.REDSTEEL.effectDefinitions[effectId];
     if (!def) {
       ui.notifications.error(`Effect not found: ${effectId}`);
       return;
@@ -249,26 +249,26 @@ export class ToSActiveEffect extends ActiveEffect {
       // FEAR: Reset instead of stack
       // -----------------------------
       if (effectId === "fear") {
-        await existing.setFlag("tos", "stacks", 3);
+        await existing.setFlag("redsteel", "stacks", 3);
         await existing.executeTrigger("onApply", { appliedStacks: 3 });
         return existing;
       }
 
-      const currentStacks = existing.getFlag("tos", "stacks") ?? 1;
+      const currentStacks = existing.getFlag("redsteel", "stacks") ?? 1;
       const newStacks = Math.min(currentStacks + stacks, maxStacks);
       const appliedStacks = newStacks - currentStacks;
 
       if (appliedStacks <= 0) return existing;
 
-      await existing.setFlag("tos", "stacks", newStacks);
+      await existing.setFlag("redsteel", "stacks", newStacks);
       await existing.updateCorrosionChange();
 
       if (turnsDuration > 0) {
-        await existing.setFlag("tos", "actorTurns", turnsDuration);
+        await existing.setFlag("redsteel", "actorTurns", turnsDuration);
       }
 
       if (roundsDuration > 0) {
-        await existing.setFlag("tos", "rounds", roundsDuration);
+        await existing.setFlag("redsteel", "rounds", roundsDuration);
       }
 
       await existing.executeTrigger("onApply", { appliedStacks });
@@ -278,17 +278,17 @@ export class ToSActiveEffect extends ActiveEffect {
     // ============================================
     // NEW EFFECT
     // ============================================
-    const tosFlags = {
+    const redsteelFlags = {
       triggers: def.triggers ?? {},
       stacks: initialStacks,
     };
 
     if (turnsDuration > 0) {
-      tosFlags.actorTurns = turnsDuration;
+      redsteelFlags.actorTurns = turnsDuration;
     }
 
     if (roundsDuration > 0) {
-      tosFlags.rounds = roundsDuration;
+      redsteelFlags.rounds = roundsDuration;
     }
 
     const [created] = await actor.createEmbeddedDocuments("ActiveEffect", [
@@ -296,7 +296,7 @@ export class ToSActiveEffect extends ActiveEffect {
         name: def.name,
         img: def.img,
         statuses: def.statuses ?? [],
-        flags: { tos: tosFlags, core: { statusId: effectId } },
+        flags: { redsteel: redsteelFlags, core: { statusId: effectId } },
         changes: changes,
       },
     ]);
@@ -326,7 +326,7 @@ export class ToSActiveEffect extends ActiveEffect {
   /* -------------------------------------------- */
 
   get actorTurns() {
-    return this.getFlag("tos", "actorTurns") ?? 0;
+    return this.getFlag("redsteel", "actorTurns") ?? 0;
   }
 
   async decrementActorTurn() {
@@ -339,11 +339,11 @@ export class ToSActiveEffect extends ActiveEffect {
       return;
     }
 
-    await this.setFlag("tos", "actorTurns", remaining);
+    await this.setFlag("redsteel", "actorTurns", remaining);
   }
 
   async decrementRound() {
-    const rounds = this.getFlag("tos", "rounds");
+    const rounds = this.getFlag("redsteel", "rounds");
     if (rounds == null) return;
 
     const remaining = rounds - 1;
@@ -353,19 +353,19 @@ export class ToSActiveEffect extends ActiveEffect {
       return;
     }
 
-    await this.setFlag("tos", "rounds", remaining);
+    await this.setFlag("redsteel", "rounds", remaining);
   }
   /* -------------------------------------------- */
   /*  TRIGGER STRUCTURE                           */
   /* -------------------------------------------- */
 
   get triggers() {
-    return this.getFlag("tos", "triggers") ?? {};
+    return this.getFlag("redsteel", "triggers") ?? {};
   }
 
   async _handleBurningPanic() {
     // Only resolve once
-    if (this.getFlag("tos", "panicResolved")) return;
+    if (this.getFlag("redsteel", "panicResolved")) return;
 
     const actor = this.parent;
     if (!actor) return;
@@ -380,15 +380,15 @@ export class ToSActiveEffect extends ActiveEffect {
 
     if (roll.total >= 0) {
       // Success → no further panic tests
-      await this.setFlag("tos", "panicResolved", true);
+      await this.setFlag("redsteel", "panicResolved", true);
       return;
     }
 
     // Failure → apply panic effect
-    await game.tos.applyEffect(actor, "panic");
+    await game.redsteel.applyEffect(actor, "panic");
 
     // Only test once per burn instance
-    await this.setFlag("tos", "panicResolved", true);
+    await this.setFlag("redsteel", "panicResolved", true);
   }
 
   async _handleFearTest() {
@@ -410,14 +410,14 @@ export class ToSActiveEffect extends ActiveEffect {
     const dice = roll.terms.find((t) => t.faces === 100);
     const diceResult = dice?.results?.[0]?.result ?? 0;
 
-    let stacks = this.getFlag("tos", "stacks") ?? 1;
+    let stacks = this.getFlag("redsteel", "stacks") ?? 1;
 
     // =========================
     // CRITICAL FAILURE
     // =========================
     if (total <= -60 || diceResult >= 96) {
       stacks += 1;
-      await this.setFlag("tos", "stacks", stacks);
+      await this.setFlag("redsteel", "stacks", stacks);
 
       ui.notifications.info(`${actor.name} is overwhelmed by fear! (+1 round)`);
       return;
@@ -435,14 +435,14 @@ export class ToSActiveEffect extends ActiveEffect {
         return;
       }
 
-      await this.setFlag("tos", "stacks", stacks);
+      await this.setFlag("redsteel", "stacks", stacks);
       ui.notifications.info(`${actor.name} steels their nerves. (-1 round)`);
       return;
     }
 
     // Any fail will apply panic
     if (roll.total >= 0) return;
-    await game.tos.applyEffect(actor, "panic");
+    await game.redsteel.applyEffect(actor, "panic");
   }
 
   async _handleStoneSkin() {
@@ -494,7 +494,7 @@ export class ToSActiveEffect extends ActiveEffect {
     const actor = this.parent;
     if (!actor) return;
 
-    let stacks = this.getFlag("tos", "stacks") ?? 1;
+    let stacks = this.getFlag("redsteel", "stacks") ?? 1;
 
     // -------------------------
     // Automatic decrement
@@ -507,7 +507,7 @@ export class ToSActiveEffect extends ActiveEffect {
       return;
     }
 
-    await this.setFlag("tos", "stacks", stacks);
+    await this.setFlag("redsteel", "stacks", stacks);
 
     // -------------------------
     // Now perform resolve test
@@ -550,7 +550,7 @@ export class ToSActiveEffect extends ActiveEffect {
     let formula = trigger.formula;
     if (!formula) return;
 
-    const stacks = this.getFlag("tos", "stacks") ?? 1;
+    const stacks = this.getFlag("redsteel", "stacks") ?? 1;
     const appliedStacks = context.appliedStacks ?? stacks;
 
     formula = formula
@@ -591,7 +591,7 @@ export class ToSActiveEffect extends ActiveEffect {
     const effectId = this.getFlag("core", "statusId");
     if (!effectId) return;
 
-    await ToSActiveEffect._removeCombatModifiers(actor, effectId);
+    await RedsteelActiveEffect._removeCombatModifiers(actor, effectId);
   }
 
   async _handleRegenerationHeal(trigger) {
@@ -618,7 +618,7 @@ export class ToSActiveEffect extends ActiveEffect {
 
     let formula = trigger.formula;
 
-    const stacks = this.getFlag("tos", "stacks") ?? 1;
+    const stacks = this.getFlag("redsteel", "stacks") ?? 1;
     formula = formula.replace("{stacks}", stacks);
 
     const roll = await new Roll(formula).evaluate({ async: true });
@@ -652,10 +652,10 @@ export class ToSActiveEffect extends ActiveEffect {
     const actor = this.parent;
     if (!actor) return;
 
-    const data = this.getFlag("tos", "channelingData");
+    const data = this.getFlag("redsteel", "channelingData");
     if (!data) return;
 
-    const costPerRound = this.getFlag("tos", "costPerRound") ?? 0;
+    const costPerRound = this.getFlag("redsteel", "costPerRound") ?? 0;
 
     if (costPerRound > 0) {
       const currentMana = actor.system.stats.mana?.value ?? 0;
@@ -684,7 +684,7 @@ export class ToSActiveEffect extends ActiveEffect {
     }
 
     // ✅ Now resolve (even if mana is now 0)
-    await game.tos.resolveChannelingTick(actor, this);
+    await game.redsteel.resolveChannelingTick(actor, this);
   }
 }
 

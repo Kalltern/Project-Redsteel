@@ -6,7 +6,7 @@ const { api, sheets } = foundry.applications;
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheetV2}
  */
-export class ToSActorSheet extends api.HandlebarsApplicationMixin(
+export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
   sheets.ActorSheetV2,
 ) {
   constructor(options = {}) {
@@ -18,7 +18,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    classes: ["tos", "actor"],
+    classes: ["redsteel", "actor"],
     position: {
       width: 860,
       height: 1200,
@@ -494,41 +494,41 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /** @override */
   static PARTS = {
     header: {
-      template: "systems/tos/templates/actor/header.hbs",
+      template: "systems/redsteel/templates/actor/header.hbs",
     },
     tabs: {
       // Foundry-provided generic template
       template: "templates/generic/tab-navigation.hbs",
     },
     testtab: {
-      template: "systems/tos/templates/actor/testtab.hbs",
+      template: "systems/redsteel/templates/actor/testtab.hbs",
     },
     skills: {
-      template: "systems/tos/templates/actor/skills.hbs",
+      template: "systems/redsteel/templates/actor/skills.hbs",
     },
     features: {
-      template: "systems/tos/templates/actor/features.hbs",
+      template: "systems/redsteel/templates/actor/features.hbs",
     },
     biography: {
-      template: "systems/tos/templates/actor/biography.hbs",
+      template: "systems/redsteel/templates/actor/biography.hbs",
     },
     inventory: {
-      template: "systems/tos/templates/actor/inventory.hbs",
+      template: "systems/redsteel/templates/actor/inventory.hbs",
     },
     abilities: {
-      template: "systems/tos/templates/actor/abilities.hbs",
+      template: "systems/redsteel/templates/actor/abilities.hbs",
     },
     spells: {
-      template: "systems/tos/templates/actor/spells.hbs",
+      template: "systems/redsteel/templates/actor/spells.hbs",
     },
     miracles: {
-      template: "systems/tos/templates/actor/miracles.hbs",
+      template: "systems/redsteel/templates/actor/miracles.hbs",
     },
     effects: {
-      template: "systems/tos/templates/actor/effects.hbs",
+      template: "systems/redsteel/templates/actor/effects.hbs",
     },
     config: {
-      template: "systems/tos/templates/actor/config.hbs",
+      template: "systems/redsteel/templates/actor/config.hbs",
     },
   };
 
@@ -580,8 +580,8 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       // Add the actor's data to context.data for easier access, as well as flags.
       system: this.actor.system,
       flags: this.actor.flags,
-      // Adding a pointer to CONFIG.TOS
-      config: CONFIG.TOS,
+      // Adding a pointer to CONFIG.REDSTEEL
+      config: CONFIG.REDSTEEL,
       tabs: this._getTabs(options.parts),
     };
 
@@ -681,7 +681,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
         // FontAwesome Icon, if you so choose
         icon: "",
         // Run through localization
-        label: "TOS.Actor.Tabs.",
+        label: "REDSTEEL.Actor.Tabs.",
       };
       switch (partId) {
         case "header":
@@ -962,7 +962,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle changing a Document's image.
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @returns {Promise}
@@ -990,7 +990,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Renders an embedded document's sheet
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -1003,7 +1003,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handles item deletion
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -1016,7 +1016,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handles item add and subtract
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -1046,7 +1046,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle creating a new Owned Item or ActiveEffect for the actor using initial data defined in the HTML dataset
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private
@@ -1079,7 +1079,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Determines effect parent to pass to helper
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private
@@ -1092,7 +1092,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle clickable rolls.
    *
-   * @this ToSActorSheet
+   * @this RedsteelActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -1143,16 +1143,16 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
       let label = dataset.label
         ? ` ${game.i18n.localize(
             dataset.rollType === "combat-skill"
-              ? `TOS.Actor.Character.skills.${skillKey}.label`
+              ? `REDSTEEL.Actor.Character.skills.${skillKey}.label`
               : dataset.rollType === "attribute"
-                ? `TOS.Actor.Character.Attribute.${
+                ? `REDSTEEL.Actor.Character.Attribute.${
                     skillKey.charAt(0).toUpperCase() + skillKey.slice(1)
                   }.long`
                 : dataset.rollType === "secondaryAttribute"
-                  ? `TOS.Actor.Character.SecondaryAttribute.${
+                  ? `REDSTEEL.Actor.Character.SecondaryAttribute.${
                       skillKey.charAt(0).toUpperCase() + skillKey.slice(1)
                     }.long`
-                  : `TOS.Actor.Character.skills.${skillKey}.label`,
+                  : `REDSTEEL.Actor.Character.skills.${skillKey}.label`,
           )}`
         : "";
       const rollName = label;
@@ -1223,7 +1223,7 @@ export class ToSActorSheet extends api.HandlebarsApplicationMixin(
           flavor: `<p style="text-align: center; font-size: 20px;"><b>${label}</b></p>`,
           rollMode: game.settings.get("core", "rollMode"),
           flags: {
-            tos: {
+            redsteel: {
               rollName,
               criticalSuccessThreshold, // Store critical success threshold
               criticalFailureThreshold, // Store critical failure threshold

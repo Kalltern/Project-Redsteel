@@ -195,16 +195,16 @@
   <li class="item flexrow items-header gear">
     <div class="item-name gear">{{localize "Gear"}}</div>
         <div class="item-equipped">
-      {{localize "TOS.Item.Gear.FIELDS.equipped.label"}}
+      {{localize "REDSTEEL.Item.Gear.FIELDS.equipped.label"}}
     </div>
     <div class="item-layer">
-      {{localize "TOS.Item.Gear.FIELDS.layer.label"}}
+      {{localize "REDSTEEL.Item.Gear.FIELDS.layer.label"}}
     </div>
         <div class="item-armor">
-      {{localize "TOS.Item.Gear.FIELDS.armor.label"}}
+      {{localize "REDSTEEL.Item.Gear.FIELDS.armor.label"}}
     </div>
             <div class="item-durability">
-      {{localize "TOS.Item.Gear.FIELDS.durability.label"}}
+      {{localize "REDSTEEL.Item.Gear.FIELDS.durability.label"}}
     </div>
     <div class="item-controls">
       {{#if @root.editable}}
@@ -336,7 +336,7 @@
   <div class="item-offhand"></div>
 
   <div class="item-formula">
-    {{localize "TOS.Item.Weapon.FIELDS.rollFormula.label"}}
+    {{localize "REDSTEEL.Item.Weapon.FIELDS.rollFormula.label"}}
   </div>
 
   <div class="item-controls">
@@ -435,7 +435,7 @@
       {{#if (eq item.system.gripMode "two")}}active{{/if}}"
     data-action="toggleTwoHandGrip"
     data-item-id="{{item._id}}"
-    title="{{localize "TOS.Item.Weapon.FIELDS.twoHandGrip.label"}}"
+    title="{{localize "REDSTEEL.Item.Weapon.FIELDS.twoHandGrip.label"}}"
   ></i>
   {{/if}}
 </div>
@@ -447,7 +447,7 @@
     class="npc-offhand-toggle fas fa-hand-paper {{#if item.system.npcOffhand}}active{{/if}}"
     data-action="toggleNpcOffhand"
     data-item-id="{{item._id}}"
-    title="{{localize "TOS.Item.Weapon.FIELDS.offhand.label"}}"
+    title="{{localize "REDSTEEL.Item.Weapon.FIELDS.offhand.label"}}"
   ></i>
     {{/if}}
   {{/if}}
@@ -480,9 +480,9 @@
       <div class="item-name">{{localize "Supplies"}}</div>
 
       <div class="item-formula">{{localize
-          "TOS.Item.Weapon.FIELDS.rollFormula.label"
+          "REDSTEEL.Item.Weapon.FIELDS.rollFormula.label"
         }}</div>
-      <div class="item-quantity">{{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}</div>
+      <div class="item-quantity">{{localize "REDSTEEL.Item.Consumable.FIELDS.quantity.label"}}</div>
       <div class="item-controls">
         {{#if @root.editable}}
           <a
@@ -610,7 +610,7 @@
   <div class="item-formula"></div>
 
   <div class="item-quantity">
-    {{localize "TOS.Item.Consumable.FIELDS.quantity.label"}}
+    {{localize "REDSTEEL.Item.Consumable.FIELDS.quantity.label"}}
   </div>
 
   <div class="item-controls">

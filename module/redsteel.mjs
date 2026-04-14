@@ -1,16 +1,16 @@
 // Import document classes.
-import { ToSActor } from "./documents/actor.mjs";
-import { ToSItem } from "./documents/item.mjs";
-import { ToSCombat } from "./documents/combat.mjs";
-import { ToSActiveEffect } from "./documents/effects.mjs";
+import { RedsteelActor } from "./documents/actor.mjs";
+import { RedsteelItem } from "./documents/item.mjs";
+import { RedsteelCombat } from "./documents/combat.mjs";
+import { RedsteelActiveEffect } from "./documents/effects.mjs";
 import { HelpOverlay } from "./documents/helpOverlay.mjs";
 // Import sheet classes.
-import { ToSActorSheet } from "./sheets/actor-sheet.mjs";
-import { ToSItemSheet } from "./sheets/item-sheet.mjs";
+import { RedsteelActorSheet } from "./sheets/actor-sheet.mjs";
+import { RedsteelItemSheet } from "./sheets/item-sheet.mjs";
 import { registerEffectSheetExtensions } from "./sheets/effect-sheet.mjs";
 // Import helper/utility classes and constants.
 
-import { TOS } from "./helpers/config.mjs";
+import { REDSTEEL } from "./helpers/config.mjs";
 import { statusEffectManager } from "./utils/statusEffectManager.mjs";
 import { usePotion } from "./utils/usePotion.mjs";
 import { defenseRoll } from "./utils/defense.mjs";
@@ -65,16 +65,16 @@ import {
 
 // Add key classes to the global scope so they can be more easily used
 // by downstream developers
-globalThis.tos = {
+globalThis.redsteel = {
   documents: {
-    ToSActor,
-    ToSItem,
-    ToSCombat,
-    ToSActiveEffect,
+    RedsteelActor,
+    RedsteelItem,
+    RedsteelCombat,
+    RedsteelActiveEffect,
   },
   applications: {
-    ToSActorSheet,
-    ToSItemSheet,
+    RedsteelActorSheet,
+    RedsteelItemSheet,
   },
   utils: {
     rollItemMacro,
@@ -83,47 +83,47 @@ globalThis.tos = {
 
 Hooks.once("init", function () {
   // Add custom constants for configuration.
-  CONFIG.TOS = TOS;
+  CONFIG.REDSTEEL = REDSTEEL;
 
-  game.tos = game.tos || {};
-  game.tos.helpOverlay = HelpOverlay;
-  game.tos.selectToken = selectToken;
-  game.tos.statusEffectManager = statusEffectManager;
-  game.tos.getActorCombatModifiers = getActorCombatModifiers;
-  game.tos.applyEffect = ToSActiveEffect.applyEffect.bind(ToSActiveEffect);
-  game.tos.resolveWeaponContext = resolveWeaponContext;
-  game.tos.deductAbilityCost = deductAbilityCost;
-  game.tos.buildWeaponSetView = buildWeaponSetView;
-  game.tos.evaluateDmgVsArmor = evaluateDmgVsArmor;
-  game.tos.firstAid = firstAid;
-  game.tos.combatAbilities = combatAbilities;
-  game.tos.delayTurn = delayTurn;
-  game.tos.restAndRecover = restAndRecover;
-  game.tos.longRest = longRest;
-  game.tos.spellDefense = spellDefense;
-  game.tos.attackActions = attackActions;
-  game.tos.meleeAttack = meleeAttack;
-  game.tos.universalAttackLogic = universalAttackLogic;
-  game.tos.rangedAttack = rangedAttack;
-  game.tos.throwingAttack = throwingAttack;
-  game.tos.castSpell = castSpell;
-  game.tos.throwExplosive = throwExplosive;
-  game.tos.usePotion = usePotion;
-  game.tos.getNonWeaponAbility = getNonWeaponAbility;
-  game.tos.getDoctrineBonuses = getDoctrineBonuses;
-  game.tos.getWeaponSkillBonuses = getWeaponSkillBonuses;
-  game.tos.getAttackRolls = getAttackRolls;
-  game.tos.getDamageRolls = getDamageRolls;
-  game.tos.getEffectRolls = getEffectRolls;
-  game.tos.getCriticalRolls = getCriticalRolls;
-  game.tos.showSpellSelectionDialogs = showSpellSelectionDialogs;
-  game.tos.deductMana = deductMana;
-  game.tos.calculateAttackBonuses = calculateAttackBonuses;
-  game.tos.performAttackRoll = performAttackRoll;
-  game.tos.finalizeRollsAndPostChat = finalizeRollsAndPostChat;
-  game.tos.defenseRoll = defenseRoll;
-  game.tos.autoAttack = autoAttack;
-  game.tos.resolveChannelingTick = resolveChannelingTick;
+  game.redsteel = game.redsteel || {};
+  game.redsteel.helpOverlay = HelpOverlay;
+  game.redsteel.selectToken = selectToken;
+  game.redsteel.statusEffectManager = statusEffectManager;
+  game.redsteel.getActorCombatModifiers = getActorCombatModifiers;
+  game.redsteel.applyEffect = RedsteelActiveEffect.applyEffect.bind(RedsteelActiveEffect);
+  game.redsteel.resolveWeaponContext = resolveWeaponContext;
+  game.redsteel.deductAbilityCost = deductAbilityCost;
+  game.redsteel.buildWeaponSetView = buildWeaponSetView;
+  game.redsteel.evaluateDmgVsArmor = evaluateDmgVsArmor;
+  game.redsteel.firstAid = firstAid;
+  game.redsteel.combatAbilities = combatAbilities;
+  game.redsteel.delayTurn = delayTurn;
+  game.redsteel.restAndRecover = restAndRecover;
+  game.redsteel.longRest = longRest;
+  game.redsteel.spellDefense = spellDefense;
+  game.redsteel.attackActions = attackActions;
+  game.redsteel.meleeAttack = meleeAttack;
+  game.redsteel.universalAttackLogic = universalAttackLogic;
+  game.redsteel.rangedAttack = rangedAttack;
+  game.redsteel.throwingAttack = throwingAttack;
+  game.redsteel.castSpell = castSpell;
+  game.redsteel.throwExplosive = throwExplosive;
+  game.redsteel.usePotion = usePotion;
+  game.redsteel.getNonWeaponAbility = getNonWeaponAbility;
+  game.redsteel.getDoctrineBonuses = getDoctrineBonuses;
+  game.redsteel.getWeaponSkillBonuses = getWeaponSkillBonuses;
+  game.redsteel.getAttackRolls = getAttackRolls;
+  game.redsteel.getDamageRolls = getDamageRolls;
+  game.redsteel.getEffectRolls = getEffectRolls;
+  game.redsteel.getCriticalRolls = getCriticalRolls;
+  game.redsteel.showSpellSelectionDialogs = showSpellSelectionDialogs;
+  game.redsteel.deductMana = deductMana;
+  game.redsteel.calculateAttackBonuses = calculateAttackBonuses;
+  game.redsteel.performAttackRoll = performAttackRoll;
+  game.redsteel.finalizeRollsAndPostChat = finalizeRollsAndPostChat;
+  game.redsteel.defenseRoll = defenseRoll;
+  game.redsteel.autoAttack = autoAttack;
+  game.redsteel.resolveChannelingTick = resolveChannelingTick;
   registerDynamicInitiative();
   registerEffectSheetExtensions();
 
@@ -133,11 +133,11 @@ Hooks.once("init", function () {
    */
 
   // Define custom Document classes
-  CONFIG.Actor.documentClass = ToSActor;
-  CONFIG.Item.documentClass = ToSItem;
-  CONFIG.Combat.documentClass = ToSCombat;
-  CONFIG.ActiveEffect.documentClass = ToSActiveEffect;
-  CONFIG.statusEffects = TOS.statusEffects;
+  CONFIG.Actor.documentClass = RedsteelActor;
+  CONFIG.Item.documentClass = RedsteelItem;
+  CONFIG.Combat.documentClass = RedsteelCombat;
+  CONFIG.ActiveEffect.documentClass = RedsteelActiveEffect;
+  CONFIG.statusEffects = REDSTEEL.statusEffects;
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
   // if the transfer property on the Active Effect is true.
@@ -145,36 +145,36 @@ Hooks.once("init", function () {
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("tos", ToSActorSheet, {
+  Actors.registerSheet("redsteel", RedsteelActorSheet, {
     makeDefault: true,
-    label: "TOS.SheetLabels.Actor",
+    label: "REDSTEEL.SheetLabels.Actor",
   });
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("tos", ToSItemSheet, {
+  Items.registerSheet("redsteel", RedsteelItemSheet, {
     makeDefault: true,
-    label: "TOS.SheetLabels.Item",
+    label: "REDSTEEL.SheetLabels.Item",
   });
 
-  game.keybindings.register("tos-system", "helpScreen", {
+  game.keybindings.register("redsteel-system", "helpScreen", {
     name: "Show Help Screen",
     editable: [{ key: "KeyH" }],
     onDown: () => {
-      game.tos.helpOverlay.toggle();
+      game.redsteel.helpOverlay.toggle();
       return true;
     },
   });
 });
 
 /* -------------------------------------------- */
-/*  ToS Specific Game settings                  */
+/*  Redsteel Specific Game settings                  */
 /* -------------------------------------------- */
 
 function registerDynamicInitiative() {
-  game.settings.register("tos", "registerDynamicInitiative", {
+  game.settings.register("redsteel", "registerDynamicInitiative", {
     config: true,
     scope: "world",
-    name: "TOS.Config.Initiative.name",
-    hint: "TOS.Config.Initiative.label",
+    name: "REDSTEEL.Config.Initiative.name",
+    hint: "REDSTEEL.Config.Initiative.label",
     type: Boolean,
     default: false,
   });
@@ -319,20 +319,20 @@ Handlebars.registerHelper("healthPercentage", function (current, max) {
 
 Hooks.once("ready", () => {
   ui.controls.initialize();
-  ToSActiveEffect.registerStatusCounterIntegration();
+  RedsteelActiveEffect.registerStatusCounterIntegration();
 });
 
 Hooks.once("ready", function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createDocMacro(data, slot));
 });
-const SOCKET = "system.tos";
+const SOCKET = "system.redsteel";
 
 Hooks.once("ready", () => {
-  console.log("TOS | Socket Listener Registered");
+  console.log("REDSTEEL | Socket Listener Registered");
 
   game.socket.on(SOCKET, async (data) => {
-    console.log("TOS | GM Received Socket Data:", data);
+    console.log("REDSTEEL | GM Received Socket Data:", data);
     if (!game.user.isGM) return;
 
     if (data.type === "applyDamage") {
@@ -346,60 +346,60 @@ Hooks.once("ready", () => {
 });
 
 Hooks.once("ready", () => {
-  ToSActiveEffect.registerHooks();
+  RedsteelActiveEffect.registerHooks();
 });
 
 Hooks.once("ready", async () => {
   // Prevent re-adding macros every load
-  if (game.user.getFlag("tos", "hotbarInitialized")) return;
+  if (game.user.getFlag("redsteel", "hotbarInitialized")) return;
 
   // Define preset macros
   const macroData = [
     {
       name: "Attack actions",
-      command: `game.tos.attackActions();`,
+      command: `game.redsteel.attackActions();`,
       img: "icons/skills/melee/hand-grip-sword-white-brown.webp",
       slot: 1,
       shared: true,
     },
     {
       name: "Defense actions",
-      command: `game.tos.defenseRoll();`,
+      command: `game.redsteel.defenseRoll();`,
       img: "icons/equipment/shield/shield-round-boss-wood-brown.webp",
       slot: 2,
       shared: true,
     },
     {
       name: "Combat abilities",
-      command: `game.tos.combatAbilities();`,
+      command: `game.redsteel.combatAbilities();`,
       img: "icons/skills/melee/weapons-crossed-swords-yellow.webp",
       slot: 3,
       shared: true,
     },
     {
       name: "Channeling",
-      command: `game.tos.castSpell();`,
+      command: `game.redsteel.castSpell();`,
       img: "icons/magic/lightning/orb-ball-spiral-blue.webp",
       slot: 4,
       shared: true,
     },
     {
       name: "First aid",
-      command: `game.tos.firstAid();`,
+      command: `game.redsteel.firstAid();`,
       img: "icons/magic/life/cross-yellow-green.webp",
       slot: 8,
       shared: true,
     },
     {
       name: "Potions",
-      command: `game.tos.usePotion();`,
+      command: `game.redsteel.usePotion();`,
       img: "icons/consumables/potions/bottle-round-label-cork-red.webp",
       slot: 9,
       shared: true,
     },
     {
       name: "Delay turn",
-      command: `game.tos.delayTurn();`,
+      command: `game.redsteel.delayTurn();`,
       img: "icons/magic/time/hourglass-brown-orange.webp",
       slot: 10,
       shared: true,
@@ -411,14 +411,14 @@ Hooks.once("ready", async () => {
     macroData.push({
       name: "Long Rest",
       scope: "global",
-      command: `game.tos.longRest();`,
+      command: `game.redsteel.longRest();`,
       img: "icons/magic/time/day-night-sunset-sunrise.webp",
       slot: 6,
       shared: false,
     });
     macroData.push({
       name: "Effect manager",
-      command: `await game.tos.statusEffectManager();`,
+      command: `await game.redsteel.statusEffectManager();`,
       img: "icons/sundries/documents/document-sealed-signatures-red.webp",
       slot: 7,
       shared: false,
@@ -444,14 +444,14 @@ Hooks.once("ready", async () => {
     await game.user.assignHotbarMacro(macro, data.slot);
   }
 
-  await game.user.setFlag("tos", "hotbarInitialized", true);
+  await game.user.setFlag("redsteel", "hotbarInitialized", true);
 });
 
 /* -------------------------------------------- */
 /*  Hooks for Dynamic initiative if enabled     */
 /* -------------------------------------------- */
 Hooks.once("ready", () => {
-  game.socket.on("system.tos", async (data) => {
+  game.socket.on("system.redsteel", async (data) => {
     if (!game.user.isGM) return;
 
     if (data.type === "dynamicInitiativeNextRound") {
@@ -465,7 +465,7 @@ Hooks.once("ready", () => {
 });
 
 Hooks.on("ready", () => {
-  const SYS_ID = "tos";
+  const SYS_ID = "redsteel";
   const SETTING_KEY = "registerDynamicInitiative";
   const isDynamicInitEnabled = () => game.settings.get(SYS_ID, SETTING_KEY);
 
@@ -480,7 +480,7 @@ Hooks.on("ready", () => {
     Combat.prototype.nextRound = async function () {
       if (isDynamicInitEnabled()) {
         if (!game.user.isGM) {
-          game.socket.emit("system.tos", {
+          game.socket.emit("system.redsteel", {
             type: "dynamicInitiativeNextRound",
             combatId: this.id,
           });
@@ -490,7 +490,7 @@ Hooks.on("ready", () => {
 
           const combatantUpdates = combat.combatants.map((c) => ({
             _id: c.id,
-            flags: { tos: { PreviousRoundInitiative: c.initiative } },
+            flags: { redsteel: { PreviousRoundInitiative: c.initiative } },
           }));
 
           await Combatant.updateDocuments(combatantUpdates, { parent: combat });
@@ -543,7 +543,7 @@ Hooks.on("ready", () => {
         } catch (err) {
           // Translate permission error for players
           if (!game.user.isGM) {
-            game.socket.emit("system.tos", {
+            game.socket.emit("system.redsteel", {
               type: "dynamicInitiativeNextRound",
               combatId: this.id,
             });
@@ -585,7 +585,7 @@ async function createDocMacro(data, slot) {
   const item = await Item.fromDropData(data);
 
   // Create the macro command using the uuid.
-  const command = `game.tos.rollItemMacro("${data.uuid}");`;
+  const command = `game.redsteel.rollItemMacro("${data.uuid}");`;
   let macro = game.macros.find(
     (m) => m.name === item.name && m.command === command,
   );
@@ -595,7 +595,7 @@ async function createDocMacro(data, slot) {
       type: "script",
       img: item.img,
       command: command,
-      flags: { "tos.itemMacro": true },
+      flags: { "redsteel.itemMacro": true },
     });
   }
   game.user.assignHotbarMacro(macro, slot);
@@ -634,8 +634,8 @@ Hooks.on("createChatMessage", async (message) => {
     if (!game.user.isGM && message.user.id !== game.user.id) return;
     const flavor = message.flavor ?? "";
 
-    // Read existing rollName from flags.tos (macro or previous messages)
-    const existing = message.getFlag("tos", "rollName");
+    // Read existing rollName from flags.redsteel (macro or previous messages)
+    const existing = message.getFlag("redsteel", "rollName");
 
     let shouldSet = !existing;
 
@@ -658,15 +658,15 @@ Hooks.on("createChatMessage", async (message) => {
         rollName = message.rolls[0].formula;
       }
 
-      await message.setFlag("tos", "rollName", rollName);
+      await message.setFlag("redsteel", "rollName", rollName);
     }
 
     // Determine rollName to use (macro flag or inferred)
     const rollNameToUse =
-      existing || (await message.getFlag("tos", "rollName"));
+      existing || (await message.getFlag("redsteel", "rollName"));
     console.log("Roll Name:", rollNameToUse);
   } catch (err) {
-    console.error("ToS rollName hook error", err);
+    console.error("redsteel rollName hook error", err);
   }
 });
 async function handleApplyDamage(messageId) {
@@ -967,14 +967,14 @@ async function handlePostDamageStatus({ actor, combatant }) {
   }
 }
 async function applyEffectToActor(actor, effectId, stacks = 1) {
-  if (!CONFIG.TOS.effectDefinitions[effectId]) {
+  if (!CONFIG.REDSTEEL.effectDefinitions[effectId]) {
     console.warn(
-      `Effect ${effectId} not defined in CONFIG.TOS.effectDefinitions`,
+      `Effect ${effectId} not defined in CONFIG.REDSTEEL.effectDefinitions`,
     );
     return;
   }
 
-  return await game.tos.applyEffect(actor, effectId, { stacks });
+  return await game.redsteel.applyEffect(actor, effectId, { stacks });
 }
 
 Hooks.on("renderChatMessage", (message, html) => {
@@ -990,7 +990,7 @@ Hooks.on("renderChatMessage", (message, html) => {
     .join(" ");
 
   const footer = document.createElement("div");
-  footer.classList.add("tos-damage-footer");
+  footer.classList.add("redsteel-damage-footer");
   footer.innerHTML = `${formatted}`;
 
   // IMPORTANT: html[0] is <li class="chat-message">
@@ -1036,11 +1036,11 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         await roll.evaluate();
         const d100Result = roll.dice?.[0]?.results?.[0]?.result ?? roll.total; // Extract the d100 result
         const criticalSuccessThreshold =
-          message.flags.tos.criticalSuccessThreshold;
+          message.flags.redsteel.criticalSuccessThreshold;
         const criticalFailureThreshold =
-          message.flags.tos.criticalFailureThreshold;
+          message.flags.redsteel.criticalFailureThreshold;
         const critSuccess = d100Result <= criticalSuccessThreshold;
-        const rollName = message.getFlag("tos", "rollName");
+        const rollName = message.getFlag("redsteel", "rollName");
 
         let flavorText = "";
 
@@ -1057,7 +1057,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
           flavor: `<p style="text-align: center; font-size: 20px;"><b><i class="fa-light fa-dice-d20"></i> ${rollName} <i class="fa-light fa-dice-d20"></i><hr></b></p>
           <p style="text-align: center; font-size: 20px;"><b>${flavorText}</b></p>`,
           flags: {
-            tos: {
+            redsteel: {
               rollName,
               criticalSuccessThreshold, // Store critical success threshold
               criticalFailureThreshold, // Store critical failure threshold
@@ -1080,7 +1080,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
       const applyDamageButton = $(`
       <button
         type="button"
-        class="tos-apply-damage"
+        class="redsteel-apply-damage"
         data-message-id="${message.id}">
         Apply Damage
       </button>
@@ -1108,7 +1108,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         const applyEffectsButton = $(`
       <button
         type="button"
-        class="tos-apply-effects"
+        class="redsteel-apply-effects"
         data-message-id="${message.id}">
         Apply Effects
       </button>
@@ -1643,7 +1643,7 @@ Hooks.on("renderChatMessage", (message, html) => {
     const button = event.currentTarget;
 
     const msg = game.messages.get(message.id);
-    const data = msg.flags.tos;
+    const data = msg.flags.redsteel;
 
     if (!data || data.type !== "critFailPrompt") return;
 
@@ -1653,7 +1653,7 @@ Hooks.on("renderChatMessage", (message, html) => {
 
     // --- EXISTING LOGIC ---
     const table = game.tables.find(
-      (t) => t.getFlag("tos", "critTable") === spellType,
+      (t) => t.getFlag("redsteel", "critTable") === spellType,
     );
 
     if (!table) return;

@@ -2,7 +2,7 @@
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class ToSItem extends Item {
+export class RedsteelItem extends Item {
   /**
    * Augment the basic Item data model with additional dynamic data.
    */

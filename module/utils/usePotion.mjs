@@ -1,5 +1,5 @@
 export async function usePotion() {
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;

@@ -6,7 +6,7 @@ const { api, sheets } = foundry.applications;
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheetV2}
  */
-export class ToSItemSheet extends api.HandlebarsApplicationMixin(
+export class RedsteelItemSheet extends api.HandlebarsApplicationMixin(
   sheets.ItemSheetV2,
 ) {
   constructor(options = {}) {
@@ -16,7 +16,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    classes: ["tos", "item"],
+    classes: ["redsteel", "item"],
     actions: {
       onEditImage: this._onEditImage,
       viewDoc: this._viewEffect,
@@ -36,53 +36,53 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /** @override */
   static PARTS = {
     header: {
-      template: "systems/tos/templates/item/header.hbs",
+      template: "systems/redsteel/templates/item/header.hbs",
     },
     tabs: {
       // Foundry-provided generic template
       template: "templates/generic/tab-navigation.hbs",
     },
     description: {
-      template: "systems/tos/templates/item/description.hbs",
+      template: "systems/redsteel/templates/item/description.hbs",
     },
     doctrines: {
-      template: "systems/tos/templates/item/doctrines.hbs",
+      template: "systems/redsteel/templates/item/doctrines.hbs",
     },
     combatEffects: {
-      template: "systems/tos/templates/item/combatEffects.hbs",
+      template: "systems/redsteel/templates/item/combatEffects.hbs",
     },
     attributesFeature: {
-      template: "systems/tos/templates/item/attribute-parts/feature.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/feature.hbs",
     },
     attributesGear: {
-      template: "systems/tos/templates/item/attribute-parts/gear.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/gear.hbs",
     },
     attributesAmmunition: {
-      template: "systems/tos/templates/item/attribute-parts/ammunition.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/ammunition.hbs",
     },
     attributesItem: {
-      template: "systems/tos/templates/item/attribute-parts/item.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/item.hbs",
     },
     attributesRace: {
-      template: "systems/tos/templates/item/attribute-parts/race.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/race.hbs",
     },
     attributesConsumable: {
-      template: "systems/tos/templates/item/attribute-parts/consumable.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/consumable.hbs",
     },
     attributesWeapon: {
-      template: "systems/tos/templates/item/attribute-parts/weapon.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/weapon.hbs",
     },
     attributesOffhand: {
-      template: "systems/tos/templates/item/attribute-parts/offhand.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/offhand.hbs",
     },
     attributesSpell: {
-      template: "systems/tos/templates/item/attribute-parts/spell.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/spell.hbs",
     },
     attributesAbility: {
-      template: "systems/tos/templates/item/attribute-parts/ability.hbs",
+      template: "systems/redsteel/templates/item/attribute-parts/ability.hbs",
     },
     effects: {
-      template: "systems/tos/templates/item/effects.hbs",
+      template: "systems/redsteel/templates/item/effects.hbs",
     },
   };
 
@@ -136,8 +136,8 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
       // Adding system and flags for easier access
       system: this.item.system,
       flags: this.item.flags,
-      // Adding a pointer to CONFIG.TOS
-      config: CONFIG.TOS,
+      // Adding a pointer to CONFIG.REDSTEEL
+      config: CONFIG.REDSTEEL,
       // You can factor out context construction to helper functions
       tabs: this._getTabs(options.parts),
     };
@@ -208,7 +208,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
         // FontAwesome Icon, if you so choose
         icon: "",
         // Run through localization
-        label: "TOS.Item.Tabs.",
+        label: "REDSTEEL.Item.Tabs.",
       };
       switch (partId) {
         case "header":
@@ -279,7 +279,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle changing a Document's image.
    *
-   * @this ToSItemSheet
+   * @this RedsteelItemSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @returns {Promise}
@@ -307,7 +307,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /**
    * Renders an embedded document's sheet
    *
-   * @this ToSItemSheet
+   * @this RedsteelItemSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -320,7 +320,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handles item deletion
    *
-   * @this ToSItemSheet
+   * @this RedsteelItemSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -333,7 +333,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle creating a new Owned Item or ActiveEffect for the actor using initial data defined in the HTML dataset
    *
-   * @this ToSItemSheet
+   * @this RedsteelItemSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private
@@ -367,7 +367,7 @@ export class ToSItemSheet extends api.HandlebarsApplicationMixin(
   /**
    * Determines effect parent to pass to helper
    *
-   * @this ToSItemSheet
+   * @this RedsteelItemSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private

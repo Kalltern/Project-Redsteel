@@ -1,8 +1,8 @@
 {
-  "TOS": {
+  "REDSTEEL": {
     "SheetLabels": {
-      "Actor": "ToS Actor Sheet",
-      "Item": "ToS Item Sheet"
+      "Actor": "Redsteel Actor Sheet",
+      "Item": "Redsteel Item Sheet"
     },
     "UI": {
       "name": "Name",

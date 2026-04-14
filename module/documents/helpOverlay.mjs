@@ -1,6 +1,6 @@
 export class HelpOverlay {
   static toggle() {
-    const existing = document.getElementById("tos-help-overlay");
+    const existing = document.getElementById("redsteel-help-overlay");
     if (existing) existing.remove();
     else this.render();
   }
@@ -9,11 +9,11 @@ export class HelpOverlay {
     return `
     <div class="help-category">
       <h2 class="category-title">
-        ${game.i18n.localize("TOS.Help.CombatRound.Title")}
+        ${game.i18n.localize("REDSTEEL.Help.CombatRound.Title")}
       </h2>
 
       <div class="card-body">
-        ${game.i18n.localize("TOS.Help.CombatRound.Description")}
+        ${game.i18n.localize("REDSTEEL.Help.CombatRound.Description")}
       </div>
     </div>
   `;
@@ -21,7 +21,7 @@ export class HelpOverlay {
 
   static render() {
     const overlay = document.createElement("div");
-    overlay.id = "tos-help-overlay";
+    overlay.id = "redsteel-help-overlay";
 
     const grouped = {};
     const CATEGORY_ORDER = ["movement", "combat", "magic", "other"];
@@ -37,20 +37,20 @@ export class HelpOverlay {
       .map((type) => {
         const actions = grouped[type];
 
-        const labelType = game.i18n.localize(`TOS.Help.Category.${type}`);
+        const labelType = game.i18n.localize(`REDSTEEL.Help.Category.${type}`);
 
         const cards = actions
           .map((action) => {
             const labelName = game.i18n.localize(
-              `TOS.Help.Action.${action.name}`,
+              `REDSTEEL.Help.Action.${action.name}`,
             );
             const labelCost = game.i18n.localize(
-              `TOS.Help.Cost.${action.cost}`,
+              `REDSTEEL.Help.Cost.${action.cost}`,
             );
             const labelDescription = game.i18n.localize(
-              `TOS.Help.Description.${action.description}`,
+              `REDSTEEL.Help.Description.${action.description}`,
             );
-            const cost = game.i18n.localize(`TOS.Help.Category.cost`);
+            const cost = game.i18n.localize(`REDSTEEL.Help.Category.cost`);
 
             return `
               <div class="help-card">
@@ -91,10 +91,10 @@ export class HelpOverlay {
 
     <div class="help-tabs">
       <button class="tab-button active" data-tab="general">
-        ${game.i18n.localize("TOS.Help.Tab.GeneralActions")}
+        ${game.i18n.localize("REDSTEEL.Help.Tab.GeneralActions")}
       </button>
       <button class="tab-button" data-tab="round">
-        ${game.i18n.localize("TOS.Help.Tab.CombatRound")}
+        ${game.i18n.localize("REDSTEEL.Help.Tab.CombatRound")}
       </button>
     </div>
 
@@ -144,13 +144,13 @@ export class HelpOverlay {
   }
 
   static getCombatRoundContent() {
-    const t = (key) => game.i18n.localize(`TOS.Help.Round.${key}`);
+    const t = (key) => game.i18n.localize(`REDSTEEL.Help.Round.${key}`);
 
     return `
     <div class="help-category">
 
       <h2 class="category-title">
-        ${game.i18n.localize("TOS.Help.CombatRound.Title")}
+        ${game.i18n.localize("REDSTEEL.Help.CombatRound.Title")}
       </h2>
 
       <div class="category-row">

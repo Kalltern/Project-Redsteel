@@ -17,7 +17,7 @@
     <div class="grid {{#if (or system.magicPotential system.priest)}}grid-4col{{else}}grid-3col{{/if}}">
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.health.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.health.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -37,7 +37,7 @@
       </div>
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.stamina.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.stamina.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -57,7 +57,7 @@
       </div>
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.toxicity.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.toxicity.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -78,7 +78,7 @@
 
       {{#if system.magicPotential}}
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.mana.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.mana.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -100,7 +100,7 @@
 
             {{#if system.priest}}
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.holyEnergy.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.holyEnergy.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -259,7 +259,7 @@
     {{#each system.stats as |stat key|}}
       {{#if (or (eq key "graveWounds") (eq key "fatigue") (eq key "corruption") (eq key "mind") (eq key "insanity"))}}
       <div class="attribute">
-        <label>{{localize (concat 'TOS.Actor.Character.stats.' key '.value.label')}}</label>
+        <label>{{localize (concat 'REDSTEEL.Actor.Character.stats.' key '.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -329,7 +329,7 @@
 <div class="grid {{#if (or system.magicPotential system.priest)}}grid-4col{{else}}grid-3col{{/if}}">
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.health.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.health.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -349,7 +349,7 @@
       </div>
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.stamina.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.stamina.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -369,7 +369,7 @@
       </div>
 
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.toxicity.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.toxicity.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -390,7 +390,7 @@
 
       {{#if system.magicPotential}}
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.mana.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.mana.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -412,7 +412,7 @@
 
       {{#if system.priest}}
       <div class="grid-span-1">
-        <label class="stats-resource-label">{{localize (concat 'TOS.Actor.Character.stats.holyEnergy.value.label')}}</label>
+        <label class="stats-resource-label">{{localize (concat 'REDSTEEL.Actor.Character.stats.holyEnergy.value.label')}}</label>
         <div class="stat-values">
           <input
             type="text"
@@ -435,10 +435,10 @@
     </div>
 
           <div class="checkbox-row">
-        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.mage.label"}}</label>
+        <label class="resource-label">{{localize "REDSTEEL.Actor.NPC.FIELDS.mage.label"}}</label>
         <input type="checkbox" name="system.magicPotential" {{checked system.magicPotential}} />
 
-        <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.priest.label"}}</label>
+        <label class="resource-label">{{localize "REDSTEEL.Actor.NPC.FIELDS.priest.label"}}</label>
         <input type="checkbox" name="system.priest" {{checked system.priest}} />
       </div>
   </div>
@@ -500,7 +500,7 @@
       <div class="stat-row">
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.armor.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.armor.label"}}</label>
           <input
             type="text"
             name="system.armor.natural.value"
@@ -518,7 +518,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.acid.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.acid.label"}}</label>
           <input
             type="text"
             name="system.armor.acid.value"
@@ -536,7 +536,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.fire.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.fire.label"}}</label>
           <input
             type="text"
             name="system.armor.fire.value"
@@ -554,7 +554,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.frost.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.frost.label"}}</label>
           <input
             type="text"
             name="system.armor.frost.value"
@@ -572,7 +572,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.lightning.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.lightning.label"}}</label>
           <input
             type="text"
             name="system.armor.lightning.value"
@@ -590,7 +590,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.poison.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.poison.label"}}</label>
           <input
             type="text"
             name="system.armor.poison.value"
@@ -607,7 +607,7 @@
           />
         </div>
                 <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.dark.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.dark.label"}}</label>
           <input
             type="text"
             name="system.armor.dark.value"
@@ -625,7 +625,7 @@
         </div>
 
                 <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.holy.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.holy.label"}}</label>
           <input
             type="text"
             name="system.armor.holy.value"
@@ -642,7 +642,7 @@
           />
         </div>
                         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Item.Gear.FIELDS.magic.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Item.Gear.FIELDS.magic.label"}}</label>
           <input
             type="text"
             name="system.armor.magic.value"
@@ -666,7 +666,7 @@
       <div class="stat-row">
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.combat.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.combat.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.combat.value"
@@ -677,7 +677,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.archery.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.archery.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.archery.value"
@@ -688,7 +688,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.throwing.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.throwing.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.throwing.value"
@@ -699,7 +699,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.channeling.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.channeling.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.channeling.value"
@@ -710,7 +710,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.damageBonus.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.damageBonus.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.damageBonus.value"
@@ -724,7 +724,7 @@
       <div class="stat-row">
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.meleeDefense.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.meleeDefense.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.meleeDefense.value"
@@ -735,7 +735,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.dodge.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.dodge.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.dodge.value"
@@ -746,7 +746,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.combatSkills.rangedDefense.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.combatSkills.rangedDefense.label"}}</label>
           <input
             type="text"
             name="system.combatSkills.rangedDefense.value"
@@ -757,7 +757,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.NPC.FIELDS.mov.label"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.NPC.FIELDS.mov.label"}}</label>
           <input
             type="text"
             name="system.secondaryAttributes.mov.value"
@@ -768,7 +768,7 @@
         </div>
 
         <div class="attribute-armor">
-          <label class="resource-label">{{localize "TOS.Actor.Character.SecondaryAttribute.Ini.long"}}</label>
+          <label class="resource-label">{{localize "REDSTEEL.Actor.Character.SecondaryAttribute.Ini.long"}}</label>
           <input
             type="text"
             name="system.secondaryAttributes.ini.value"

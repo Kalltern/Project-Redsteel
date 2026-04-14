@@ -1,6 +1,6 @@
 export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   if (!actor) {
-    const context = game.tos.selectToken();
+    const context = game.redsteel.selectToken();
     if (!context) return;
 
     actor = context.actor;
@@ -37,9 +37,9 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   }
   `;
 
-  if (!document.getElementById("tos-defense-css")) {
+  if (!document.getElementById("redsteel-defense-css")) {
     const styleSheet = document.createElement("style");
-    styleSheet.id = "tos-defense-css";
+    styleSheet.id = "redsteel-defense-css";
     styleSheet.type = "text/css";
     styleSheet.innerText = css;
     document.head.appendChild(styleSheet);
@@ -76,7 +76,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
   let hasLongReach = false;
 
   // Try active weapon first (PC flow)
-  const context = game.tos.resolveWeaponContext(actor, ability);
+  const context = game.redsteel.resolveWeaponContext(actor, ability);
   const activeWeapon = context?.weapon;
 
   if (activeWeapon?.system?.longReach) {
@@ -277,7 +277,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       console.log("DEFENSE CONTEXT:", context);
 
       const { doctrineCritDefenseBonus, doctrineDefenseBonus } =
-        await game.tos.getDoctrineBonuses(actor, weapon);
+        await game.redsteel.getDoctrineBonuses(actor, weapon);
 
       const defense = actor.system.combatSkills.meleeDefense;
       const defenseRating = defense.rating;
@@ -318,7 +318,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     };
 
     if (!weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability);
+      const context = game.redsteel.resolveWeaponContext(actor, ability);
       if (context?.weapon) {
         return resolveWithContext(context);
       }
@@ -327,7 +327,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     /*  IF WEAPON ALREADY KNOWN → SKIP DIALOG       */
     /* -------------------------------------------- */
     if (weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -349,7 +349,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
       if (!context) return;
       await resolveWithContext(context);
     });
@@ -370,7 +370,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       const rollName = `Ranged defense with ${weapon.name}`;
 
       const { doctrineCritDefenseBonus, doctrineRangedDefenseBonus } =
-        await game.tos.getDoctrineBonuses(actor, weapon);
+        await game.redsteel.getDoctrineBonuses(actor, weapon);
 
       const defense = actor.system.combatSkills.rangedDefense;
       const overwhelmPenalty = overwhelm * -5;
@@ -406,12 +406,12 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     };
 
     if (!weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability);
+      const context = game.redsteel.resolveWeaponContext(actor, ability);
       if (context?.weapon) return resolveWithContext(context);
     }
 
     if (weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -425,7 +425,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
       if (!context) return;
       await resolveWithContext(context);
     });
@@ -505,12 +505,12 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     };
 
     if (!weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability);
+      const context = game.redsteel.resolveWeaponContext(actor, ability);
       if (context?.weapon) return resolveWithContext(context);
     }
 
     if (weapon) {
-      const context = game.tos.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -524,7 +524,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.tos.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
       if (!context) return;
       await resolveWithContext(context);
     });
@@ -702,7 +702,7 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
        ${armorTable}        
       `,
       flags: {
-        tos: {
+        redsteel: {
           rollName,
           criticalSuccessThreshold,
           criticalFailureThreshold,

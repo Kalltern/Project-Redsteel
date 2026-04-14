@@ -4,7 +4,7 @@ export async function combatAbilities() {
   // ====================================================================
   let lockedMultiAttackAbility = null;
   let multiAttackCount = 1;
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -97,7 +97,7 @@ export async function combatAbilities() {
   // 2. CSS INJECTION
   // ====================================================================
 
-  if (!document.getElementById("tos-ability-dialog-styles")) {
+  if (!document.getElementById("redsteel-ability-dialog-styles")) {
     const css = `
         .ability-dialog .window-content { max-width: 300px; width: 100%; height: auto; }
         .ability-dialog .window { width: auto; height: auto; }
@@ -105,7 +105,7 @@ export async function combatAbilities() {
         #keep-open { margin-right: 5px; }
     `;
     const styleSheet = document.createElement("style");
-    styleSheet.id = "tos-ability-dialog-styles";
+    styleSheet.id = "redsteel-ability-dialog-styles";
     styleSheet.type = "text/css";
     styleSheet.innerText = css;
     document.head.appendChild(styleSheet);
@@ -172,17 +172,17 @@ export async function combatAbilities() {
 
     if (lockedMultiAttackAbility?.id === ability.id) {
       // Already in multiattack mode → only pay modifiers
-      paid = await game.tos.deductAbilityCost(actor, selectedModifiers);
+      paid = await game.redsteel.deductAbilityCost(actor, selectedModifiers);
     } else {
       // First strike (or normal ability)
-      paid = await game.tos.deductAbilityCost(actor, [
+      paid = await game.redsteel.deductAbilityCost(actor, [
         ability,
         ...selectedModifiers,
       ]);
     }
     if (!paid) return;
     if (ability.system.class === "stance") {
-      await game.tos.applyEffect(actor, ability.system.key);
+      await game.redsteel.applyEffect(actor, ability.system.key);
       return;
     }
     const isStandalone = ability.system.standalone;
@@ -216,7 +216,7 @@ export async function combatAbilities() {
       const mode = isDefenseRoll ? "defense" : "attack";
       await weaponSelectionFlow(actor, ability, mode, intent);
     } else {
-      await game.tos.getNonWeaponAbility(actor, ability);
+      await game.redsteel.getNonWeaponAbility(actor, ability);
     }
     function transformDialogToMultiAttackMode(dialog, ability) {
       const html = dialog.element;
@@ -280,7 +280,7 @@ export async function combatAbilities() {
 
   let hasLongReach = false;
 
-  const contextWeapon = game.tos.resolveWeaponContext(actor);
+  const contextWeapon = game.redsteel.resolveWeaponContext(actor);
   const activeWeapon = contextWeapon?.weapon;
 
   if (activeWeapon?.system?.longReach) {
@@ -431,13 +431,13 @@ export async function combatAbilities() {
     // 1. AUTO-RESOLVE VIA ACTIVE WEAPON SET
     // ==================================================
 
-    const weaponContext = game.tos.resolveWeaponContext(actor, ability);
+    const weaponContext = game.redsteel.resolveWeaponContext(actor, ability);
 
     if (weaponContext) {
       await updateCombatFlags(actor, intent);
 
       if (mode === "defense") {
-        return game.tos.defenseRoll({
+        return game.redsteel.defenseRoll({
           actor,
           weapon: weaponContext.weapon,
           ability,
@@ -503,7 +503,7 @@ export async function combatAbilities() {
 
     const handleWeaponSelection = async (weaponIndex) => {
       const weapon = weapons[weaponIndex];
-      const weaponContext = game.tos.resolveWeaponContext(
+      const weaponContext = game.redsteel.resolveWeaponContext(
         actor,
         ability,
         weapon,
@@ -514,7 +514,7 @@ export async function combatAbilities() {
 
       if (mode === "defense") {
         // defenseRoll function
-        await game.tos.defenseRoll({
+        await game.redsteel.defenseRoll({
           actor,
           weapon: weaponContext.weapon,
           ability,
@@ -622,23 +622,23 @@ export async function combatAbilities() {
     if (!actor) return;
 
     if (intent.sneak) {
-      await actor.setFlag("tos", "useSneakAttack", true);
-      await actor.setFlag("tos", "sneakAccessCounter", 0);
+      await actor.setFlag("redsteel", "useSneakAttack", true);
+      await actor.setFlag("redsteel", "sneakAccessCounter", 0);
     } else {
-      await actor.unsetFlag("tos", "useSneakAttack");
-      await actor.unsetFlag("tos", "sneakAccessCounter");
+      await actor.unsetFlag("redsteel", "useSneakAttack");
+      await actor.unsetFlag("redsteel", "sneakAccessCounter");
     }
 
     if (intent.flanking) {
-      await actor.setFlag("tos", "useFlankingAttack", true);
+      await actor.setFlag("redsteel", "useFlankingAttack", true);
     } else {
-      await actor.unsetFlag("tos", "useFlankingAttack");
+      await actor.unsetFlag("redsteel", "useFlankingAttack");
     }
 
     if (intent.aim > 0) {
-      await actor.setFlag("tos", "aimCount", intent.aim);
+      await actor.setFlag("redsteel", "aimCount", intent.aim);
     } else {
-      await actor.unsetFlag("tos", "aimCount");
+      await actor.unsetFlag("redsteel", "aimCount");
     }
   }
 
@@ -778,7 +778,7 @@ ${damageLine}
 <hr>
 `,
       flags: {
-        tos: {
+        redsteel: {
           rollName,
           criticalSuccessThreshold,
           criticalFailureThreshold,
@@ -844,7 +844,7 @@ ${damageLine}
 
     // 3️⃣ Actor enchant authority
     if (actor) {
-      const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+      const actorMods = game.redsteel.getActorCombatModifiers(actor, weapon);
 
       if (actorMods?.damageTypes?.length) {
         const baseExpression = weaponProfile.expression ?? [];
@@ -970,7 +970,7 @@ ${damageLine}
         doctrineSkillCritPen,
         doctrineCritDmg,
         doctrineBleedBonus,
-      } = await game.tos.getDoctrineBonuses(actor, weapon));
+      } = await game.redsteel.getDoctrineBonuses(actor, weapon));
     }
 
     doctrineBonus += abilityCritChance;
@@ -987,7 +987,7 @@ ${damageLine}
         weaponSkillCrit,
         weaponSkillCritDmg,
         weaponSkillCritPen,
-      } = await game.tos.getWeaponSkillBonuses(actor, weapon));
+      } = await game.redsteel.getWeaponSkillBonuses(actor, weapon));
     }
 
     const mainPen = weapon ? Number(weapon.system.penetration) || 0 : 0;
@@ -997,7 +997,7 @@ ${damageLine}
           weaponContext.offWeapon?.system?.offhandProperties?.penetration,
         ) || 0
       : 0;
-    const actorMods = game.tos.getActorCombatModifiers(actor, weapon);
+    const actorMods = game.redsteel.getActorCombatModifiers(actor, weapon);
     const penetration =
       mainPen + offPen + abilityPenetration + actorMods.penetrationBonus;
 
@@ -1008,7 +1008,7 @@ ${damageLine}
       critFailure,
       criticalSuccessThreshold,
       criticalFailureThreshold,
-    } = await game.tos.getAttackRolls(
+    } = await game.redsteel.getAttackRolls(
       actor,
       weapon,
       doctrineBonus,
@@ -1021,7 +1021,7 @@ ${damageLine}
     );
 
     const { damageRoll, damageTotal, breakthroughRollResult } =
-      await game.tos.getDamageRolls(
+      await game.redsteel.getDamageRolls(
         actor,
         weapon,
         weaponContext,
@@ -1034,7 +1034,7 @@ ${damageLine}
       critScoreResult,
       critBonusPenetration,
       critDamageTotal,
-    } = await game.tos.getCriticalRolls(
+    } = await game.redsteel.getCriticalRolls(
       actor,
       weapon,
       weaponContext,
@@ -1049,7 +1049,7 @@ ${damageLine}
     );
 
     const { allBleedRollResults, effectsRollResults, mechanicalEffects } =
-      await game.tos.getEffectRolls(
+      await game.redsteel.getEffectRolls(
         actor,
         weapon,
         weaponContext,
@@ -1295,7 +1295,7 @@ export async function deductAbilityCost(actor, abilities = []) {
 }
 
 function renderWeaponLoadoutsDialog(actor) {
-  const weaponSets = game.tos.buildWeaponSetView(actor);
+  const weaponSets = game.redsteel.buildWeaponSetView(actor);
   const activeSet = actor.system.combat.activeWeaponSet;
 
   return `

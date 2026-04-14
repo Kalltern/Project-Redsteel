@@ -5,7 +5,7 @@ export async function delayTurn() {
     return;
   }
 
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -111,7 +111,7 @@ export async function delayTurn() {
 
 export async function restAndRecover() {
   // Ensure a token is selected
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -148,7 +148,7 @@ export async function restAndRecover() {
 
 export async function longRest() {
   // Ensure a token is selected
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
   const { actor, token } = context;
   const system = actor.system;
@@ -226,7 +226,7 @@ export async function longRest() {
 }
 
 export async function firstAid() {
-  const context = game.tos.selectToken({ notifyFallback: true });
+  const context = game.redsteel.selectToken({ notifyFallback: true });
   if (!context) return;
 
   const { actor, token } = context;
@@ -287,7 +287,7 @@ export async function firstAid() {
 </div>
   `,
     flags: {
-      tos: {
+      redsteel: {
         rollName,
         criticalSuccessThreshold,
         criticalFailureThreshold,

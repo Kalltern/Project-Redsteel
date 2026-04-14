@@ -8,17 +8,17 @@ export function prepareActiveEffectCategories(effects) {
   const categories = {
     temporary: {
       type: 'temporary',
-      label: game.i18n.localize('TOS.Effect.Temporary'),
+      label: game.i18n.localize('REDSTEEL.Effect.Temporary'),
       effects: [],
     },
     passive: {
       type: 'passive',
-      label: game.i18n.localize('TOS.Effect.Passive'),
+      label: game.i18n.localize('REDSTEEL.Effect.Passive'),
       effects: [],
     },
     inactive: {
       type: 'inactive',
-      label: game.i18n.localize('TOS.Effect.Inactive'),
+      label: game.i18n.localize('REDSTEEL.Effect.Inactive'),
       effects: [],
     },
   };

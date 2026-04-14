@@ -4,7 +4,7 @@
   data-tab="spells"
 >
   <h2 class="flex-group-center">
-    {{localize "TOS.Actor.Character.schools.spellPower.label"}}
+    {{localize "REDSTEEL.Actor.Character.schools.spellPower.label"}}
   </h2>
 
   <div class="grid grid-9col spells">
@@ -13,7 +13,7 @@
   {{#with (lookup ../system.schools group.school) as |school|}}
     <div class="grid-span-1-spell">
       <label class="resource-label">
-        {{localize (concat "TOS.Actor.Character.schools." group.school ".label")}}
+        {{localize (concat "REDSTEEL.Actor.Character.schools." group.school ".label")}}
       </label>
       <input
         class="spell-value"
@@ -32,7 +32,7 @@
       {{#each system.schools as |school key|}}
         <div class="grid-span-1-spell">
           <label class="resource-label">
-            {{localize (concat "TOS.Actor.Character.schools." key ".label")}}
+            {{localize (concat "REDSTEEL.Actor.Character.schools." key ".label")}}
           </label>
           <input
             class="spell-value"
@@ -58,7 +58,7 @@
       data-group="spells-subtabs"
       data-tab="{{group.school}}"
     >
-      {{localize (concat "TOS.Actor.Character.schools." group.school ".label")}}
+      {{localize (concat "REDSTEEL.Actor.Character.schools." group.school ".label")}}
     </a>
   {{/each}}
 </nav>
@@ -81,11 +81,11 @@
       {{#if rankGroup.spells.length}}
         <ol class="items-list" data-rank="{{rankGroup.rank}}">
           <li class="item flexrow items-header" data-action="toggleSchool">
-            <div class="item-name">{{localize (concat "TOS.Item.Spell.FIELDS." rankGroup.rank ".label")}}</div>
-            <div class="item-name spellDifficulty">{{localize "TOS.Item.Spell.FIELDS.difficulty.label"}}</div>
-            <div class="item-name spellCost">{{localize "TOS.Item.Spell.FIELDS.headerCost.label"}}</div>
-            <div class="item-name">{{localize "TOS.Item.Spell.FIELDS.headerActions.label"}}</div>
-            <div class="item-name">{{localize "TOS.Item.Spell.FIELDS.headerRange.label"}}</div>
+            <div class="item-name">{{localize (concat "REDSTEEL.Item.Spell.FIELDS." rankGroup.rank ".label")}}</div>
+            <div class="item-name spellDifficulty">{{localize "REDSTEEL.Item.Spell.FIELDS.difficulty.label"}}</div>
+            <div class="item-name spellCost">{{localize "REDSTEEL.Item.Spell.FIELDS.headerCost.label"}}</div>
+            <div class="item-name">{{localize "REDSTEEL.Item.Spell.FIELDS.headerActions.label"}}</div>
+            <div class="item-name">{{localize "REDSTEEL.Item.Spell.FIELDS.headerRange.label"}}</div>
           </li>
 
           {{#each rankGroup.spells as |item|}}
