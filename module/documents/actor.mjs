@@ -207,8 +207,6 @@ export class RedsteelActor extends Actor {
 
           // Dodge penalty
           combatSkills.dodge.bonus += shield.system.dodgePenalty ?? 0;
-          const dodgeLimit = systemData.dodgeLimit;
-          dodgeLimit.total = dodgeLimit.value + dodgeLimit.bonus;
           // Initiative / speed penalties
           secondary.ini.bonus += shield.system.iniPenalty ?? 0;
           secondary.spd.bonus += shield.system.maxSpeed ?? 0;
@@ -239,6 +237,9 @@ export class RedsteelActor extends Actor {
         }
       }
     }
+
+    const dodgeLimit = systemData.dodgeLimit;
+    dodgeLimit.total = dodgeLimit.value + dodgeLimit.bonus;
 
     const meleeOrRanged = Math.max(throwing[melee], combatset1[archery.value]);
 
@@ -925,6 +926,8 @@ export class RedsteelActor extends Actor {
       (+res + +systemData.secondaryAttributes.res.bonus) / 10;
     mana.value = Number(mana.value) || 0;
     mana.max = Number(mana.max) || 0;
+    const dodgeLimit = systemData.dodgeLimit;
+    dodgeLimit.total = dodgeLimit.value + dodgeLimit.bonus;
 
     holyEnergy.value = Number(holyEnergy.value) || 0;
     holyEnergy.max = Number(holyEnergy.max) || 0;

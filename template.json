@@ -1082,6 +1082,11 @@
           "value": 0
         }
       },
+        "dodgeLimit": {
+        "value": 50,
+        "bonus": 0,
+        "total": 0
+      },
       "schools": {
         "fire": {
           "value": 0,

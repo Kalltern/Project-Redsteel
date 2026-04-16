@@ -327,7 +327,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     /*  IF WEAPON ALREADY KNOWN → SKIP DIALOG       */
     /* -------------------------------------------- */
     if (weapon) {
-      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        weapon,
+      );
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -349,7 +353,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        selected,
+      );
       if (!context) return;
       await resolveWithContext(context);
     });
@@ -411,7 +419,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     }
 
     if (weapon) {
-      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        weapon,
+      );
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -425,7 +437,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        selected,
+      );
       if (!context) return;
       await resolveWithContext(context);
     });
@@ -486,10 +502,8 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
       );
 
       await roll.evaluate();
-      const d100Term = roll.terms.find((t) => t.faces === 100);
-      const d100Result = d100Term?.results?.[0]?.result;
-      console.log("d100Term", d100Term);
-      console.log("d100Result", d100Result);
+      const d100 = roll.dice.find((d) => d.faces === 100);
+      const d100Result = d100?.total;
       const dodgeFailed = d100Result > actor.system.dodgeLimit.total;
       console.log("dodgeFailed", dodgeFailed);
 
@@ -510,7 +524,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
     }
 
     if (weapon) {
-      const context = game.redsteel.resolveWeaponContext(actor, ability, weapon);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        weapon,
+      );
       if (!context) return;
       return resolveWithContext(context);
     }
@@ -524,7 +542,11 @@ export async function defenseRoll({ actor, weapon, ability = null } = {}) {
 
     showWeaponDialog(weapons, async (index) => {
       const selected = weapons[index];
-      const context = game.redsteel.resolveWeaponContext(actor, ability, selected);
+      const context = game.redsteel.resolveWeaponContext(
+        actor,
+        ability,
+        selected,
+      );
       if (!context) return;
       await resolveWithContext(context);
     });
