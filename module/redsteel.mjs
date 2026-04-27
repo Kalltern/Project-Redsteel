@@ -90,7 +90,8 @@ Hooks.once("init", function () {
   game.redsteel.selectToken = selectToken;
   game.redsteel.statusEffectManager = statusEffectManager;
   game.redsteel.getActorCombatModifiers = getActorCombatModifiers;
-  game.redsteel.applyEffect = RedsteelActiveEffect.applyEffect.bind(RedsteelActiveEffect);
+  game.redsteel.applyEffect =
+    RedsteelActiveEffect.applyEffect.bind(RedsteelActiveEffect);
   game.redsteel.resolveWeaponContext = resolveWeaponContext;
   game.redsteel.deductAbilityCost = deductAbilityCost;
   game.redsteel.buildWeaponSetView = buildWeaponSetView;
@@ -1012,7 +1013,9 @@ Hooks.on("renderChatMessage", (message, html, data) => {
   // Check if the current user is the one who made the roll
   if (game.user.id === message.author?.id) {
     // Add logic to check if the message is a roll message and create a reroll button
-    if (message.content.includes("rolled") || message.rolls.length > 0) {
+    const hasTestRoll = message.rolls?.some((r) => r.formula.includes("1d100"));
+
+    if (hasTestRoll) {
       const rerollButton = $('<button class="reroll-button">Re-Roll</button>');
 
       // Check if a button container already exists, if not, create one

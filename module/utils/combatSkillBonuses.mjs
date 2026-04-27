@@ -55,11 +55,10 @@ export async function getNonWeaponAbility(actor, ability) {
   let concatRollAndDescription = ability.system.description;
   let attributeTestRoll = null;
 
-  if (
-    abilityAttributeTestName &&
-    abilityAttributeTestName !== "-- Select a Type --"
-  ) {
-    const lowerTestName = abilityAttributeTestName.trim().toLowerCase();
+  const testName = ability.system.attributeTest?.trim();
+
+  if (testName && testName !== "-- Select a Type --") {
+    const lowerTestName = testName.toLowerCase();
     let baseValue = 0;
 
     // 1️⃣ Leadership special rule FIRST
@@ -86,13 +85,13 @@ export async function getNonWeaponAbility(actor, ability) {
 
       baseValue =
         actor.type === "npc"
-          ? (actor.system.attributes[shortKey]?.value ?? 0)
-          : (actor.system.attributes[shortKey]?.value ?? 0); // use value since you don't have .mod
+          ? (actor.system.attributes[shortKey]?.mod ?? 0)
+          : (actor.system.attributes[shortKey]?.mod ?? 0);
     }
     const totalModifier = Number(baseValue) + Number(abilityTestModifier);
     // Create the Roll
     const attributeRoll = new Roll(`(${totalModifier}) - 1d100`);
-    await attributeRoll.evaluate({ async: true });
+    attributeRoll.evaluateSync();
 
     const attributeRollTotal = attributeRoll.total;
     const attributeString = `<hr>
@@ -127,23 +126,43 @@ export async function getNonWeaponAbility(actor, ability) {
   const rollData = actor.getRollData();
   if (system.roll.diceBonus) {
     damageRoll = new Roll(system.roll.diceBonus, rollData);
-    await damageRoll.evaluate({ async: true });
+    await damageRoll.evaluate();
   }
   const damageProfile = buildDamageProfile(system);
   let rollName = ability.name;
-  const damageTotal = Math.floor(damageRoll.total);
+  const damageTotal = damageRoll ? Math.floor(damageRoll.total) : 0;
   const penetration = system.penetration;
-  const halfDamage = system.roll.halfDamage || false;
-  const attackHTML = await attributeTestRoll.render();
-  const damageHTML = await damageRoll.render();
+  const halfDamage = system.roll?.halfDamage || false;
+  let attackHTML = "";
+  if (attributeTestRoll instanceof Roll && attributeTestRoll._evaluated) {
+    attackHTML = await attributeTestRoll.render();
+  }
+
+  let damageHTML = "";
+  if (damageRoll instanceof Roll && damageRoll._evaluated) {
+    damageHTML = await damageRoll.render();
+  }
+  const validRolls = [];
+
+  if (attributeTestRoll instanceof Roll && attributeTestRoll._evaluated) {
+    validRolls.push(attributeTestRoll);
+  }
+
+  if (damageRoll instanceof Roll && damageRoll._evaluated) {
+    validRolls.push(damageRoll);
+  }
   // Send the combined chat message
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
-    content: `
-<div class="dual-roll">
+    content: `${
+      attackHTML
+        ? `
   <div class="roll-column">
     <div class="roll-label">Margin of Success</div>
     ${attackHTML}
+  </div>`
+        : ""
+    }
   </div>
   <div class="roll-column">
     <div class="roll-label">Damage Roll</div>
@@ -151,7 +170,7 @@ export async function getNonWeaponAbility(actor, ability) {
   </div>
 </div>
 `,
-    rolls: [attributeTestRoll, damageRoll].filter((r) => r),
+    rolls: validRolls,
     flags: {
       redsteel: {
         rollName,
@@ -677,7 +696,7 @@ export async function getCriticalRolls(
   await critScoreRoll.evaluate();
   const critScoreResult = critScoreRoll.total;
   let critScore = 0;
-  if (critScoreResult > 1) {
+  if (critScoreResult >= 1) {
     if (critScoreResult <= 6) critScore = 1;
     else if (critScoreResult <= 12) critScore = 2;
     else if (critScoreResult <= 18) critScore = 3;

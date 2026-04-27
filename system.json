@@ -65,33 +65,15 @@
   ],
   "packs": [
     {
-      "name": "adventure-notes",
-      "label": "Adventure Notes",
-      "type": "JournalEntry",
-      "system": "redsteel"
-    },
-    {
-      "name": "critfail-tables",
-      "label": "Critical Failure Tables",
+      "name": "redsteel-magic-crit-fails",
+      "label": "Redsteel-magic-crit-fails",
       "type": "RollTable",
       "system": "redsteel"
     },
     {
-      "name": "characters",
-      "label": "Characters",
-      "type": "Actor",
-      "system": "redsteel"
-    },
-    {
-      "name": "items",
-      "label": "Items",
+      "name": "redsteel-items",
+      "label": "Redsteel-items",
       "type": "Item",
-      "system": "redsteel"
-    },
-    {
-      "name": "scenes",
-      "label": "Scenes",
-      "type": "Scene",
       "system": "redsteel"
     }
   ],
@@ -99,11 +81,8 @@
     {
       "name": "Redsteel",
       "packs": [
-        "adventure-notes",
-        "critfail-tables",
-        "characters",
-        "items",
-        "scenes"
+        "redsteel-items",
+        "redsteel-magic-crit-fails"
       ]
     }
   ],
