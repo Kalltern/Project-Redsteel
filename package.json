@@ -1,5 +1,5 @@
 {
-  "name": "tos",
+  "name": "redsteel",
   "version": "1.0.0",
   "description": "JSON compiler for the Redsteel system",
   "scripts": {

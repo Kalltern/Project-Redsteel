@@ -22,12 +22,35 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      # `npm ci` is recommended
-      # httpsdocs.github.comenactionsautomating-builds-and-testsbuilding-and-testing-nodejs
       - name: Install Dependencies
         run: npm ci
 
-      # Run build script
       - name: Build Packs
+        run: npm run pullJSONtoLDB --if-present
+
+      - name: Create ZIP
         run: |
-          npm run pullJSONtoLDB --if-present
+          mkdir release
+
+          cp system.json release/
+          cp template.json release/ 2>/dev/null || true
+
+          cp -r lang release/
+          cp -r templates release/
+          cp -r packs release/
+          cp -r module release/
+
+          cp -r css release/ 2>/dev/null || true
+          cp -r assets release/ 2>/dev/null || true
+          cp -r ui release/ 2>/dev/null || true
+          cp -r lib release/ 2>/dev/null || true
+
+          cd release
+          zip -r ../redsteel.zip .
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: redsteel.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
