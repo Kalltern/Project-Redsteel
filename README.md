@@ -10,7 +10,7 @@ The system uses Barbrawl and Status Icon counters as dependencies.
 
 ## Status
 
-The system contains Lite version of the Redsteel ruleset and a Quickplay scenario for beginners.
+The system contains Lite version of the Redsteel ruleset for beginners.
 
 ### Legal
 
