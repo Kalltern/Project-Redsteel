@@ -1,0 +1,31 @@
+{
+  "folder": "rujgVKzoNA0iCeug",
+  "name": "Verdigris",
+  "type": "item",
+  "img": "systems/tos/assets/icons/Verdigris.png",
+  "system": {
+    "description": "<p>Effect - Creates the alchemical substance Verdigris, needed for alchemical production.<br />Production Bonus - -10% -&gt; 1 dose<br />Composition - 5x ingredients containing Verdigris</p>",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.NEHwlbmolaHzelAh",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "DpluPFUgMaftXeZA",
+  "_key": "!items!DpluPFUgMaftXeZA"
+}

@@ -1,0 +1,109 @@
+{
+  "folder": "NHaSpGKlxSYECai3",
+  "name": "Free hand I",
+  "type": "feature",
+  "img": "icons/equipment/hand/glove-tooled-leather-brown.webp",
+  "system": {
+    "description": "<p>If one hand is free, Dodge +5%, may reroll a Dodge once per day, and gains +1d6 damage.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": null
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Free hand I",
+      "origin": "Item.ztuDbndFS43K5GMq",
+      "img": "icons/equipment/hand/glove-tooled-leather-brown.webp",
+      "_id": "9DhEtnO8InEaXo2x",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.combatSkills.dodge.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.freehand.1",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!gulZ0dnUEcOaVtBg.9DhEtnO8InEaXo2x"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "148a4400785f7755d02a21957bdd416c8ec7f590"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.ztuDbndFS43K5GMq",
+    "duplicateSource": "Item.UYmALzKn6MWIv7VA",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 1200000,
+  "_id": "gulZ0dnUEcOaVtBg",
+  "_key": "!items!gulZ0dnUEcOaVtBg"
+}

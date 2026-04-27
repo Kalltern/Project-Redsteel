@@ -1,0 +1,48 @@
+{
+  "folder": "rleu17ZbMrvMDhT0",
+  "name": "Bloody kiss",
+  "type": "consumable",
+  "_id": "MTXlg86chA9VmgAz",
+  "img": "icons/consumables/potions/conical-mushroom-poison-red.webp",
+  "system": {
+    "description": "<p>Effect - +70% Chance to Bleed<br />Duration - 2 hours<br />Production bonus - -15% -&gt; 1 dose<br />Ingredients - Quality fat, Be, Be, Qu, Pa, Blood lily<br />Level - 2<br />Info - Thick brown liquid, slight odor. Cutting and stabbing weapons.</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "",
+    "roll": {
+      "diceNum": null,
+      "diceSize": "",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_key": "!items!MTXlg86chA9VmgAz"
+}

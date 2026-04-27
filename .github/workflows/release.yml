@@ -33,13 +33,15 @@ jobs:
           mkdir release
 
           cp system.json release/
+
           cp template.json release/ 2>/dev/null || true
 
-          cp -r lang release/
-          cp -r templates release/
-          cp -r packs release/
-          cp -r module release/
-
+          cp -r lang release/ 2>/dev/null || true
+          cp -r templates release/ 2>/dev/null || true
+          cp -r packs release/ 2>/dev/null || true
+          cp -r module release/ 2>/dev/null || true
+          cp -r scripts release/ 2>/dev/null || true
+          cp -r styles release/ 2>/dev/null || true
           cp -r css release/ 2>/dev/null || true
           cp -r assets release/ 2>/dev/null || true
           cp -r ui release/ 2>/dev/null || true
@@ -47,6 +49,9 @@ jobs:
 
           cd release
           zip -r ../redsteel.zip .
+
+      - name: Debug
+        run: ls -R
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2

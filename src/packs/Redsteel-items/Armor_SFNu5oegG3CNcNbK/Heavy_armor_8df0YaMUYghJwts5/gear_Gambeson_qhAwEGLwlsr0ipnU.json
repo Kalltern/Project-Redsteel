@@ -1,0 +1,83 @@
+{
+  "folder": "8df0YaMUYghJwts5",
+  "name": "Gambeson",
+  "type": "gear",
+  "_id": "qhAwEGLwlsr0ipnU",
+  "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+  "system": {
+    "description": "",
+    "equipped": false,
+    "layerOptions": [
+      "Not Armor",
+      "Bottom",
+      "Middle",
+      "Top"
+    ],
+    "armor": {
+      "value": 6,
+      "durability": 0,
+      "acid": {
+        "value": 0
+      },
+      "fire": {
+        "value": 0
+      },
+      "frost": {
+        "value": 0
+      },
+      "lightning": {
+        "value": 0
+      },
+      "magic": {
+        "value": 0
+      },
+      "dark": {
+        "value": 0
+      },
+      "poison": {
+        "value": 0
+      },
+      "holy": {
+        "value": 0
+      }
+    },
+    "weight": 0,
+    "helmet": true,
+    "shield": false,
+    "swimPenalty": -10,
+    "dodgePenalty": -5,
+    "castPenalty": -5,
+    "acroPenalty": -5,
+    "stealthPenalty": -5,
+    "iniPenalty": 0,
+    "maxSpeed": 0,
+    "rangedDefense": 0,
+    "defense": 0,
+    "healthBonus": 0,
+    "critDefense": 0,
+    "rangedCritDefense": 0,
+    "archeryPenalty": 0,
+    "perPenalty": 0,
+    "layer": "Bottom"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294837982,
+    "modifiedTime": 1777294837982,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_key": "!items!qhAwEGLwlsr0ipnU"
+}

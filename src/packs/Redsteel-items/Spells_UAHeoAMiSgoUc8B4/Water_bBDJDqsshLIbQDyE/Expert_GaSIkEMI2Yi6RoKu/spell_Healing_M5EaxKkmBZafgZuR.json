@@ -1,0 +1,155 @@
+{
+  "name": "Healing",
+  "type": "spell",
+  "img": "icons/magic/life/heart-cross-blue.webp",
+  "system": {
+    "description": "<p>Restores {{math spellPower \"*\" 2}} + 4d6 HP to a chosen target and stops up to 2 bleeding effects.<br /><br />Not fully automated. Resolve the spell manually</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": false,
+    "sustained": false,
+    "difficulty": -20,
+    "cost": 20,
+    "perRound": 0,
+    "option": "magic",
+    "type": "water",
+    "rank": "expert",
+    "actionCost": "1",
+    "range": "8",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 4,
+      "diceSize": "6",
+      "diceBonus": "@spellPower*2"
+    },
+    "penetration": 0,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "GaSIkEMI2Yi6RoKu",
+  "flags": {
+    "scene-packer": {
+      "hash": "3faed373f5699fb5d4bf99f2c0c59f4235b25d9f"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.trsTHbAfcXWZKXF5",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "M5EaxKkmBZafgZuR",
+  "sort": 0,
+  "_key": "!items!M5EaxKkmBZafgZuR"
+}

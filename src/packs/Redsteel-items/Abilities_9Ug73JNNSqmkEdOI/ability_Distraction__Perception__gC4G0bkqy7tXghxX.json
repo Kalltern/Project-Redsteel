@@ -1,0 +1,139 @@
+{
+  "name": "Distraction (Perception)",
+  "type": "ability",
+  "img": "icons/skills/melee/strike-weapons-orange.webp",
+  "system": {
+    "description": "<p>Modifies Attack, Multiple Attack, Flurry of Attacks, Multiple Throw, or Throw while Running.<br data-start=\"112\" data-end=\"115\" />Deals half damage.</p><p data-start=\"168\" data-end=\"411\" data-is-last-node data-is-only-node>Triggers a vs test of Perception against target's Perception Test.</p><p data-start=\"168\" data-end=\"411\" data-is-last-node data-is-only-node>On attacker's success, the target loses 1 Reaction.<br data-start=\"262\" data-end=\"265\" />On a hit, attacker gains a +10% bonus to the Test.<br data-start=\"306\" data-end=\"309\" />On a Critical Hit, attacker gains a +30% bonus to the Test.<br data-start=\"359\" data-end=\"362\" />On a Critical Failure, the Test is not triggered.<br /><br />Cost applies to each attack.</p>",
+    "type": "other",
+    "weaponAbility": false,
+    "standalone": false,
+    "modifiesAttack": true,
+    "multiAttack": false,
+    "typeOptions": [
+      "melee",
+      "ranged"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "movement",
+      "attack",
+      "defense"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "drain"
+      ],
+      "types": []
+    },
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "attributeTest": "perception",
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testModifier": 0,
+    "costOptions": [
+      "stamina",
+      "mana",
+      "health",
+      "mental",
+      "fatigue",
+      "inspiration",
+      "holy energy"
+    ],
+    "costType": "stamina",
+    "cost": 3,
+    "perRound": 0,
+    "effects": {
+      "stagger": 0,
+      "bleed": 0,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "class": "attack",
+    "actionCost": "Free Action",
+    "defense": 0,
+    "rangedDefense": 0,
+    "dodge": 0,
+    "attack": 0,
+    "roll": {
+      "diceBonus": "@Half"
+    },
+    "breakthrough": "",
+    "penetration": 0,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "folder": "9Ug73JNNSqmkEdOI",
+  "flags": {
+    "scene-packer": {
+      "hash": "8acdec263f7675a24901138a6b9981dc53d646d2"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.EcyEOMnYqoDcN9iN",
+    "duplicateSource": "Item.yoaHzPcADWincgO4",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835871,
+    "modifiedTime": 1777294835871,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 3400000,
+  "_id": "gC4G0bkqy7tXghxX",
+  "_key": "!items!gC4G0bkqy7tXghxX"
+}

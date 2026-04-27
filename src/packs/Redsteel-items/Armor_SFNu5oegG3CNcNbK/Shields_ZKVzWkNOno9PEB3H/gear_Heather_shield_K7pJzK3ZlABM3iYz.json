@@ -1,0 +1,83 @@
+{
+  "folder": "ZKVzWkNOno9PEB3H",
+  "name": "Heather shield",
+  "type": "gear",
+  "img": "icons/equipment/shield/heater-steel-boss-red.webp",
+  "system": {
+    "description": "",
+    "equipped": false,
+    "layerOptions": [
+      "Not Armor",
+      "Bottom",
+      "Middle",
+      "Top"
+    ],
+    "armor": {
+      "value": 0,
+      "durability": 1,
+      "acid": {
+        "value": 0
+      },
+      "fire": {
+        "value": 0
+      },
+      "frost": {
+        "value": 0
+      },
+      "lightning": {
+        "value": 0
+      },
+      "magic": {
+        "value": 0
+      },
+      "dark": {
+        "value": 0
+      },
+      "poison": {
+        "value": 0
+      },
+      "holy": {
+        "value": 0
+      }
+    },
+    "weight": 0,
+    "helmet": false,
+    "shield": true,
+    "swimPenalty": 0,
+    "dodgePenalty": -10,
+    "castPenalty": 0,
+    "acroPenalty": 0,
+    "stealthPenalty": 0,
+    "iniPenalty": 0,
+    "maxSpeed": 0,
+    "rangedDefense": 25,
+    "defense": 15,
+    "healthBonus": 0,
+    "critDefense": 3,
+    "rangedCritDefense": 3,
+    "archeryPenalty": 0,
+    "perPenalty": 0,
+    "layer": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.GD9aFgA0TYsiRwoT",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294837982,
+    "modifiedTime": 1777294837982,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "K7pJzK3ZlABM3iYz",
+  "_key": "!items!K7pJzK3ZlABM3iYz"
+}

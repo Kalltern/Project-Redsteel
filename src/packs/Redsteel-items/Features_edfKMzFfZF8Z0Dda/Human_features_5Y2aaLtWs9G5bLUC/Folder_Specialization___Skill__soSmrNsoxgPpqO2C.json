@@ -1,0 +1,21 @@
+{
+  "type": "Item",
+  "folder": "5Y2aaLtWs9G5bLUC",
+  "name": "Specialization: *Skill*",
+  "color": null,
+  "sorting": "a",
+  "_id": "soSmrNsoxgPpqO2C",
+  "description": "",
+  "sort": -100000,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!soSmrNsoxgPpqO2C"
+}

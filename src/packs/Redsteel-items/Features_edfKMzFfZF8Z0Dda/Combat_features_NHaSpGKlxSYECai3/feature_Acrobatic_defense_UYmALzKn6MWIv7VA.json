@@ -1,0 +1,120 @@
+{
+  "folder": "NHaSpGKlxSYECai3",
+  "name": "Acrobatic defense",
+  "type": "feature",
+  "img": "icons/equipment/back/cloak-plain-green.webp",
+  "system": {
+    "description": "<p>Increases Ranged defense by 10% and Dodge by 10%.<br data-start=\"118\" data-end=\"121\" />Increases critical Dodge success chance by 3%.<br data-start=\"167\" data-end=\"170\" />Raises the Dodge success threshold to 80%.<br data-start=\"212\" data-end=\"215\" />On a successful Dodge vs Test against a Magical attack, reduces direct magical damage by 50%.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": null
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Acrobatic defense",
+      "origin": "Item.ztuDbndFS43K5GMq",
+      "img": "icons/equipment/back/cloak-plain-green.webp",
+      "_id": "9DhEtnO8InEaXo2x",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.combatSkills.dodge.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.rangedDefense.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.dodge.critbonus",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        },
+        {
+          "key": "",
+          "value": "",
+          "mode": 2
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!UYmALzKn6MWIv7VA.9DhEtnO8InEaXo2x"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "148a4400785f7755d02a21957bdd416c8ec7f590"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.ztuDbndFS43K5GMq",
+    "duplicateSource": "Item.kcqSnGFSKxF9eC74",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 1200000,
+  "_id": "UYmALzKn6MWIv7VA",
+  "_key": "!items!UYmALzKn6MWIv7VA"
+}

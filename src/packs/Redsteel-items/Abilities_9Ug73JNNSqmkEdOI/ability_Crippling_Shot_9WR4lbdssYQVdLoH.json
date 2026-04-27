@@ -1,0 +1,125 @@
+{
+  "name": "Crippling Shot",
+  "type": "ability",
+  "img": "icons/skills/ranged/arrow-strike-apple-orange.webp",
+  "system": {
+    "description": "Reduces the target’s Movement by half (rounded up) and Dodge chance by -20% for three turns",
+    "type": "ranged",
+    "weaponAbility": "undefined",
+    "standalone": false,
+    "modifiesAttack": false,
+    "multiAttack": false,
+    "typeOptions": [
+      "melee",
+      "ranged"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "movement",
+      "attack",
+      "defense"
+    ],
+    "resources": [
+      {
+        "mode": "",
+        "amount": "",
+        "type": ""
+      }
+    ],
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "drain"
+      ],
+      "types": []
+    },
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "attributeTest": "",
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testModifier": 0,
+    "costOptions": [
+      "stamina",
+      "mana",
+      "health",
+      "mental",
+      "fatigue",
+      "inspiration",
+      "holy energy"
+    ],
+    "costType": "stamina",
+    "cost": 6,
+    "perRound": 0,
+    "effects": {
+      "stagger": 0,
+      "bleed": 0,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "class": "attack",
+    "actionCost": "1 Action",
+    "defense": 0,
+    "rangedDefense": 0,
+    "dodge": 0,
+    "attack": 0,
+    "roll": {
+      "diceBonus": ""
+    },
+    "breakthrough": "",
+    "penetration": 0,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0
+  },
+  "effects": [],
+  "folder": "9Ug73JNNSqmkEdOI",
+  "flags": {
+    "scene-packer": {
+      "hash": "03e83b6c2eca5e5782f100e08ecb1eece116d97e"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.S3Y7JUnCSI6SEITQ",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835871,
+    "modifiedTime": 1777294835871,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "9WR4lbdssYQVdLoH",
+  "sort": 700000,
+  "_key": "!items!9WR4lbdssYQVdLoH"
+}

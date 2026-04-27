@@ -1,0 +1,139 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Silver tongue",
+  "type": "feature",
+  "img": "icons/commodities/biological/tongue-blue.webp",
+  "system": {
+    "description": "<p>Charisma attribute cap +1.<br data-start=\"1469\" data-end=\"1472\" />Persuasion, Music, Acting, Command, Deception, Intimidation, and Seduction +5%.</p><p>May reroll a charisma based skill once per day.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Silver tongue",
+      "active": [
+        false,
+        false
+      ],
+      "value": 2
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Silver tongue",
+      "origin": "Item.0HKUdWcGOFVxqXp6",
+      "img": "icons/svg/book.svg",
+      "_id": "GBF9TM9oMXjvke39",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.persuasion.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.music.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.acting.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.leadership.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.deception.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.intimidation.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.temptation.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#6dcce3",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!927rRKJ5IAFRQGZK.GBF9TM9oMXjvke39"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "87be76bef5a2d0a922fdd3c8bb6b8502412999c8"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.Y0apogBXYR9wVzr1",
+    "duplicateSource": "Item.AZxFGIGP7gD9tCA3",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 102344,
+  "_id": "927rRKJ5IAFRQGZK",
+  "_key": "!items!927rRKJ5IAFRQGZK"
+}

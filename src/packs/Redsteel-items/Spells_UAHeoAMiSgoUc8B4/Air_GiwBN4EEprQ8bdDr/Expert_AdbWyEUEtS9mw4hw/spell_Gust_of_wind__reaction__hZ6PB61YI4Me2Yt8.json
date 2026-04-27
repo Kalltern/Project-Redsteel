@@ -1,0 +1,155 @@
+{
+  "name": "Gust of wind (reaction)",
+  "type": "spell",
+  "img": "icons/magic/air/wind-tornado-spiral-pink-purple.webp",
+  "system": {
+    "description": "<p>Can be cast as a Reaction only when caster is being attacked. <br />Successful cast cancels the incoming physical attack.</p><hr /><p>Triggers a vs Test of Will + {{math spellPower \"*\" 2}} against target's Strength/Dexterity Test.</p><hr /><ul><li><p>On caster's success, the target is set Prone and pushed back one hex.</p></li><li><p>On failure, the target is pushed back one hex.</p></li><li><p>On a failure with a target's Margin of Success of at least 50, the target is not pushed at all.</p></li></ul>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": 0
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": false,
+    "sustained": false,
+    "difficulty": -20,
+    "cost": 6,
+    "perRound": 0,
+    "option": "magic",
+    "type": "air",
+    "rank": "expert",
+    "actionCost": "Reaction",
+    "range": "4",
+    "spellClass": "support",
+    "roll": {
+      "diceNum": 0,
+      "diceSize": "0",
+      "diceBonus": ""
+    },
+    "penetration": 0,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "Will",
+    "testModifier": "@spellPower*2"
+  },
+  "effects": [],
+  "folder": "AdbWyEUEtS9mw4hw",
+  "flags": {
+    "scene-packer": {
+      "hash": "e54f7f82d68f054e2a62c01fa7efad5c1457c492"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.7bPtojRofbKwcdh0",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "hZ6PB61YI4Me2Yt8",
+  "sort": 0,
+  "_key": "!items!hZ6PB61YI4Me2Yt8"
+}

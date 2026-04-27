@@ -1,0 +1,48 @@
+{
+  "folder": "rleu17ZbMrvMDhT0",
+  "name": "Snake bite",
+  "type": "consumable",
+  "img": "icons/skills/melee/strike-dagger-poison-green.webp",
+  "system": {
+    "description": "<p>Effect - Deals 2d4 Poison damage to target. Target can only take this damage once per round. Ignores Armor.<br />Duration - 2 hours<br />Production bonus - +20% -&gt; 1 dose<br />Ingredients - Fat, Ve, Ve<br />Level - 1<br />Info - Green liquid, strong odor. Slashing and stabbing weapons.</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "",
+    "roll": {
+      "diceNum": null,
+      "diceSize": "",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.C1prrhx2Krf7fwQN",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "iSONUAkrjdWy7cmo",
+  "_key": "!items!iSONUAkrjdWy7cmo"
+}

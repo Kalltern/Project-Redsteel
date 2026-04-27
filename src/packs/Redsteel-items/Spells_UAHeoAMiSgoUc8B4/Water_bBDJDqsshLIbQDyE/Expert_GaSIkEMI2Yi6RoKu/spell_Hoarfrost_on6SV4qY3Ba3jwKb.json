@@ -1,0 +1,155 @@
+{
+  "name": "Hoarfrost",
+  "type": "spell",
+  "img": "icons/magic/water/ice-snowman.webp",
+  "system": {
+    "description": "<p>Creates slippery ice covering up to 3 + X connected hexes for {{math spellPower \"*\" 5}} minutes. <br />Crossing requires a Dexterity test per hex—failure knocks the Target down. <br />Difficulty scales with movement speed: Slow – normal; walking – advanced; running – very hard.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": -5,
+    "cost": 3,
+    "perRound": 0,
+    "option": "magic",
+    "type": "water",
+    "rank": "expert",
+    "actionCost": "1",
+    "range": "15",
+    "spellClass": "support",
+    "roll": {
+      "diceNum": 0,
+      "diceSize": "0",
+      "diceBonus": ""
+    },
+    "penetration": 0,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "GaSIkEMI2Yi6RoKu",
+  "flags": {
+    "scene-packer": {
+      "hash": "9ecb93381546ac1d0cfafd170010c02ab93d1f41"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.l6e3ybq1fLnFhLC1",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "on6SV4qY3Ba3jwKb",
+  "sort": 0,
+  "_key": "!items!on6SV4qY3Ba3jwKb"
+}

@@ -1,0 +1,260 @@
+{
+  "name": "Fire crit fails",
+  "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "VsUFThIH0VdAGe0G",
+      "name": "Degree 0",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Flammable unattended or uncarried objects within 12m ignite.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.VsUFThIH0VdAGe0G"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        2,
+        5
+      ],
+      "_id": "f559kSUbEQMxMj0E",
+      "name": "Degree 1",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>The caster’s hair ignites. Deals 1d6 damage per round.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.f559kSUbEQMxMj0E"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        6,
+        9
+      ],
+      "_id": "MMW5UoXBkLs6dH3k",
+      "name": "Degree 2",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. All creatures within 4.5m have a part of their body ignite. Deals 1d6 damage until extinguished (Endurance/Dexterity Test).</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.MMW5UoXBkLs6dH3k"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        10,
+        12
+      ],
+      "_id": "n1IH5Bfv5aRINWHP",
+      "name": "Degree 3",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. A fiery explosion erupts in a 6m area centered on the caster, dealing Magical+Fire damage 4d6, Penetration 8. 10% chance to Burn.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.n1IH5Bfv5aRINWHP"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        13,
+        15
+      ],
+      "_id": "8nxTpA08cNTgE7Zy",
+      "name": "Degree 4",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 3d6 damage.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.8nxTpA08cNTgE7Zy"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        16,
+        18
+      ],
+      "_id": "D2z1eZqKVy6AJfbD",
+      "name": "Degree 5",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 4d6 damage and prevents casting of the affected school for 1d4+1 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.D2z1eZqKVy6AJfbD"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        19,
+        20
+      ],
+      "_id": "t5uouqrhUzfOqXde",
+      "name": "Degree 6",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. The caster and two random targets within 9m ignite with magical fire. Enurance/Dexterity Test (Very Hard) to extinguish. Deals 4d6 damage per round; otherwise functions as Burn.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.t5uouqrhUzfOqXde"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        21,
+        22
+      ],
+      "_id": "gTtzA09ggjaf8ZA6",
+      "name": "Degree 7",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to double the spell’s cost. The caster is attacked by Relgar’s Hound, dealing Magical+Fire damage 4d6 and forcing a Strength/Dexterity test (Hard). On success, the caster loses one action; on failure, they are knocked prone and take an additional 3d6 damage. Penetration 10.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.gTtzA09ggjaf8ZA6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "_id": "YUTy2xR78VY59IDZ",
+      "name": "Degree 8",
+      "img": "icons/magic/fire/flame-burning-yellow-orange.webp",
+      "description": "<p>Burns additional mana equal to double the spell’s cost. Deals 5d6 damage and prevents casting of the affected school for 2d6 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!SHLJh4OgylkXzGmU.YUTy2xR78VY59IDZ"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {
+    "tos": {
+      "critTable": "fire"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294815963,
+    "modifiedTime": 1777294815972,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "formula": "1d23",
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "SHLJh4OgylkXzGmU",
+  "sort": 200000,
+  "_key": "!tables!SHLJh4OgylkXzGmU"
+}

@@ -1,0 +1,88 @@
+{
+  "folder": "eZqc2jXvEWxnj88U",
+  "name": "Hemophylia!",
+  "type": "feature",
+  "img": "icons/skills/wounds/injury-eyes-blood-red.webp",
+  "system": {
+    "description": "<p>Bleeding risk increased by 15%.<br data-start=\"578\" data-end=\"581\" />For each Bleeding gained, gains one additional Bleeding.<br data-start=\"637\" data-end=\"640\" />Stopping Bleeding is 20% harder.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Active Effect",
+      "origin": "Item.3PuTYDFBMSLukDl8",
+      "img": "icons/svg/aura.svg",
+      "_id": "dB0quGViMiOe5xVv",
+      "type": "base",
+      "system": {},
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!3PuTYDFBMSLukDl8.dB0quGViMiOe5xVv"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "d667cfdb4874bec68f36af40ed6c350b6e4c2652"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.eohwI0Z6ApB0sLzU",
+    "duplicateSource": "Item.UEXLga8AqCBzqjZV",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 112500,
+  "_id": "3PuTYDFBMSLukDl8",
+  "_key": "!items!3PuTYDFBMSLukDl8"
+}

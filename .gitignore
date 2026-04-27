@@ -10,7 +10,7 @@ npm-debug.log
 *.lock
 jsconfig.json
 foundry
-packs/
+/packs/
 tos.zip
 
 *.log

@@ -1,0 +1,155 @@
+{
+  "name": "Dark bolt",
+  "type": "spell",
+  "img": "icons/magic/unholy/projectile-smoke-trail-pink.webp",
+  "system": {
+    "description": "Deals 6d6 + {{math spellPower \"+\" 1}} damage to one target. Corruption +4",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "Corruption",
+        "mode": "add",
+        "amount": 4
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": -10,
+    "cost": 6,
+    "perRound": 0,
+    "option": "magic",
+    "type": "darkness",
+    "rank": "expert",
+    "actionCost": "1",
+    "range": "50",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 6,
+      "diceSize": "6",
+      "diceBonus": "1 + @spellPower"
+    },
+    "penetration": 12,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "dark",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "stagger": null,
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null
+    },
+    "attributeTest": "",
+    "testModifier": "",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "folder": "XCC7CG5LovD3hSXR",
+  "flags": {
+    "scene-packer": {
+      "hash": "6294d1bd1d2af7b6a7b78b405d83ba5fb7e88651"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.hW4I7eVvq60d4Frb",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "ARplbApYWQYgnwhz",
+  "sort": 0,
+  "_key": "!items!ARplbApYWQYgnwhz"
+}

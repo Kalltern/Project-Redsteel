@@ -1,0 +1,51 @@
+{
+  "folder": "eNR6Ak4yjoOYudB1",
+  "name": "Giantslayer",
+  "type": "consumable",
+  "img": "icons/consumables/potions/bottle-conical-corked-yellow.webp",
+  "system": {
+    "description": "<p>Effect - Penetration +5, Break through +2d6 for combat and throwing<br />Duration - 15 minutes<br />Toxicity - 22<br />Production bonus - -25% -&gt; 1 dose<br />Ingredients - Strong alcohol, Yl, Al, Pa, Dragon root</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "potion",
+    "roll": {
+      "diceNum": 2,
+      "diceSize": "6",
+      "diceBonus": "0"
+    },
+    "type": "",
+    "toxicity": 22,
+    "bleed": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.mQY5B85ioxIGc64B",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "SBOEeDX7kg1f3viD",
+  "_key": "!items!SBOEeDX7kg1f3viD"
+}

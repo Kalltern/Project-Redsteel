@@ -1,0 +1,125 @@
+{
+  "name": "Slow Movement",
+  "type": "ability",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "description": "Moves up to a number of hexes equal to Speed/2, rounded down. \nMoving around an enemy always costs 1 hex and may be interrupted by a successful Opportunity Attack. \nMovement may trigger a Reaction. \nWhen an Opportunity Attack is triggered by movement, the character has the right to Defense.",
+    "type": "melee",
+    "weaponAbility": "undefined",
+    "standalone": false,
+    "modifiesAttack": false,
+    "multiAttack": false,
+    "typeOptions": [
+      "melee",
+      "ranged"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "movement",
+      "attack",
+      "defense"
+    ],
+    "resources": [
+      {
+        "mode": "",
+        "amount": "",
+        "type": ""
+      }
+    ],
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "drain"
+      ],
+      "types": []
+    },
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "attributeTest": "",
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testModifier": 0,
+    "costOptions": [
+      "stamina",
+      "mana",
+      "health",
+      "mental",
+      "fatigue",
+      "inspiration",
+      "holy energy"
+    ],
+    "costType": "stamina",
+    "cost": 0,
+    "perRound": 0,
+    "effects": {
+      "stagger": 0,
+      "bleed": 0,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "class": "movement",
+    "actionCost": "1 Action",
+    "defense": 0,
+    "rangedDefense": 0,
+    "dodge": 0,
+    "attack": 0,
+    "roll": {
+      "diceBonus": ""
+    },
+    "breakthrough": "",
+    "penetration": 0,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0
+  },
+  "effects": [],
+  "folder": "laOvi1sJV6MKCK7M",
+  "flags": {
+    "scene-packer": {
+      "hash": "d02de676d3765d90f6a0f0ba6212433ac46145aa"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.JM9L8UZB5IwSzlSz",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835871,
+    "modifiedTime": 1777294835871,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "TvO8nyLwhv1UuXy3",
+  "sort": 1600000,
+  "_key": "!items!TvO8nyLwhv1UuXy3"
+}

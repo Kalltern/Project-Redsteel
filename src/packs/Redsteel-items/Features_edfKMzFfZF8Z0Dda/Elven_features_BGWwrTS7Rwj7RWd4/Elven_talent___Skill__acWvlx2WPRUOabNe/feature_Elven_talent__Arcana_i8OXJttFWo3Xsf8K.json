@@ -1,0 +1,103 @@
+{
+  "folder": "acWvlx2WPRUOabNe",
+  "name": "Elven talent: Arcana",
+  "type": "feature",
+  "img": "icons/skills/targeting/target-glowing-yellow.webp",
+  "system": {
+    "description": "<p>You get a +5% bonus to Arcana. You can reroll Arcana once per day. Cannot be picked if you already have Specialization: Arcana.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Elven talent: Arcana",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Elven talent: Arcana",
+      "origin": "Item.i8OXJttFWo3Xsf8K",
+      "img": "icons/svg/daze.svg",
+      "_id": "0WnLc3LTF5A03eGF",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.arcana.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!i8OXJttFWo3Xsf8K.0WnLc3LTF5A03eGF"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "e33d8f22b75f497f64117308d2a609e2f0a62da0"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.qY23DhhJfBet7EGs",
+    "duplicateSource": "Item.NG7n7j8lLtukayj5",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "exQfSubzwCCs5h8v": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 100000,
+  "_id": "i8OXJttFWo3Xsf8K",
+  "_key": "!items!i8OXJttFWo3Xsf8K"
+}

@@ -1,0 +1,48 @@
+{
+  "folder": "mTnmmH0f0TAMHvof",
+  "name": "Cracker",
+  "type": "consumable",
+  "img": "icons/weapons/thrown/bomb-fuse-brown.webp",
+  "system": {
+    "description": "<p>Effect - Single target. Physical/Crushing damage 8d6, Penetration 20, 50% chance to Stun. 75% shield damage<br />Duration - 1 round<br />Production bonus - 0% -&gt; 1 batch<br />Ingredients - Container, Pa, Qu, Qu</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "explosive",
+    "roll": {
+      "diceNum": 8,
+      "diceSize": "6",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.dg5QhNmhrtytTqze",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "SeVcOSZVIfsNyzBN",
+  "_key": "!items!SeVcOSZVIfsNyzBN"
+}

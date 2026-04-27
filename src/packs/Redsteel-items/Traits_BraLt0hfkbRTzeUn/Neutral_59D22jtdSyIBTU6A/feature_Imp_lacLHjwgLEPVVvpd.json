@@ -1,0 +1,124 @@
+{
+  "folder": "59D22jtdSyIBTU6A",
+  "name": "Imp",
+  "type": "feature",
+  "img": "icons/creatures/mammals/rodent-rat-green.webp",
+  "system": {
+    "description": "<p>Strength −1, Speed +1, Hit Points −5, Ranged Defense +5%, Dodge +5%.</p><p data-start=\"80\" data-end=\"167\"></p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Imp",
+      "origin": "Item.gWRI8zNNXh1ashoJ",
+      "img": "icons/creatures/mammals/rodent-rat-green.webp",
+      "_id": "HHrqAl9gxdHkcBCc",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.str.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        },
+        {
+          "key": "system.secondaryAttributes.spd.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.stats.health.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.rangedDefense.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.dodge.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!lacLHjwgLEPVVvpd.HHrqAl9gxdHkcBCc"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "0177a26ddbfa512b90843901f556ba397e6d8317"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.gWRI8zNNXh1ashoJ",
+    "duplicateSource": "Item.jyXyZGzAMrINzHWS",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 200000,
+  "_id": "lacLHjwgLEPVVvpd",
+  "_key": "!items!lacLHjwgLEPVVvpd"
+}

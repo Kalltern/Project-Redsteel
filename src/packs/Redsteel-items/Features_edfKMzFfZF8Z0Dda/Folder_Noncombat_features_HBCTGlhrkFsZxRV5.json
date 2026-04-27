@@ -1,0 +1,21 @@
+{
+  "type": "Item",
+  "folder": "edfKMzFfZF8Z0Dda",
+  "name": "Noncombat features",
+  "color": null,
+  "sorting": "a",
+  "_id": "HBCTGlhrkFsZxRV5",
+  "description": "",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!HBCTGlhrkFsZxRV5"
+}

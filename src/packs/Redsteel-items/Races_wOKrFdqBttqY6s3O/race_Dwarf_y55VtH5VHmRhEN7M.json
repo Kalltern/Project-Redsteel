@@ -1,0 +1,107 @@
+{
+  "name": "Dwarf",
+  "type": "race",
+  "img": "icons/svg/aura.svg",
+  "system": {
+    "description": ""
+  },
+  "effects": [
+    {
+      "name": "Dwarf",
+      "origin": "Item.y55VtH5VHmRhEN7M",
+      "img": "icons/svg/aura.svg",
+      "_id": "EWvV8zitGzHQ9TaP",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.end.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.str.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.stats.health.base",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.armor.magic.bonus",
+          "mode": 2,
+          "value": "4",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!y55VtH5VHmRhEN7M.EWvV8zitGzHQ9TaP"
+    }
+  ],
+  "folder": "wOKrFdqBttqY6s3O",
+  "flags": {
+    "scene-packer": {
+      "hash": "317f3a619127d499fa98ba4adb763f407063dc43",
+      "sourceId": "Compendium.world.rysy.Item.L9bTUkicOJYaxYGR"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.jM8Sy2nkyJoMzGvv",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294842837,
+    "modifiedTime": 1777294842837,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "y55VtH5VHmRhEN7M",
+  "sort": 125000,
+  "_key": "!items!y55VtH5VHmRhEN7M"
+}

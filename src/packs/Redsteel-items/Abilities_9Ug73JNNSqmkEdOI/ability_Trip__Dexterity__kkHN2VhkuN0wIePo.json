@@ -1,0 +1,110 @@
+{
+  "folder": "9Ug73JNNSqmkEdOI",
+  "name": "Trip (Dexterity)",
+  "type": "ability",
+  "img": "icons/skills/melee/strike-blade-blood-red.webp",
+  "system": {
+    "description": "<p>Modifies Attack, Multiple Attack, Opportunity Attack, or Counterattack. Cost applies to each attack.</p><p><br />−10% to Hit, half damage.</p><p>On hit, triggers a Dexterity vs Endurance/Dexterity Test.</p><p>On attackers success, knocks the target down.</p><p>On a Critical Hit, Test bonus +20%.</p><p>Cannot be combined with Stunning blow or Impale.</p>",
+    "type": "melee",
+    "weaponAbility": false,
+    "standalone": false,
+    "modifiesAttack": true,
+    "multiAttack": false,
+    "typeOptions": [
+      "melee",
+      "ranged"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "movement",
+      "attack",
+      "defense"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "drain"
+      ],
+      "types": []
+    },
+    "testOptions": [],
+    "attributeTest": "dexterity",
+    "dmgTypes": [],
+    "testModifier": 0,
+    "costOptions": [
+      "stamina",
+      "mana",
+      "health",
+      "mental",
+      "fatigue",
+      "inspiration",
+      "holy energy"
+    ],
+    "costType": "stamina",
+    "cost": 5,
+    "perRound": 0,
+    "effects": {
+      "stagger": 0,
+      "bleed": 0,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "roll": {
+      "diceBonus": ""
+    },
+    "penetration": null,
+    "class": "attack",
+    "actionCost": "Free Action",
+    "breakthrough": "",
+    "attack": -10,
+    "critRange": null,
+    "critChance": null,
+    "critFail": null,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "sort": 750000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": "Item.lceDlymn87I1aDNX",
+    "duplicateSource": "Item.lceDlymn87I1aDNX",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835871,
+    "modifiedTime": 1777294835871,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "kkHN2VhkuN0wIePo",
+  "_key": "!items!kkHN2VhkuN0wIePo"
+}

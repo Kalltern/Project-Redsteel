@@ -1,0 +1,51 @@
+{
+  "folder": "eNR6Ak4yjoOYudB1",
+  "name": "Green cross",
+  "type": "consumable",
+  "img": "icons/consumables/potions/vial-cork-green.webp",
+  "system": {
+    "description": "<p>Effect - Antidote and immunity to 1st level poisons<br />Duration - 1 hour<br />Toxicity - 10<br />Production bonus - +20% -&gt; 1 dose<br />Ingredients - Strong alcohol, Be, Al, Ve</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "potion",
+    "roll": {
+      "diceNum": 0,
+      "diceSize": "0",
+      "diceBonus": "0"
+    },
+    "type": "",
+    "toxicity": 10,
+    "bleed": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.wxJ3ujrsferjqu81",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "LG5NJZsI9reXiwXY",
+  "_key": "!items!LG5NJZsI9reXiwXY"
+}

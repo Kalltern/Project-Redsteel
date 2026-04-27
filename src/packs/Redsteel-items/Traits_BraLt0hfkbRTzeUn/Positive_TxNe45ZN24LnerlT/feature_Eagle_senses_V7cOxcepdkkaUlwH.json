@@ -1,0 +1,112 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Eagle senses",
+  "type": "feature",
+  "img": "icons/magic/perception/eye-ringed-glow-angry-red.webp",
+  "system": {
+    "description": "<p>Perception attribute cap +1.<br data-start=\"1637\" data-end=\"1640\" />Perception Tests +5%, Shooting +5% and may reroll a roll once per day.<br data-start=\"1709\" data-end=\"1712\" /><span style=\"color:rgb(239, 230, 216);font-family:Signika, 'Palatino Linotype', sans-serif;font-size:14px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;background-color:rgba(12, 12, 12, 0.9);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;display:inline !important;float:none\">May reroll a perception based skill once per day.</span></p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Eagle Archer | Eagle Perception ",
+      "active": [
+        false,
+        false
+      ],
+      "value": 2
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Eagle senses",
+      "origin": "Item.gP8vJQQI5EFup2yV",
+      "img": "icons/magic/perception/eye-ringed-glow-angry-red.webp",
+      "_id": "lCsQDuc2b7vzSlWY",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.combatSkills.archery.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.per.modBonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.throwing.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!V7cOxcepdkkaUlwH.lCsQDuc2b7vzSlWY"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "d0d244a53c41bca470bbdc7f948873db16b5504a"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.gP8vJQQI5EFup2yV",
+    "duplicateSource": "Item.67RoFGg6keXkzz3a",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 131250,
+  "_id": "V7cOxcepdkkaUlwH",
+  "_key": "!items!V7cOxcepdkkaUlwH"
+}

@@ -1,0 +1,102 @@
+{
+  "folder": "LtAi2BTNcTepSvJW",
+  "name": "Adept: First aid",
+  "type": "feature",
+  "img": "icons/commodities/treasure/medal-ribbon-striped-gold-red.webp",
+  "system": {
+    "description": "<p>Once per day you may reroll this ability. Adds 5% to tests of this ability.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Adept: First aid",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Adept: First Aid",
+      "origin": "Item.yWAIsWqc8dpv3YS8",
+      "img": "icons/svg/heal.svg",
+      "_id": "AsE76xQotjPYBiwf",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.firstAid.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!yWAIsWqc8dpv3YS8.AsE76xQotjPYBiwf"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "3751c8924fa005d5a86fa32abed3015762c03559"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.fwANzRnUmuj6zxxg",
+    "duplicateSource": "Item.rH2izAi84XLI0iUS",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "yWAIsWqc8dpv3YS8",
+  "sort": 150000,
+  "_key": "!items!yWAIsWqc8dpv3YS8"
+}

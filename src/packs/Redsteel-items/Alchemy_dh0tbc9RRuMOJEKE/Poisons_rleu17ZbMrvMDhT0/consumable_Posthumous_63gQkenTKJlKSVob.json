@@ -1,0 +1,48 @@
+{
+  "folder": "rleu17ZbMrvMDhT0",
+  "name": "Posthumous",
+  "type": "consumable",
+  "img": "icons/consumables/potions/potion-flask-corked-green.webp",
+  "system": {
+    "description": "<p>Effect - Deals 1d8 Poison damage per round. Resting twice in the same round cancels the effect. Ignores Armor.<br />Duration - 2 hours<br />Production bonus - +20% -&gt; 1 dose<br />Ingredients - Fat, Qu, Be<br />Level - 1<br />Info - Green liquid, strong odor. Slashing and stabbing weapons.</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "",
+    "roll": {
+      "diceNum": null,
+      "diceSize": "",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.C1prrhx2Krf7fwQN",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "63gQkenTKJlKSVob",
+  "_key": "!items!63gQkenTKJlKSVob"
+}

@@ -1,0 +1,27 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Abilities",
+  "color": null,
+  "sorting": "a",
+  "_id": "9Ug73JNNSqmkEdOI",
+  "description": "",
+  "sort": 100000,
+  "flags": {
+    "scene-packer": {
+      "hash": "82cb87fb24c195909717b644f5f2d064fb714b2f"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835838,
+    "modifiedTime": 1777294835838,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_key": "!folders!9Ug73JNNSqmkEdOI"
+}

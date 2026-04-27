@@ -1,0 +1,103 @@
+{
+  "folder": "LtAi2BTNcTepSvJW",
+  "name": "Adept: Acrobacy",
+  "type": "feature",
+  "img": "icons/commodities/treasure/medal-ribbon-striped-gold-red.webp",
+  "system": {
+    "description": "<p>Once per day you may reroll this ability. Adds 5% to tests of this ability.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Adept: Acrobacy",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Adept: Acrobacy",
+      "origin": "Item.IFLj390OdVRF0oon",
+      "img": "icons/svg/jump.svg",
+      "_id": "boPY14c4Z2CHYhqJ",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.acrobacy.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!IFLj390OdVRF0oon.boPY14c4Z2CHYhqJ"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "389128c07a9f5fedf58433e75907f050448443dd"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.rH2izAi84XLI0iUS",
+    "duplicateSource": "Item.vIDPH2rjzH58Ed6U",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "exQfSubzwCCs5h8v": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 100000,
+  "_id": "IFLj390OdVRF0oon",
+  "_key": "!items!IFLj390OdVRF0oon"
+}

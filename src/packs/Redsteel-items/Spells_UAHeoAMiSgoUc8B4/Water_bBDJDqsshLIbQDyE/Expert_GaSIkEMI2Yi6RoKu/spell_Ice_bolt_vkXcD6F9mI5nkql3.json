@@ -1,0 +1,148 @@
+{
+  "name": "Ice bolt",
+  "type": "spell",
+  "img": "icons/magic/water/projectile-ice-faceted-blue.webp",
+  "system": {
+    "description": "<p>Deals 6d6 + {{spellPower}} damage to a single Target.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": [
+      {
+        "mode": "",
+        "amount": "",
+        "type": ""
+      }
+    ],
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": -10,
+    "cost": 6,
+    "perRound": 0,
+    "option": "magic",
+    "type": "water",
+    "rank": "expert",
+    "actionCost": "1",
+    "range": "50",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 6,
+      "diceSize": "6",
+      "diceBonus": "@spellPower"
+    },
+    "penetration": 12,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "frost",
+    "bool3": "and",
+    "dmgType3": "piercing",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "folder": "GaSIkEMI2Yi6RoKu",
+  "flags": {
+    "scene-packer": {
+      "hash": "f9480e5d427958026bb5f80c2301e9049d91ee6c"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.HaPQCgFclpLuVClH",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "vkXcD6F9mI5nkql3",
+  "sort": 0,
+  "_key": "!items!vkXcD6F9mI5nkql3"
+}

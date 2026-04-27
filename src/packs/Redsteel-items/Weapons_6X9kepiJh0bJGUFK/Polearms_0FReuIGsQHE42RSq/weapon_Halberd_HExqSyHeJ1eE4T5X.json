@@ -1,0 +1,142 @@
+{
+  "folder": "0FReuIGsQHE42RSq",
+  "name": "Halberd",
+  "type": "weapon",
+  "img": "icons/weapons/polearms/halberd-crescent-small-spiked.webp",
+  "system": {
+    "description": "",
+    "class": "polearm",
+    "classOptions": [
+      "axe",
+      "blunt",
+      "sword",
+      "polearm",
+      "bow",
+      "crossbow",
+      "firearm"
+    ],
+    "equipped": false,
+    "twoHandGrip": false,
+    "longReach": true,
+    "gripMode": "one",
+    "offhand": false,
+    "npcOffhand": false,
+    "type": "heavy",
+    "typeOptions": [
+      "light",
+      "medium",
+      "heavy"
+    ],
+    "weight": 0,
+    "attack": 0,
+    "defense": 5,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0,
+    "critDefense": 0,
+    "critDodge": 0,
+    "critDamage": 0,
+    "critPenetration": 0,
+    "dodge": 0,
+    "offhandProperties": {
+      "diceBonus": "0",
+      "penetration": 0,
+      "attack": 0,
+      "defense": 0,
+      "critRange": 0,
+      "critChance": 0,
+      "critFail": 0,
+      "critDefense": 0,
+      "critDodge": 0,
+      "dodge": 0,
+      "breakthrough": "",
+      "sneakDamage": "",
+      "effects": {
+        "stagger": 0,
+        "bleed": 0,
+        "extra1": 0,
+        "extra2": 0,
+        "extra3": 0,
+        "stun": 0
+      },
+      "doctrines": {
+        "dimakerus": false,
+        "duelist": false,
+        "monk": false,
+        "rogue": false
+      },
+      "effectType1": "",
+      "effectType2": "",
+      "effectType3": ""
+    },
+    "doctrines": {
+      "cavalry": false,
+      "dimakerus": false,
+      "duelist": false,
+      "monk": false,
+      "pikeman": true,
+      "reaver": false,
+      "rogue": false,
+      "shieldbearer": false,
+      "swordsman": false,
+      "archer": false,
+      "arbalest": false,
+      "peltast": false,
+      "juggler": false
+    },
+    "effects": {
+      "stagger": 15,
+      "bleed": 15,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "roll": {
+      "diceNum": 8,
+      "diceSize": "4",
+      "diceBonus": "0"
+    },
+    "penetration": 12,
+    "breakthrough": "",
+    "sneakDamage": "",
+    "finesse": false,
+    "sharp": false,
+    "thrown": false,
+    "dmgType1": "physical",
+    "bool2": "and",
+    "dmgType2": "piercing",
+    "bool3": "or",
+    "dmgType3": "slash",
+    "bool4": "or",
+    "dmgType4": "blunt",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": "Item.TYAlXCMHotKRHBYM",
+    "duplicateSource": "Item.qHc74wLETZbW29LL",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294848035,
+    "modifiedTime": 1777294848035,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "HExqSyHeJ1eE4T5X",
+  "_key": "!items!HExqSyHeJ1eE4T5X"
+}

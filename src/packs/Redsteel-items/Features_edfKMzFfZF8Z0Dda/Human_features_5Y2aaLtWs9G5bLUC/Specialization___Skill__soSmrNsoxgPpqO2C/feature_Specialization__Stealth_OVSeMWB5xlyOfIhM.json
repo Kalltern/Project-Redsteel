@@ -1,0 +1,103 @@
+{
+  "folder": "soSmrNsoxgPpqO2C",
+  "name": "Specialization: Stealth",
+  "type": "feature",
+  "img": "icons/skills/targeting/target-glowing-yellow.webp",
+  "system": {
+    "description": "<p>You get a 3 SP discount per level for Stealth and a +5% bonus. You can reroll Stealth once per day. Cannot be picked if you already have Talented I: Stealth.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Specialization: Stealth",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Specialization: Stealth",
+      "origin": "Item.OVSeMWB5xlyOfIhM",
+      "img": "icons/svg/cowled.svg",
+      "_id": "a8Ew0MF6jiyAVogP",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.stealth.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!OVSeMWB5xlyOfIhM.a8Ew0MF6jiyAVogP"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "e33d8f22b75f497f64117308d2a609e2f0a62da0"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.qY23DhhJfBet7EGs",
+    "duplicateSource": "Item.iGqjFiZoMjvTW9rJ",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "exQfSubzwCCs5h8v": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 1400000,
+  "_id": "OVSeMWB5xlyOfIhM",
+  "_key": "!items!OVSeMWB5xlyOfIhM"
+}

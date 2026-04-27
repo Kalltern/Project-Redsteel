@@ -1,0 +1,35 @@
+{
+  "name": "Throwing axes",
+  "type": "ammunition",
+  "img": "icons/weapons/axes/shortaxe-yellow.webp",
+  "system": {
+    "description": "",
+    "quantity": 6,
+    "option": "knives",
+    "options": [],
+    "bleed": null,
+    "penetration": null
+  },
+  "effects": [],
+  "folder": "GCGXFuObx5excja0",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.UPlksG5Uh1FinxNM",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294848035,
+    "modifiedTime": 1777294848035,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "EbxmeqsD1XnaRWk9",
+  "_key": "!items!EbxmeqsD1XnaRWk9"
+}

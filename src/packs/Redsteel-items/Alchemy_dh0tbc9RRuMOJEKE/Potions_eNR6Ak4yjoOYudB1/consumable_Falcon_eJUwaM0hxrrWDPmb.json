@@ -1,0 +1,51 @@
+{
+  "folder": "eNR6Ak4yjoOYudB1",
+  "name": "Falcon",
+  "type": "consumable",
+  "img": "icons/consumables/potions/bottle-pear-corked-labeled-ornamental-purple.webp",
+  "system": {
+    "description": "<p>Effect - Initiative +4, Perception +2, Shooting +5%<br />Duration - 30 minutes<br />Toxicity - 16<br />Production bonus - -10% -&gt; 1 dose<br />Ingredients - Distillate, Yl, Qu, Yl, Qu</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "potion",
+    "roll": {
+      "diceNum": 0,
+      "diceSize": "0",
+      "diceBonus": "0"
+    },
+    "type": "",
+    "toxicity": 16,
+    "bleed": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.mQY5B85ioxIGc64B",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "eJUwaM0hxrrWDPmb",
+  "_key": "!items!eJUwaM0hxrrWDPmb"
+}

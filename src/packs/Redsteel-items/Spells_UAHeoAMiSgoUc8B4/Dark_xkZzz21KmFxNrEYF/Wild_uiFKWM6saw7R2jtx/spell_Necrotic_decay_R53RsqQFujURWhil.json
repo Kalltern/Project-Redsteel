@@ -1,0 +1,155 @@
+{
+  "name": "Necrotic decay",
+  "type": "spell",
+  "img": "icons/magic/unholy/hand-fire-skeleton-pink.webp",
+  "system": {
+    "description": "<p>Deals 2d4 damage to the caster and 2d6 + {{spellPower}} damage to the target + 1d6 per each level of corruption. Ignores Armor.<br /><br />Not fully automated, resolve extra corruption damage manually.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": 25,
+    "cost": 3,
+    "perRound": 0,
+    "option": "magic",
+    "type": "darkness",
+    "rank": "wild",
+    "actionCost": "1",
+    "range": "8",
+    "spellClass": "support",
+    "roll": {
+      "diceNum": 2,
+      "diceSize": "6",
+      "diceBonus": "@spellPower + X"
+    },
+    "penetration": 100,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "dark",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "uiFKWM6saw7R2jtx",
+  "flags": {
+    "scene-packer": {
+      "hash": "0235e44612cbd07341b5cd11e229ef32fa1667e4"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.WGApVgnmfVuMZ2FY",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "R53RsqQFujURWhil",
+  "sort": 0,
+  "_key": "!items!R53RsqQFujURWhil"
+}
