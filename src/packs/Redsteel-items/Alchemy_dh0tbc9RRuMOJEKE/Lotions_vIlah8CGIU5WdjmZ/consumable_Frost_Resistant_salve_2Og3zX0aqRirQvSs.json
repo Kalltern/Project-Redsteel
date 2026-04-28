@@ -1,11 +1,11 @@
 {
   "folder": "vIlah8CGIU5WdjmZ",
-  "name": "Mast proti kyselinám",
+  "name": "Frost-Resistant salve",
   "type": "consumable",
-  "_id": "xEhGxslkZljRcpme",
-  "img": "icons/commodities/materials/bowl-powder-pink.webp",
+  "_id": "2Og3zX0aqRirQvSs",
+  "img": "icons/commodities/materials/bowl-liquid-red.webp",
   "system": {
-    "description": "<p>Effect - Protects from acid (50% resistance)<br />Duration - 1 day<br />Production bonus - -15% -&gt; 2 doses<br />Ingredients - Quality fat, Be, Ve, Yl, Mechový kámen</p>",
+    "description": "<p>Effect - Protects from frost (50% resistance), prevents Slow and Freeze<br />Duration - 1 day<br />Production bonus - -15% -&gt; 2 doses<br />Ingredients - Quality fat, Be, Ve, Yl, Fire stone</p>",
     "options": [
       "potion",
       "explosive",
@@ -41,8 +41,8 @@
     "systemId": "redsteel",
     "systemVersion": "0.8.1",
     "createdTime": 1777294836937,
-    "modifiedTime": 1777294836937,
-    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+    "modifiedTime": 1777361376572,
+    "lastModifiedBy": "rTB5mgST8sfucVG0"
   },
-  "_key": "!items!xEhGxslkZljRcpme"
+  "_key": "!items!2Og3zX0aqRirQvSs"
 }

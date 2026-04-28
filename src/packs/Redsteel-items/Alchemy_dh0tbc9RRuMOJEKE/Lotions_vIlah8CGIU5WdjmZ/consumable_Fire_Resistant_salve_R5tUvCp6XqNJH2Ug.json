@@ -1,11 +1,11 @@
 {
   "folder": "vIlah8CGIU5WdjmZ",
-  "name": "Hojivá mast",
+  "name": "Fire-Resistant salve",
   "type": "consumable",
-  "_id": "FLS1YsL3sTiAmiiD",
-  "img": "icons/commodities/materials/bowl-powder-blue.webp",
+  "_id": "R5tUvCp6XqNJH2Ug",
+  "img": "icons/commodities/materials/bowl-liquid-white.webp",
   "system": {
-    "description": "<p>Effect - 2x Health from resting<br />Duration - 12 hours<br />Production bonus - +30% -&gt; 3 doses<br />Ingredients - Fat, Be, Ve</p>",
+    "description": "<p>Effect - Protects from heat (50% resistance), prevents Burning<br />Duration - 1 day<br />Production bonus - -15% -&gt; 2 doses<br />Ingredients - Quality fat, Be, Ve, Yl, Ice stone</p>",
     "options": [
       "potion",
       "explosive",
@@ -41,8 +41,8 @@
     "systemId": "redsteel",
     "systemVersion": "0.8.1",
     "createdTime": 1777294836937,
-    "modifiedTime": 1777294836937,
-    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+    "modifiedTime": 1777361364984,
+    "lastModifiedBy": "rTB5mgST8sfucVG0"
   },
-  "_key": "!items!FLS1YsL3sTiAmiiD"
+  "_key": "!items!R5tUvCp6XqNJH2Ug"
 }
