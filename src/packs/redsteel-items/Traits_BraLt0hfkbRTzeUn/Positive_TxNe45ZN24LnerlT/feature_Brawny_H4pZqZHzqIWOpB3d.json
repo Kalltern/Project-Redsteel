@@ -1,0 +1,106 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Brawny",
+  "type": "feature",
+  "img": "icons/creatures/mammals/bull-horns-eyes-glowin-orange.webp",
+  "system": {
+    "description": "<p>Strength attribute cap +1, Hit Points +5, Athletics +5%.<br data-start=\"913\" data-end=\"916\" />May reroll a strength based skill once per day.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Brawny: Strength",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Brawny",
+      "origin": "Item.0Ho0My3e2N3Vdwnn",
+      "img": "icons/creatures/mammals/bull-horns-eyes-glowin-orange.webp",
+      "_id": "2kF8URbtUD6aY2wj",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.athletics.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.stats.health.base",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!H4pZqZHzqIWOpB3d.2kF8URbtUD6aY2wj"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "bbfe499eb9ad3f0cdc9c39d5977cfd73cf82bc1a"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.0Ho0My3e2N3Vdwnn",
+    "duplicateSource": "Item.0fUsRU5TeUrl8yDV",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 134375,
+  "_id": "H4pZqZHzqIWOpB3d",
+  "_key": "!items!H4pZqZHzqIWOpB3d"
+}

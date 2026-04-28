@@ -1,0 +1,138 @@
+{
+  "name": "Sprint",
+  "type": "ability",
+  "img": "icons/creatures/mammals/rabbit-movement-glowing-green.webp",
+  "system": {
+    "description": "<p>Run a distance of Speed * 2 hexes.<br />Increases Ranged defense by 15% and reduces Defense by 25%. <br />Maximum running distance is 12 hexes. <br />If an Opportunity Attack is triggered by moving away from an opponent, the character cannot use Defense.<br />Final movement may be affected by terrain. </p>",
+    "type": "other",
+    "weaponAbility": false,
+    "standalone": false,
+    "modifiesAttack": false,
+    "multiAttack": false,
+    "typeOptions": [
+      "melee",
+      "ranged"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "movement",
+      "attack",
+      "defense"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "drain"
+      ],
+      "types": []
+    },
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "attributeTest": "",
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testModifier": 0,
+    "costOptions": [
+      "stamina",
+      "mana",
+      "health",
+      "mental",
+      "fatigue",
+      "inspiration",
+      "holy energy"
+    ],
+    "costType": "stamina",
+    "cost": 1,
+    "perRound": 0,
+    "effects": {
+      "stagger": 0,
+      "bleed": 0,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "class": "movement",
+    "actionCost": "2 Actions",
+    "defense": 0,
+    "rangedDefense": 0,
+    "dodge": 0,
+    "attack": 0,
+    "roll": {
+      "diceBonus": ""
+    },
+    "breakthrough": "",
+    "penetration": 0,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0,
+    "dmgType1": "",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "folder": "laOvi1sJV6MKCK7M",
+  "flags": {
+    "scene-packer": {
+      "hash": "f490f3e932ff62282865170c243982dab9a4cbc2"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.e88xU4cfmjfW7mbl",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294835871,
+    "modifiedTime": 1777294835871,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "Xc0SM3CwS9pnT5rY",
+  "sort": 1800000,
+  "_key": "!items!Xc0SM3CwS9pnT5rY"
+}

@@ -1,0 +1,260 @@
+{
+  "name": "Air crit fails",
+  "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "VsUFThIH0VdAGe0G",
+      "name": "Degree 0",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>A loud blast echoes through the area, deafening all creatures within 30m for 1d10 minutes.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.VsUFThIH0VdAGe0G"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        2,
+        5
+      ],
+      "_id": "f559kSUbEQMxMj0E",
+      "name": "Degree 1",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>A bolt of lightning lashes out from the caster, linking them to the nearest target. Roll 1d100 to determine who is struck (1–50 target, 51–100 caster). The affected target takes 3d6 damage. Penetration 10.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.f559kSUbEQMxMj0E"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        6,
+        9
+      ],
+      "_id": "MMW5UoXBkLs6dH3k",
+      "name": "Degree 2",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. A powerful gust of wind throws the caster 3m in a random direction and knocks them prone. They take 1d8 damage for each hex they could not move.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.MMW5UoXBkLs6dH3k"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        10,
+        12
+      ],
+      "_id": "n1IH5Bfv5aRINWHP",
+      "name": "Degree 3",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. The caster begins to levitate and rises at a rate of 1.5m per round for 1d8+1 rounds.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.n1IH5Bfv5aRINWHP"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        13,
+        15
+      ],
+      "_id": "8nxTpA08cNTgE7Zy",
+      "name": "Degree 4",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 3d6 damage.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.8nxTpA08cNTgE7Zy"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        16,
+        18
+      ],
+      "_id": "D2z1eZqKVy6AJfbD",
+      "name": "Degree 5",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 4d6 damage and prevents casting of the affected school for 1d4+1 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.D2z1eZqKVy6AJfbD"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        19,
+        20
+      ],
+      "_id": "t5uouqrhUzfOqXde",
+      "name": "Degree 6",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Weather conditions within 100m drastically worsen for 3 rounds. All creatures must pass an Endurance test to avoid being knocked prone and a Very Hard Endurance test or be forced into Slow movement for the duration. Ranged and Thrown attacks suffer -50%.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.t5uouqrhUzfOqXde"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        21,
+        22
+      ],
+      "_id": "gTtzA09ggjaf8ZA6",
+      "name": "Degree 7",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns double the spell’s mana cost. Calls down 1d4+1 white lightning bolts within a 7.5m area, striking random targets that cannot repeat. If reduced to 0 Health, targets fall unconscious.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.gTtzA09ggjaf8ZA6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "_id": "YUTy2xR78VY59IDZ",
+      "name": "Degree 8",
+      "img": "icons/magic/lightning/bolt-cloud-sky-white.webp",
+      "description": "<p>Burns additional mana equal to double the spell cost. Deals 5d6 damage and prevents casting of the affected school for 2d6 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!K2TxHDgTrLSBWJ8d.YUTy2xR78VY59IDZ"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {
+    "tos": {
+      "critTable": "air"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294813580,
+    "modifiedTime": 1777294815972,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "formula": "1d20",
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "K2TxHDgTrLSBWJ8d",
+  "sort": 100000,
+  "_key": "!tables!K2TxHDgTrLSBWJ8d"
+}

@@ -1,0 +1,25 @@
+{
+  "type": "Item",
+  "folder": "UAHeoAMiSgoUc8B4",
+  "name": "Water",
+  "color": null,
+  "sorting": "a",
+  "_id": "bBDJDqsshLIbQDyE",
+  "description": "",
+  "sort": 500000,
+  "flags": {
+    "scene-packer": {
+      "hash": "45d007c4ab3cec863fc6f68be5453085f5ba0bbb"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!bBDJDqsshLIbQDyE"
+}

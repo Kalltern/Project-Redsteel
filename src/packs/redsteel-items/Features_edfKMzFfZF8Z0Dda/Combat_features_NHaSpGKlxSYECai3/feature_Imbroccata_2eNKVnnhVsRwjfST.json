@@ -1,0 +1,49 @@
+{
+  "folder": "NHaSpGKlxSYECai3",
+  "name": "Imbroccata",
+  "type": "feature",
+  "img": "icons/weapons/daggers/dagger-straight-thin-black.webp",
+  "system": {
+    "description": "<p>When using a rapier, damage dealt by the Weak Point Attack action is not limited by Penetration. Grants action \"Imbroccata: Exploit Weakness\".</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": null
+    },
+    "option": "feature"
+  },
+  "effects": [],
+  "flags": {
+    "scene-packer": {
+      "hash": "148a4400785f7755d02a21957bdd416c8ec7f590"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.ztuDbndFS43K5GMq",
+    "duplicateSource": "Item.sR9KUaDFsXwlBxlW",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 2450000,
+  "_id": "2eNKVnnhVsRwjfST",
+  "_key": "!items!2eNKVnnhVsRwjfST"
+}

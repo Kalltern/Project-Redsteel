@@ -1,0 +1,103 @@
+{
+  "folder": "59D22jtdSyIBTU6A",
+  "name": "Kleptomaniac",
+  "type": "feature",
+  "img": "icons/containers/bags/coinpouch-gold-red.webp",
+  "system": {
+    "description": "",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Kleptomaniac",
+      "active": [
+        false,
+        false
+      ],
+      "value": 2
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Kleptomaniac",
+      "origin": "Item.5VUtA1sC4S13NkWy",
+      "img": "icons/containers/bags/coinpouch-gold-red.webp",
+      "_id": "LwhTvD5qDBfh2vVw",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.pickpocketing.bonus",
+          "mode": 2,
+          "value": "20",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!4NPQGMNOAFrcQagK.LwhTvD5qDBfh2vVw"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "b6df42229f4e2dcd7dc5c5fb035330663f270f8e"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.5VUtA1sC4S13NkWy",
+    "duplicateSource": "Item.uC457U3agvBneQti",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 175000,
+  "_id": "4NPQGMNOAFrcQagK",
+  "_key": "!items!4NPQGMNOAFrcQagK"
+}

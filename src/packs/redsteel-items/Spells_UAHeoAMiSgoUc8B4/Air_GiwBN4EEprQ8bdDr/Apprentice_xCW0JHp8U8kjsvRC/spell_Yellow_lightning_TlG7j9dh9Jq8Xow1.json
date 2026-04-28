@@ -1,0 +1,155 @@
+{
+  "name": "Yellow lightning",
+  "type": "spell",
+  "img": "icons/magic/lightning/bolt-forked-orange.webp",
+  "system": {
+    "description": "<p>Deals 3d6 + {{math spellPower \"-\" 1}} damage to a single target.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": 20,
+    "cost": 4,
+    "perRound": 0,
+    "option": "magic",
+    "type": "air",
+    "rank": "apprentice",
+    "actionCost": "1",
+    "range": "50",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 3,
+      "diceSize": "6",
+      "diceBonus": "+ (@spellPower-1 )"
+    },
+    "penetration": 12,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "lightning",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": "0",
+      "effect2": "0",
+      "effect3": "0",
+      "effect4": "0",
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "xCW0JHp8U8kjsvRC",
+  "flags": {
+    "scene-packer": {
+      "hash": "852b2941b206afc26e96d0c0d99c20faf98cfd61"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.n2TQoPA8Kff3hlHH",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "TlG7j9dh9Jq8Xow1",
+  "sort": 0,
+  "_key": "!items!TlG7j9dh9Jq8Xow1"
+}

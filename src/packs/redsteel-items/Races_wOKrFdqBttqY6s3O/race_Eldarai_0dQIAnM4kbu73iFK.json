@@ -1,0 +1,101 @@
+{
+  "name": "Eldarai",
+  "type": "race",
+  "img": "icons/svg/aura.svg",
+  "system": {
+    "description": ""
+  },
+  "effects": [
+    {
+      "name": "Active Effect",
+      "origin": "Item.0dQIAnM4kbu73iFK",
+      "img": "icons/svg/aura.svg",
+      "_id": "ZKS6WqDh1NoTLifC",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.stats.mana.base",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.per.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.cha.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!0dQIAnM4kbu73iFK.ZKS6WqDh1NoTLifC"
+    }
+  ],
+  "folder": "wOKrFdqBttqY6s3O",
+  "flags": {
+    "scene-packer": {
+      "sourceId": "Compendium.world.rysy.Item.FRoWkIkTvgOcnl9I",
+      "hash": "c0d319714ebfa74e7a0815c06ef5e3af32f000ad"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.jdq6cKiZ7hoexzB4",
+    "duplicateSource": "Item.5W0g2di0AJM8BUWb",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294842837,
+    "modifiedTime": 1777294842837,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 150000,
+  "_id": "0dQIAnM4kbu73iFK",
+  "_key": "!items!0dQIAnM4kbu73iFK"
+}

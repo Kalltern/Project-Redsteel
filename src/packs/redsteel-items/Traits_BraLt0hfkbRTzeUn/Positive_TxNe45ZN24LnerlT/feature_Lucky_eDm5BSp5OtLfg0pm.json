@@ -1,0 +1,100 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Lucky",
+  "type": "feature",
+  "img": "icons/commodities/flowers/clover.webp",
+  "system": {
+    "description": "<p>Luck +1.<br data-start=\"330\" data-end=\"333\" />Once per day may reroll any roll.<br data-start=\"366\" data-end=\"369\" />Can also be used on a Critical Failure, but the ability to reroll is then lost for 7 days.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Lucky",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Lucky",
+      "origin": "Item.fsSCF1yC7ixg6Yd2",
+      "img": "icons/commodities/flowers/clover.webp",
+      "_id": "wIjR0KwKS7jDxA66",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.secondaryAttributes.lck.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!eDm5BSp5OtLfg0pm.wIjR0KwKS7jDxA66"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "f65ee3f238d4788fe53c0ad4e93b3952c387de4d"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.fsSCF1yC7ixg6Yd2",
+    "duplicateSource": "Item.Pl90TGh43GW7k278",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 175000,
+  "_id": "eDm5BSp5OtLfg0pm",
+  "_key": "!items!eDm5BSp5OtLfg0pm"
+}

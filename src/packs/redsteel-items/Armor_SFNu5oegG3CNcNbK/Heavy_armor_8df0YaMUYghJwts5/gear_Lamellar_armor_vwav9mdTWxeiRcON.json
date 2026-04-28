@@ -1,0 +1,83 @@
+{
+  "folder": "8df0YaMUYghJwts5",
+  "name": "Lamellar armor",
+  "type": "gear",
+  "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+  "system": {
+    "description": "",
+    "equipped": false,
+    "layerOptions": [
+      "Not Armor",
+      "Bottom",
+      "Middle",
+      "Top"
+    ],
+    "armor": {
+      "value": 10,
+      "durability": 1,
+      "acid": {
+        "value": 0
+      },
+      "fire": {
+        "value": 0
+      },
+      "frost": {
+        "value": 0
+      },
+      "lightning": {
+        "value": 0
+      },
+      "magic": {
+        "value": 0
+      },
+      "dark": {
+        "value": 0
+      },
+      "poison": {
+        "value": 0
+      },
+      "holy": {
+        "value": 0
+      }
+    },
+    "weight": 0,
+    "helmet": true,
+    "shield": false,
+    "swimPenalty": -15,
+    "dodgePenalty": -5,
+    "castPenalty": -15,
+    "acroPenalty": -15,
+    "stealthPenalty": -15,
+    "iniPenalty": -1,
+    "maxSpeed": -2,
+    "rangedDefense": 5,
+    "defense": 3,
+    "healthBonus": 5,
+    "critDefense": 0,
+    "rangedCritDefense": 0,
+    "archeryPenalty": -5,
+    "perPenalty": -5,
+    "layer": "Top"
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.GlZaAd994ZCJy8wg",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294837982,
+    "modifiedTime": 1777294837982,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "vwav9mdTWxeiRcON",
+  "_key": "!items!vwav9mdTWxeiRcON"
+}

@@ -1,0 +1,172 @@
+{
+  "name": "Poisonous thorn",
+  "type": "spell",
+  "img": "icons/magic/nature/root-vine-beanstalk-moon.webp",
+  "system": {
+    "description": "<p>A venomous thorn launches toward a single enemy, dealing 3d6 + <span style=\"font-family:Signika, sans-serif\">{{spellPower}} damage.</span> </p><p>+15% chance to inflict Poison upon the target.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [
+      "bleeding",
+      "burning",
+      "chain",
+      "disorientation",
+      "dispel",
+      "flammable",
+      "frozen",
+      "concussion",
+      "paralyzed",
+      "poisoned",
+      "rooted",
+      "slowed",
+      "stun",
+      "vulnerable",
+      "weakened",
+      "wet"
+    ],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": 20,
+    "cost": 4,
+    "perRound": 0,
+    "option": "magic",
+    "type": "earth",
+    "rank": "apprentice",
+    "actionCost": "1",
+    "range": "50",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 3,
+      "diceSize": "6",
+      "diceBonus": "@spellPower"
+    },
+    "penetration": 8,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "piercing",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": 15,
+      "effect2": 0,
+      "effect3": 0,
+      "effect4": 0,
+      "bleed": null,
+      "extra1": 15,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "poison",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "93jLy3nvMhvY366z",
+  "flags": {
+    "scene-packer": {
+      "hash": "badbbb65d19fa66ccd90bc030ec4ec7ad874026d"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.K78X6aS3XAFgkDaH",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "nIxb8mu9Daz5L1v2",
+  "sort": 0,
+  "_key": "!items!nIxb8mu9Daz5L1v2"
+}

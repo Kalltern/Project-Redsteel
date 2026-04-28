@@ -1,0 +1,109 @@
+{
+  "folder": "eZqc2jXvEWxnj88U",
+  "name": "Disfigured",
+  "type": "feature",
+  "img": "icons/magic/acid/dissolve-arm-flesh.webp",
+  "system": {
+    "description": "<p>A very repulsive, incurable injury.<br data-start=\"124\" data-end=\"127\" />Maximum Hit Points −3.<br data-start=\"149\" data-end=\"152\" />Visage −3.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Scarred",
+      "origin": "Item.gXMVr3QdJ2pD5yJE",
+      "img": "icons/magic/acid/dissolve-arm-flesh.webp",
+      "_id": "sw4LZG9YnsnuAffz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.stats.health.base",
+          "mode": 2,
+          "value": "-3",
+          "priority": null
+        },
+        {
+          "key": "system.secondaryAttributes.vis.bonus",
+          "mode": 2,
+          "value": "-3",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!ZDprpUSZNmVK0Tm1.sw4LZG9YnsnuAffz"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "92803d8c1e0473248039fba8f25459255faeba33"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.rM0cpDegLV2nm7u5",
+    "duplicateSource": "Item.yxbHVDBFWWC6jZuS",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 0,
+  "_id": "ZDprpUSZNmVK0Tm1",
+  "_key": "!items!ZDprpUSZNmVK0Tm1"
+}

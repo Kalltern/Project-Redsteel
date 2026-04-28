@@ -1,0 +1,48 @@
+{
+  "folder": "rleu17ZbMrvMDhT0",
+  "name": "Rat dreams",
+  "type": "consumable",
+  "img": "icons/commodities/materials/bowl-powder-grey.webp",
+  "system": {
+    "description": "<p>Effect - Puts the target into a deep slumber for several hours outside of combat. (Hard Resistance Test to sleep even in combat)<br />Duration - Forever, 1 hour on weapon<br />Production bonus - +20% -&gt; 1 dose<br />Ingredients - Fat, Al, Yl, Al, (Dream orchid)<br />Level - 1<br />Info - White powder, odorless. Easily soluble.</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "",
+    "roll": {
+      "diceNum": null,
+      "diceSize": "",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.C1prrhx2Krf7fwQN",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777294836937,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "zAC1hDUP8DCX9D1j",
+  "_key": "!items!zAC1hDUP8DCX9D1j"
+}

@@ -1,0 +1,102 @@
+{
+  "folder": "LtAi2BTNcTepSvJW",
+  "name": "Adept: Traps",
+  "type": "feature",
+  "img": "icons/commodities/treasure/medal-ribbon-striped-gold-red.webp",
+  "system": {
+    "description": "<p>Once per day you may reroll this ability. Adds 5% to tests of this ability.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Adept: Traps",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Adept: Traps",
+      "origin": "Item.CLBni7WtqPPk5LzV",
+      "img": "icons/svg/trap.svg",
+      "_id": "VYbqHGyD8bSYgDki",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.traps.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!CLBni7WtqPPk5LzV.VYbqHGyD8bSYgDki"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "090f3e2650c568fe180999ce1362a2e36473f2b4"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.NNuExCG0whzbkFMt",
+    "duplicateSource": "Item.fwANzRnUmuj6zxxg",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "CLBni7WtqPPk5LzV",
+  "sort": 196875,
+  "_key": "!items!CLBni7WtqPPk5LzV"
+}

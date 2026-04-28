@@ -1,0 +1,45 @@
+{
+  "folder": "NHaSpGKlxSYECai3",
+  "name": "Flamberge Cleave",
+  "type": "feature",
+  "img": "icons/skills/melee/blade-tip-orange.webp",
+  "system": {
+    "description": "<p>When using a flamberge, the Cleave action may strike two targets positioned one behind the other instead of two adjacent targets.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "feature"
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.4EIRmQDb2QZrwRSG",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "X2OH5qD0JfFqGYjs",
+  "_key": "!items!X2OH5qD0JfFqGYjs"
+}

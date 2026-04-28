@@ -1,0 +1,25 @@
+{
+  "type": "Item",
+  "folder": "xkZzz21KmFxNrEYF",
+  "name": "Apprentice",
+  "color": null,
+  "sorting": "a",
+  "_id": "dNkZeCgBcF5AHOTZ",
+  "description": "",
+  "sort": 200000,
+  "flags": {
+    "scene-packer": {
+      "hash": "837b5fb11e09dc4af9d07b7b2ed2d1f4b2f93629"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!dNkZeCgBcF5AHOTZ"
+}

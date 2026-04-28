@@ -1,0 +1,25 @@
+{
+  "type": "Item",
+  "folder": "UAHeoAMiSgoUc8B4",
+  "name": "Earth",
+  "color": null,
+  "sorting": "a",
+  "_id": "qHsw71Rtr6dNWLNW",
+  "description": "",
+  "sort": 200000,
+  "flags": {
+    "scene-packer": {
+      "hash": "97b45ce423cda8ad820fbc725a86f6ae75fa1d85"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!qHsw71Rtr6dNWLNW"
+}

@@ -1,0 +1,142 @@
+{
+  "folder": "qIzwWf8fbs2twvmh",
+  "name": "Shortsword",
+  "type": "weapon",
+  "img": "icons/weapons/swords/shortsword-guard-brass.webp",
+  "system": {
+    "description": "",
+    "class": "sword",
+    "classOptions": [
+      "axe",
+      "blunt",
+      "sword",
+      "polearm",
+      "bow",
+      "crossbow",
+      "firearm"
+    ],
+    "equipped": false,
+    "twoHandGrip": false,
+    "longReach": false,
+    "gripMode": "one",
+    "offhand": true,
+    "npcOffhand": false,
+    "type": "light",
+    "typeOptions": [
+      "light",
+      "medium",
+      "heavy"
+    ],
+    "weight": 0,
+    "attack": 0,
+    "defense": 5,
+    "critRange": 0,
+    "critChance": 0,
+    "critFail": 0,
+    "critDefense": 0,
+    "critDodge": 3,
+    "critDamage": 0,
+    "critPenetration": 0,
+    "dodge": 0,
+    "offhandProperties": {
+      "diceBonus": "+1+1d6",
+      "penetration": 0,
+      "attack": 0,
+      "defense": 0,
+      "critRange": 0,
+      "critChance": 0,
+      "critFail": 0,
+      "critDefense": 0,
+      "critDodge": 3,
+      "dodge": 0,
+      "breakthrough": "",
+      "sneakDamage": "",
+      "effects": {
+        "stagger": 0,
+        "bleed": 15,
+        "extra1": 0,
+        "extra2": 0,
+        "extra3": 0,
+        "stun": 0
+      },
+      "doctrines": {
+        "dimakerus": true,
+        "duelist": false,
+        "monk": false,
+        "rogue": true
+      },
+      "effectType1": "",
+      "effectType2": "",
+      "effectType3": ""
+    },
+    "doctrines": {
+      "cavalry": false,
+      "dimakerus": true,
+      "duelist": false,
+      "monk": false,
+      "pikeman": false,
+      "reaver": false,
+      "rogue": true,
+      "shieldbearer": true,
+      "swordsman": false,
+      "archer": false,
+      "arbalest": false,
+      "peltast": false,
+      "juggler": false
+    },
+    "effects": {
+      "stagger": 0,
+      "bleed": 15,
+      "extra1": 0,
+      "extra2": 0,
+      "extra3": 0
+    },
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [],
+    "roll": {
+      "diceNum": 2,
+      "diceSize": "6",
+      "diceBonus": "2"
+    },
+    "penetration": 5,
+    "breakthrough": "",
+    "sneakDamage": "2d6",
+    "finesse": true,
+    "sharp": true,
+    "thrown": false,
+    "dmgType1": "physical",
+    "bool2": "and",
+    "dmgType2": "slash",
+    "bool3": "or",
+    "dmgType3": "piercing",
+    "bool4": "",
+    "dmgType4": "",
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": "Item.TYAlXCMHotKRHBYM",
+    "duplicateSource": "Item.lpGqJIWcZFNvj9uT",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294848035,
+    "modifiedTime": 1777294848035,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "FLtx1f8NpvoPwrfw",
+  "_key": "!items!FLtx1f8NpvoPwrfw"
+}

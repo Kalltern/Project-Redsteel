@@ -1,0 +1,133 @@
+{
+  "folder": "59D22jtdSyIBTU6A",
+  "name": "Giant",
+  "type": "feature",
+  "img": "icons/skills/social/intimidation-impressing.webp",
+  "system": {
+    "description": "<p>Damage +1d4 (Combat and Throw) and +5% Strength bonus.<br data-start=\"235\" data-end=\"238\" />Penalty −10% to Dodge and Blending in Crowds, −5% Ranged Defense, and −3% Agility.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Giant",
+      "origin": "Item.Zy0aJx150pPH7X7y",
+      "img": "icons/skills/social/intimidation-impressing.webp",
+      "_id": "6pBNAckxEWxtIHwV",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.giant",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.str.modBonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.dodge.bonus",
+          "mode": 2,
+          "value": "-10",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.rangedDefense.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.dex.modBonus",
+          "mode": 2,
+          "value": "-3",
+          "priority": null
+        },
+        {
+          "key": "system.skills.acting.blend",
+          "mode": 2,
+          "value": "-10",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!MfiFohK0I9UYHPLf.6pBNAckxEWxtIHwV"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "0c55c4bf92494f1688f07978e77f81aa15e0d1e1"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.Zy0aJx150pPH7X7y",
+    "duplicateSource": "Item.CvjCeipCiK9s5Tp5",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 150000,
+  "_id": "MfiFohK0I9UYHPLf",
+  "_key": "!items!MfiFohK0I9UYHPLf"
+}

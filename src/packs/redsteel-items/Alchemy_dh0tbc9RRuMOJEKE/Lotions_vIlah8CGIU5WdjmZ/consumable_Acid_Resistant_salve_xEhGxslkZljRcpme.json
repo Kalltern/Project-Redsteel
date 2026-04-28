@@ -1,0 +1,48 @@
+{
+  "folder": "vIlah8CGIU5WdjmZ",
+  "name": "Acid-Resistant salve",
+  "type": "consumable",
+  "_id": "xEhGxslkZljRcpme",
+  "img": "icons/commodities/materials/bowl-powder-pink.webp",
+  "system": {
+    "description": "<p>Effect - Protects from acid (50% resistance)<br />Duration - 1 day<br />Production bonus - -15% -&gt; 2 doses<br />Ingredients - Quality fat, Be, Ve, Yl, Moss stone</p>",
+    "options": [
+      "potion",
+      "explosive",
+      "misc"
+    ],
+    "types": [
+      "mana",
+      "health",
+      "stamina"
+    ],
+    "quantity": 1,
+    "option": "",
+    "roll": {
+      "diceNum": null,
+      "diceSize": "",
+      "diceBonus": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "exQfSubzwCCs5h8v": 3,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294836937,
+    "modifiedTime": 1777361317418,
+    "lastModifiedBy": "rTB5mgST8sfucVG0"
+  },
+  "_key": "!items!xEhGxslkZljRcpme"
+}

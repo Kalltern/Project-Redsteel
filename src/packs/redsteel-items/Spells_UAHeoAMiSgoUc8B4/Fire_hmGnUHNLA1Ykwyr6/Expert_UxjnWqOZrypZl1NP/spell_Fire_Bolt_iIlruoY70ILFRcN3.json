@@ -1,0 +1,165 @@
+{
+  "name": "Fire Bolt",
+  "type": "spell",
+  "img": "icons/magic/fire/projectile-embers-orange.webp",
+  "system": {
+    "description": "<p>Deals 5d6 + 1d6x + {{math spellPower \"+\" 1}} damage to a single target.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [
+      "bleeding",
+      "burning",
+      "chain",
+      "disorientation",
+      "dispel",
+      "flammable",
+      "frozen",
+      "concussion",
+      "paralyzed",
+      "poisoned",
+      "rooted",
+      "slowed",
+      "stun",
+      "vulnerable",
+      "weakened",
+      "wet"
+    ],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": [
+      {
+        "mode": "",
+        "amount": "",
+        "type": ""
+      }
+    ],
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": -10,
+    "cost": 6,
+    "perRound": 0,
+    "option": "magic",
+    "type": "fire",
+    "rank": "expert",
+    "actionCost": "1",
+    "range": "50",
+    "spellClass": "lesser",
+    "roll": {
+      "diceNum": 5,
+      "diceSize": "6",
+      "diceBonus": "1d6x+1+@spellPower"
+    },
+    "penetration": 10,
+    "dmgType1": "magic",
+    "bool2": "and",
+    "dmgType2": "fire",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": 0,
+      "effect2": 0,
+      "effect3": 0,
+      "effect4": 0,
+      "bleed": null,
+      "extra1": null,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "",
+    "effectType2": "",
+    "effectType3": ""
+  },
+  "effects": [],
+  "folder": "UxjnWqOZrypZl1NP",
+  "flags": {
+    "scene-packer": {
+      "hash": "b5909e9add8e6f07dcae5571262423f8545d6850"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.EFftk5sMwNP7JzFZ",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "iIlruoY70ILFRcN3",
+  "sort": 0,
+  "_key": "!items!iIlruoY70ILFRcN3"
+}

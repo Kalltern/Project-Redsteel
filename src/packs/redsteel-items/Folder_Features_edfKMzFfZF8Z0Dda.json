@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Features",
+  "color": null,
+  "sorting": "a",
+  "_id": "edfKMzFfZF8Z0Dda",
+  "description": "",
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839032,
+    "modifiedTime": 1777294839032,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_key": "!folders!edfKMzFfZF8Z0Dda"
+}

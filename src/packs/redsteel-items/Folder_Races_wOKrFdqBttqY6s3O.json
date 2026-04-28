@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Races",
+  "color": null,
+  "sorting": "a",
+  "_id": "wOKrFdqBttqY6s3O",
+  "description": "",
+  "sort": 500000,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294842818,
+    "modifiedTime": 1777294842842,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_key": "!folders!wOKrFdqBttqY6s3O"
+}

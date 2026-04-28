@@ -1,0 +1,125 @@
+{
+  "name": "Halfling",
+  "type": "race",
+  "img": "icons/svg/aura.svg",
+  "system": {
+    "description": ""
+  },
+  "effects": [
+    {
+      "name": "Halfling",
+      "origin": "Item.h8G02phV3FNnBhYR",
+      "img": "icons/svg/aura.svg",
+      "_id": "73U5lwzzNPJqDA1x",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.cha.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.wil.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.secondaryAttributes.lck.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.stealth.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.skills.acrobacy.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.rangedDefense.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.combatSkills.dodge.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!h8G02phV3FNnBhYR.73U5lwzzNPJqDA1x"
+    }
+  ],
+  "folder": "wOKrFdqBttqY6s3O",
+  "flags": {
+    "scene-packer": {
+      "sourceId": "Compendium.world.rysy.Item.FRoWkIkTvgOcnl9I",
+      "hash": "c0d319714ebfa74e7a0815c06ef5e3af32f000ad"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.jdq6cKiZ7hoexzB4",
+    "duplicateSource": "Item.5W0g2di0AJM8BUWb",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294842837,
+    "modifiedTime": 1777294842837,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 200000,
+  "_id": "h8G02phV3FNnBhYR",
+  "_key": "!items!h8G02phV3FNnBhYR"
+}

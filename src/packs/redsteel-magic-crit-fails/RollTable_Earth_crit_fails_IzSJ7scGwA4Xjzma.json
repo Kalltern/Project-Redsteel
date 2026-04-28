@@ -1,0 +1,260 @@
+{
+  "name": "Earth crit fails",
+  "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "VsUFThIH0VdAGe0G",
+      "name": "Degree 0",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Causes minor tremors in the area, which are largely harmless.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.VsUFThIH0VdAGe0G"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        2,
+        5
+      ],
+      "_id": "f559kSUbEQMxMj0E",
+      "name": "Degree 1",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>The ground within 12m of the caster turns into sticky, fairly deep mud. The terrain requires 2 movement per hex (difficult terrain).</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.f559kSUbEQMxMj0E"
+    },
+    {
+      "type": "text",
+      "weight": 4,
+      "range": [
+        6,
+        9
+      ],
+      "_id": "MMW5UoXBkLs6dH3k",
+      "name": "Degree 2",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. The caster and two random targets within 7.5m are affected by the Roots effect. Strength/Endurance test (Advanced) to break free.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.MMW5UoXBkLs6dH3k"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        10,
+        12
+      ],
+      "_id": "n1IH5Bfv5aRINWHP",
+      "name": "Degree 3",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Transforms a random target within 1.5m into a helpless pig for 1d4 rounds. The pig has Speed 4, 25 HP, and suffers -10% to Defense/Dodge. The pig cannot attack.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.n1IH5Bfv5aRINWHP"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        13,
+        15
+      ],
+      "_id": "8nxTpA08cNTgE7Zy",
+      "name": "Degree 4",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 3d6 damage.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.8nxTpA08cNTgE7Zy"
+    },
+    {
+      "type": "text",
+      "weight": 3,
+      "range": [
+        16,
+        18
+      ],
+      "_id": "D2z1eZqKVy6AJfbD",
+      "name": "Degree 5",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Deals 4d6 damage and prevents casting of the affected school for 1d4+1 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.D2z1eZqKVy6AJfbD"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        19,
+        20
+      ],
+      "_id": "t5uouqrhUzfOqXde",
+      "name": "Degree 6",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to the spell’s cost. Covers the area within 12m of the caster with spell Poisonous fungus that persist for 1 hour.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.t5uouqrhUzfOqXde"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        21,
+        22
+      ],
+      "_id": "gTtzA09ggjaf8ZA6",
+      "name": "Degree 7",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to double the spell’s cost. Turns the caster to stone for 1 hour.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.gTtzA09ggjaf8ZA6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "_id": "YUTy2xR78VY59IDZ",
+      "name": "Degree 8",
+      "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
+      "description": "<p>Burns additional mana equal to double the spell’s cost. Deals 5d6 damage and prevents casting of the affected school for 2d6 rounds. Cancels all Concentration.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!IzSJ7scGwA4Xjzma.YUTy2xR78VY59IDZ"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {
+    "tos": {
+      "critTable": "earth"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294815213,
+    "modifiedTime": 1777294815972,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "formula": "1d20",
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "IzSJ7scGwA4Xjzma",
+  "sort": 400000,
+  "_key": "!tables!IzSJ7scGwA4Xjzma"
+}

@@ -1,0 +1,103 @@
+{
+  "folder": "59D22jtdSyIBTU6A",
+  "name": "Arcane essence !",
+  "type": "feature",
+  "img": "icons/magic/light/explosion-star-glow-silhouette.webp",
+  "system": {
+    "description": "<p>+5% chance for a Critical Success on Channeling.<br data-start=\"147\" data-end=\"150\" />Instability +1</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": 0
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Arcane essence",
+      "origin": "Item.s5zLRvlphLl9A7xw",
+      "img": "icons/magic/light/explosion-star-glow-silhouette.webp",
+      "_id": "HoaR1JdEjd4kesQh",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.combatSkills.channeling.critbonusing.critbonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!mnmpF2cKyy9zuuWT.HoaR1JdEjd4kesQh"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "55d07c4163cdc7c8d8f3195553284f171e3dc6be"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.s5zLRvlphLl9A7xw",
+    "duplicateSource": "Item.c8E6rOULwLuv3QAs",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 100000,
+  "_id": "mnmpF2cKyy9zuuWT",
+  "_key": "!items!mnmpF2cKyy9zuuWT"
+}

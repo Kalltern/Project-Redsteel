@@ -1,0 +1,98 @@
+{
+  "folder": "HBCTGlhrkFsZxRV5",
+  "name": "Liquor Connoisseur",
+  "type": "feature",
+  "img": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
+  "system": {
+    "description": "",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Drinking",
+      "active": [
+        false,
+        false
+      ],
+      "value": 2
+    },
+    "option": "feature"
+  },
+  "effects": [
+    {
+      "name": "Liquor Connoisseur",
+      "origin": "Item.gdwPw8yvUiiuY6Vj",
+      "img": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
+      "_id": "K9dTS6gayoijUWg8",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.stats.toxicity.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!gdwPw8yvUiiuY6Vj.K9dTS6gayoijUWg8"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "Item.BI5SSMFs5rrJWZPw",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294839144,
+    "modifiedTime": 1777294839144,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "_id": "gdwPw8yvUiiuY6Vj",
+  "_key": "!items!gdwPw8yvUiiuY6Vj"
+}

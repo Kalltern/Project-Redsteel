@@ -1,0 +1,25 @@
+{
+  "type": "Item",
+  "folder": "UAHeoAMiSgoUc8B4",
+  "name": "Dark",
+  "color": null,
+  "sorting": "a",
+  "_id": "xkZzz21KmFxNrEYF",
+  "description": "",
+  "sort": 100000,
+  "flags": {
+    "scene-packer": {
+      "hash": "1de4e5a468ef04dab0ea862f2f3a2bb89beb3abf"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!xkZzz21KmFxNrEYF"
+}

@@ -1,0 +1,103 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Gorgeous",
+  "type": "feature",
+  "img": "icons/commodities/gems/gem-faceted-radiant-teal.webp",
+  "system": {
+    "description": "<p>Appearance +3.<br data-start=\"771\" data-end=\"774\" />During character creation, may reroll the Appearance roll once.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "",
+      "active": [
+        false,
+        false
+      ],
+      "value": null
+    },
+    "option": "trait"
+  },
+  "effects": [
+    {
+      "name": "Gorgeous",
+      "origin": "Item.AW3VJ2JFMwGJU7L0",
+      "img": "icons/commodities/gems/gem-faceted-radiant-teal.webp",
+      "_id": "krIKdST11yniBGQY",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.secondaryAttributes.vis.bonus",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "statuscounter": {
+          "value": 1,
+          "config": {
+            "type": "default"
+          },
+          "visible": false
+        },
+        "tos": {
+          "actorTurns": null
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "redsteel",
+        "systemVersion": "0.8.1",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!NAy5FTVv6r4k3hPg.krIKdST11yniBGQY"
+    }
+  ],
+  "flags": {
+    "scene-packer": {
+      "hash": "8b58a1b029a1485006cccbdf4c1842e7ba0748c0"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.AW3VJ2JFMwGJU7L0",
+    "duplicateSource": "Item.TrMbfu5zkbJUP3Hi",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 106250,
+  "_id": "NAy5FTVv6r4k3hPg",
+  "_key": "!items!NAy5FTVv6r4k3hPg"
+}

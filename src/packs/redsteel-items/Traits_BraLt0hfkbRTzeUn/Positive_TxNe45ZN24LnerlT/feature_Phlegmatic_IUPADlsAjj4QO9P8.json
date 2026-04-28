@@ -1,0 +1,49 @@
+{
+  "folder": "TxNe45ZN24LnerlT",
+  "name": "Phlegmatic",
+  "type": "feature",
+  "img": "icons/magic/water/wave-water-blue.webp",
+  "system": {
+    "description": "<p>May reroll a Resolve roll once per day.</p>",
+    "options": [
+      "feature",
+      "trait",
+      "priest"
+    ],
+    "reroll": {
+      "name": "Phlegmatic - Resolve",
+      "active": [
+        false,
+        false
+      ],
+      "value": 1
+    },
+    "option": "trait"
+  },
+  "effects": [],
+  "flags": {
+    "scene-packer": {
+      "hash": "0f802b3cb0fc3fe7c3f9db62e33663c10159a84b"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.ffZySalFGuvDYNfj",
+    "duplicateSource": "Item.ajOq7NomNuz1aUkI",
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294846698,
+    "modifiedTime": 1777294846698,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "11b6AVyWZe9rh7fX": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "sort": 118750,
+  "_id": "IUPADlsAjj4QO9P8",
+  "_key": "!items!IUPADlsAjj4QO9P8"
+}

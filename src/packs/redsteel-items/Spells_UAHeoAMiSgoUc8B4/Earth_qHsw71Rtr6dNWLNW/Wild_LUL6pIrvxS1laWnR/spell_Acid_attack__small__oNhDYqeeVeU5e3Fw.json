@@ -1,0 +1,172 @@
+{
+  "name": "Acid attack (small)",
+  "type": "spell",
+  "img": "icons/magic/acid/projectile-needles-salvo-green.webp",
+  "system": {
+    "description": "<p>Throws a small amount of acid at a target within range. <br /><br />Deals 3d6 + <span style=\"font-family:Signika, sans-serif\">{{math spellPower}} damage</span>.<br />30% chance to corrode armor (-4 armor). </p><hr /><p>Requires acid within reach.</p>",
+    "options": [
+      "divine",
+      "magic"
+    ],
+    "spellRanks": [
+      "wild",
+      "apprentice",
+      "expert",
+      "master",
+      "grandmaster"
+    ],
+    "miracleRanks": [
+      "novice",
+      "acolyte",
+      "cleric"
+    ],
+    "effectOptions": [
+      "and",
+      "or"
+    ],
+    "effectTypes": [
+      "bleeding",
+      "burning",
+      "chain",
+      "disorientation",
+      "dispel",
+      "flammable",
+      "frozen",
+      "concussion",
+      "paralyzed",
+      "poisoned",
+      "rooted",
+      "slowed",
+      "stun",
+      "vulnerable",
+      "weakened",
+      "wet"
+    ],
+    "classOptions": [
+      "support",
+      "lesser",
+      "greater"
+    ],
+    "spellTypes": [
+      "fire",
+      "water",
+      "air",
+      "earth",
+      "spirit",
+      "body",
+      "darkness",
+      "blood",
+      "gnosis"
+    ],
+    "dmgTypes": [
+      "fire",
+      "frost",
+      "lightning",
+      "acid",
+      "poison",
+      "magic",
+      "dark",
+      "physical",
+      "psychic",
+      "blunt",
+      "piercing",
+      "slash"
+    ],
+    "testOptions": [
+      "Strength",
+      "Dexterity",
+      "Endurance",
+      "Inteligence",
+      "Will",
+      "Charisma",
+      "Perception"
+    ],
+    "resources": {
+      "0": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      },
+      "1": {
+        "type": "",
+        "mode": "",
+        "amount": null
+      }
+    },
+    "resourceOptions": {
+      "modes": [
+        "add",
+        "burn"
+      ],
+      "types": [
+        ""
+      ]
+    },
+    "isOffensive": true,
+    "sustained": false,
+    "difficulty": 30,
+    "cost": 1,
+    "perRound": 0,
+    "option": "magic",
+    "type": "earth",
+    "rank": "wild",
+    "actionCost": "1",
+    "range": "8",
+    "spellClass": "support",
+    "roll": {
+      "diceNum": 3,
+      "diceSize": "6",
+      "diceBonus": "@spellPower"
+    },
+    "penetration": 8,
+    "dmgType1": "acid",
+    "bool2": "",
+    "dmgType2": "",
+    "bool3": "",
+    "dmgType3": "",
+    "bool4": "",
+    "dmgType4": "",
+    "effects": {
+      "effect1": 30,
+      "effect2": 0,
+      "effect3": 0,
+      "effect4": 0,
+      "bleed": null,
+      "extra1": 30,
+      "extra2": null,
+      "extra3": null,
+      "stagger": null
+    },
+    "effectType1": "corrosion",
+    "effectType2": "",
+    "effectType3": "",
+    "attributeTest": "",
+    "testModifier": ""
+  },
+  "effects": [],
+  "folder": "LUL6pIrvxS1laWnR",
+  "flags": {
+    "scene-packer": {
+      "hash": "3cb83f3b1c826e7dafa7754ebf22fd81632b4298"
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.dilnamodulimport.pack-1.Item.aJocoD4lFrNXTQUN",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "redsteel",
+    "systemVersion": "0.8.1",
+    "createdTime": 1777294844905,
+    "modifiedTime": 1777294844905,
+    "lastModifiedBy": "UHjN0KQ8w8ZxibJg"
+  },
+  "ownership": {
+    "default": 0,
+    "rs3mzx7WZdtEmvH2": 3,
+    "UHjN0KQ8w8ZxibJg": 3
+  },
+  "_id": "oNhDYqeeVeU5e3Fw",
+  "sort": 0,
+  "_key": "!items!oNhDYqeeVeU5e3Fw"
+}
