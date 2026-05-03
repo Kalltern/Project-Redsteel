@@ -788,19 +788,13 @@ async function applyDamageAsGM(data) {
       let stacks = 1;
 
       if (name === "bleed") {
-        const originalChance = effect.chance;
-        const critStacks = effect.critStacks || 0;
+        const normal = effect.normalStacks ?? 0;
+        const crit = effect.critStacks ?? 0;
 
-        const modifiedChance = originalChance + targetMod;
-
-        const base = Math.floor(modifiedChance / 100);
-        const remainder = modifiedChance % 100;
-
-        stacks = base;
-        if (effect.roll <= remainder) stacks++;
+        stacks = normal;
 
         if (mode === "critical") {
-          stacks += critStacks;
+          stacks += crit;
         }
       }
 
@@ -1269,17 +1263,8 @@ async function applyEffectsAsGM(data) {
 
       let stacks = 1;
 
-      if (effectId === "bleed" && typeof effectData.chance === "number") {
-        const base = Math.floor(effectData.chance / 100);
-        const remainder = effectData.chance % 100;
-
-        stacks = base;
-        if (
-          typeof effectData.roll === "number" &&
-          effectData.roll <= remainder
-        ) {
-          stacks++;
-        }
+      if (effectId === "bleed") {
+        stacks = effectData.stacks ?? 0;
       }
 
       await applyEffectToActor(actor, effectId, stacks);

@@ -1028,16 +1028,9 @@ export async function getEffectRolls(
     offProps?.effects?.bleed === -1 ||
     abilityEffects["bleed"] === -1;
 
+  // --- COMPUTE ONLY ---
   if (bleedIsAuto) {
     normalBleeds += 1;
-
-    mechanicalEffects["bleed"] = {
-      chance: null,
-      roll: null,
-      auto: true,
-      critStacks: critBleeds,
-    };
-
     bleedChanceDisplay = "AUTO";
   } else if (bleedBaseValue > 0) {
     const abilityBleed = abilityEffects["bleed"] || 0;
@@ -1069,28 +1062,39 @@ export async function getEffectRolls(
     if (bleedRollResult <= bleedChance) regularStacks++;
 
     normalBleeds += regularStacks;
+  }
 
+  // --- FINAL RESULT (single source of truth) ---
+  totalBleeds = critBleeds + normalBleeds;
+
+  // --- ASSIGN ONCE ---
+  if (bleedIsAuto || bleedBaseValue > 0) {
     mechanicalEffects["bleed"] = {
-      chance: totalBleedChance,
-      roll: bleedRollResult,
       critStacks: critBleeds,
-      auto: false,
+      normalStacks: normalBleeds,
+      chance: bleedIsAuto ? null : totalBleedChance,
+      roll: bleedIsAuto ? null : bleedRollResult,
+      rolls: {
+        regular: regularBleedRolls,
+        sharp: sharpBleedRolls,
+      },
+      auto: bleedIsAuto,
     };
   }
-  totalBleeds = critBleeds + normalBleeds;
+
+  // --- DISPLAY (unchanged logic, now consistent) ---
   let allBleedRollResults = "";
   if (mechanicalEffects["bleed"] || bleedChanceDisplay === "AUTO") {
     allBleedRollResults = `|Bleed: ${[
       ...regularBleedRolls,
       ...sharpBleedRolls,
     ].join("| |Sharp: ")}| < ${bleedChanceDisplay}% 
-    <span title="Normal Bleed Applied: ${normalBleeds}
-In total :(${totalBleeds}) due to Crit score: ${critScore} 
-">
-  ${normalBleeds}
-  <i class="fa-regular fa-droplet fa-lg" style="color: #bd0000;"></i>
-   (${totalBleeds})
-</span>`;
+  <span title="Normal Bleed Applied: ${normalBleeds}
+In total :(${totalBleeds}) due to Crit score: ${critScore}">
+    ${normalBleeds}
+    <i class="fa-regular fa-droplet fa-lg" style="color: #bd0000;"></i>
+    (${totalBleeds})
+  </span>`;
   }
 
   return {
