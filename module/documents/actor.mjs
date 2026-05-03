@@ -71,9 +71,8 @@ export class RedsteelActor extends Actor {
       "dark",
       "holy",
     ];
-    for (const type of elementalTypes) {
-      systemData.armor[type].bonus = 0;
-    }
+
+    // possibly to return here in case armor bonuses stack inapropriately
     let totalArmor = 0;
     for (const item of this.items) {
       if (item.type === "gear" && item.system.equipped) {

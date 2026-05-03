@@ -130,8 +130,8 @@ export async function combatAbilities() {
     const aimValue =
       parseInt(html.find('input[name="aim"]:checked').val()) || 0;
 
-    const useSneak = html.find("#sneak-attack-checkbox")[0]?.checked;
-    const useFlanking = html.find("#flanking-attack-checkbox")[0]?.checked;
+    const useSneak = html.find('[name="sneakAttack"]').is(":checked");
+    const useFlanking = html.find('[name="flanking"]').is(":checked");
     const selectedModifierIds = Array.from(
       container.querySelectorAll(".attack-modifier-checkbox:checked"),
     ).map((cb) => cb.dataset.abilityId);
@@ -293,12 +293,12 @@ export async function combatAbilities() {
   const modifierCheckboxHtml = modifierAbilities
     .map(
       (mod) => `
-    <label>
-      ${mod.name}
-      <input type="checkbox"
-             class="attack-modifier-checkbox"
-             data-ability-id="${mod.id}" />
-    </label>
+<label class="pill">
+  <input type="checkbox"
+         class="attack-modifier-checkbox"
+         data-ability-id="${mod.id}" />
+  <span>${mod.name}</span>
+</label>
   `,
     )
     .join("");
@@ -332,19 +332,28 @@ export async function combatAbilities() {
 </div>
 
 <div class="form-group">
-<label>
-  Sneak Attack <input type="checkbox" id="sneak-attack-checkbox" />
-  Flanking <input type="checkbox" id="flanking-attack-checkbox" />
+<div class="form-group attack-options-row">
+  <label class="pill">
+    <input type="checkbox" name="sneakAttack" />
+    <span>Sneak Attack</span>
+  </label>
+
+  <label class="pill">
+    <input type="checkbox" name="flanking" />
+    <span>Flanking</span>
+  </label>
+
   ${
     hasLongReach
       ? `
-  <label>
-    Long Reach <input type="checkbox" name="longReachPenalty" />
+  <label class="pill penalty" title="Penalty of -5 applies for close combat">
+    <input type="checkbox" name="longReachPenalty" />
+    <span>Polearm penalty</span>
   </label>
 `
       : ""
   }
-</label>
+</div>
 
 
 </div>
@@ -361,6 +370,50 @@ export async function combatAbilities() {
   </div>
 
 </form>
+<style>
+.form-group {
+  margin-bottom: 8px;
+}
+.attack-options-row,
+.attack-modifiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill input {
+  display: none;
+}
+  .pill {
+  cursor: pointer;
+  flex: 0 0 auto; 
+}
+.pill span:hover {
+  border-color: #999;
+  color: white;
+}  
+.pill span {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid #666;
+  border-radius: 999px;
+  background: #2b2b2b;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill input:checked + span {
+  background: #4a6fa5;
+  border-color: #6ea8ff;
+  color: white;
+}
+
+.pill.penalty input:checked + span {
+  background: #a54a4a;
+  border-color: #ff6e6e;
+}
+  </style>
 `,
     classes: ["ability-dialog"],
     buttons: {},

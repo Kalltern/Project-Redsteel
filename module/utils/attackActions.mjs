@@ -70,46 +70,92 @@ export async function attackActions() {
         .join("")}
     </div>
   </div>
+  <hr>
 
 <div class="form-group attack-options-row">
-  <label>
-    <input type="checkbox" id="sneak-attack-checkbox" />
-    Sneak Attack
+  <label class="pill">
+    <input type="checkbox" name="sneakAttack" />
+    <span>Sneak Attack</span>
   </label>
 
-  <label>
-    <input type="checkbox" id="flanking-attack-checkbox" />
-    Flanking
+  <label class="pill">
+    <input type="checkbox" name="flanking" />
+    <span>Flanking</span>
   </label>
 
-  ${
-    hasLongReach
-      ? `
-  <label>
+${
+  hasLongReach
+    ? `
+  <label class="pill penalty" title="Penalty of -5 applies for close combat">
     <input type="checkbox" name="longReachPenalty" />
-    Long Reach (-5)
+    <span>Polearm penalty</span>
   </label>
-  `
-      : ""
-  }
+`
+    : ""
+}
 </div>
 
-</form>
 
+</form>
+<hr>
 <div class="attack-modifiers">
   ${modifierAbilities
     .map(
       (mod) => `
-    <label>
-      ${mod.name}
-      <input type="checkbox"
-             class="attack-modifier-checkbox"
-             data-ability-id="${mod.id}" />
-    </label>
+<label class="pill">
+  <input type="checkbox"
+         class="attack-modifier-checkbox"
+         data-ability-id="${mod.id}" />
+  <span>${mod.name}</span>
+</label>
   `,
     )
     .join("")}
 </div>
+<style>
+.form-group {
+  margin-bottom: 8px;
+}
+.attack-options-row,
+.attack-modifiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill input {
+  display: none;
+}
+  .pill {
+  cursor: pointer;
+  flex: 0 0 auto; 
+}
+.pill span:hover {
+  border-color: #999;
+  color: white;
+}  
+.pill span {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid #666;
+  border-radius: 999px;
+  background: #2b2b2b;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill input:checked + span {
+  background: #4a6fa5;
+  border-color: #6ea8ff;
+  color: white;
+}
+
+.pill.penalty input:checked + span {
+  background: #a54a4a;
+  border-color: #ff6e6e;
+}
+  </style>
 `;
 
   const buttons = {};
@@ -118,8 +164,8 @@ export async function attackActions() {
     buttons[label] = {
       label,
       callback: async (html) => {
-        const useSneak = html.find("#sneak-attack-checkbox")[0]?.checked;
-        const useFlanking = html.find("#flanking-attack-checkbox")[0]?.checked;
+        const useSneak = html.find('[name="sneakAttack"]').is(":checked");
+        const useFlanking = html.find('[name="flanking"]').is(":checked");
         const longReachPenalty = html
           .find('[name="longReachPenalty"]')
           .is(":checked")
@@ -151,7 +197,10 @@ export async function attackActions() {
         );
 
         // ─── Deduct Costs ───
-        const paid = await game.redsteel.deductAbilityCost(actor, selectedModifiers);
+        const paid = await game.redsteel.deductAbilityCost(
+          actor,
+          selectedModifiers,
+        );
         if (!paid) return;
 
         // ─── Execute Attack ───

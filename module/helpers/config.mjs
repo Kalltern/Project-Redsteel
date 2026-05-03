@@ -135,6 +135,7 @@ REDSTEEL.effectDefinitions = {
     img: "icons/magic/control/fear-fright-white.webp",
     statuses: ["panic"],
     defaultTurns: 2,
+    useDuration: true,
     changes: [
       {
         key: "system.globalMod",

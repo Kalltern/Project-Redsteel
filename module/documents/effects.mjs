@@ -70,11 +70,24 @@ export class RedsteelActiveEffect extends ActiveEffect {
     Hooks.on("updateCombat", async (combat, changed) => {
       if (!this._isAuthoritative()) return;
 
+      const turnKey = `${combat.round}-${combat.turn}`;
+      const lastProcessed = combat.getFlag("redsteel", "lastTurnKey");
+
+      // 🔒 Prevent double execution globally
+      if (lastProcessed === turnKey) return;
+
+      // -------------------------
+      // ROUND START
+      // -------------------------
       if ("round" in changed) {
         await this._onRoundStart(combat);
       }
 
-      if ("turn" in changed) {
+      // -------------------------
+      // TURN START (including round rollover)
+      // -------------------------
+      if ("turn" in changed || "combatantId" in changed || "round" in changed) {
+        await combat.setFlag("redsteel", "lastTurnKey", turnKey);
         await this._onTurnStart(combat);
       }
     });
