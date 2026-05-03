@@ -91,16 +91,9 @@ export async function getNonWeaponAbility(actor, ability) {
     const totalModifier = Number(baseValue) + Number(abilityTestModifier);
     // Create the Roll
     const attributeRoll = new Roll(`(${totalModifier}) - 1d100`);
-    attributeRoll.evaluateSync();
+    await attributeRoll.evaluate();
 
     const attributeRollTotal = attributeRoll.total;
-    const attributeString = `<hr>
-    |${abilityAttributeTestName} Test ${totalModifier}%|<br>
-    Margin of Success: ${attributeRollTotal}<br>
-    <hr>
-  `;
-
-    concatRollAndDescription += attributeString;
     attributeTestRoll = attributeRoll;
   }
 
@@ -133,15 +126,6 @@ export async function getNonWeaponAbility(actor, ability) {
   const damageTotal = damageRoll ? Math.floor(damageRoll.total) : 0;
   const penetration = system.penetration;
   const halfDamage = system.roll?.halfDamage || false;
-  let attackHTML = "";
-  if (attributeTestRoll instanceof Roll && attributeTestRoll._evaluated) {
-    attackHTML = await attributeTestRoll.render();
-  }
-
-  let damageHTML = "";
-  if (damageRoll instanceof Roll && damageRoll._evaluated) {
-    damageHTML = await damageRoll.render();
-  }
   const validRolls = [];
 
   if (attributeTestRoll instanceof Roll && attributeTestRoll._evaluated) {
@@ -151,25 +135,42 @@ export async function getNonWeaponAbility(actor, ability) {
   if (damageRoll instanceof Roll && damageRoll._evaluated) {
     validRolls.push(damageRoll);
   }
+
+  const columns = [];
+
+  // Margin of Success column
+  if (attributeTestRoll instanceof Roll && attributeTestRoll._evaluated) {
+    const attackHTML = await attributeTestRoll.render();
+
+    columns.push(`
+    <div class="roll-column">
+      <div class="roll-label">Margin of Success</div>
+      ${attackHTML}
+    </div>
+  `);
+  }
+
+  // Damage column
+  if (damageRoll instanceof Roll && damageRoll._evaluated) {
+    const damageHTML = await damageRoll.render();
+
+    columns.push(`
+    <div class="roll-column">
+      <div class="roll-label">Damage Roll</div>
+      ${damageHTML}
+    </div>
+  `);
+  }
+
+  // Final content
+  const content = columns.length
+    ? `<div class="dual-roll">${columns.join("")}</div>`
+    : "";
+
   // Send the combined chat message
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(),
-    content: `${
-      attackHTML
-        ? `
-  <div class="roll-column">
-    <div class="roll-label">Margin of Success</div>
-    ${attackHTML}
-  </div>`
-        : ""
-    }
-  </div>
-  <div class="roll-column">
-    <div class="roll-label">Damage Roll</div>
-    ${damageHTML}
-  </div>
-</div>
-`,
+    content,
     rolls: validRolls,
     flags: {
       redsteel: {

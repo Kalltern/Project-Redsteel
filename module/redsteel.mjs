@@ -127,6 +127,7 @@ Hooks.once("init", function () {
   game.redsteel.resolveChannelingTick = resolveChannelingTick;
   registerDynamicInitiative();
   registerEffectSheetExtensions();
+  registerKeepDialogOpen();
 
   /**
    * Set an initiative formula for the system
@@ -177,10 +178,19 @@ function registerDynamicInitiative() {
     name: "REDSTEEL.Config.Initiative.name",
     hint: "REDSTEEL.Config.Initiative.label",
     type: Boolean,
-    default: false,
+    default: true,
   });
 }
 
+function registerKeepDialogOpen() {
+  game.settings.register("redsteel", "keepAbilityDialogOpen", {
+    name: "Keep Ability Dialog Open",
+    scope: "client", // per user
+    config: false,
+    type: Boolean,
+    default: false,
+  });
+}
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */

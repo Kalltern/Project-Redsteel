@@ -302,16 +302,18 @@ export async function combatAbilities() {
   `,
     )
     .join("");
+  const keepOpen = game.settings.get("redsteel", "keepAbilityDialogOpen");
+
   let abilityDialog = new Dialog({
     title: `Choose Combat or Defense Ability`,
     content: `
-      <div id="keep-open-container">
-    <label>
-      <input type="checkbox" id="keep-open">
-      Keep this window open
-    </label>
-  </div>
-<form class="ability-dialog-form">
+    <div id="keep-open-container">
+      <label>
+        <input type="checkbox" id="keep-open" ${keepOpen ? "checked" : ""}>
+        Keep this window open
+      </label>
+    </div>
+    <form class="ability-dialog-form">
 
   ${activeSetPreview}
 
@@ -418,9 +420,23 @@ export async function combatAbilities() {
     classes: ["ability-dialog"],
     buttons: {},
     render: (html) => {
+      const root = html[0];
+
       const app = abilityDialog.element[0];
       app.style.height = "auto";
       app.style.minHeight = "530px";
+
+      // ✅ ADD THIS PART
+      const checkbox = root.querySelector("#keep-open");
+
+      checkbox?.addEventListener("change", async (event) => {
+        await game.settings.set(
+          "redsteel",
+          "keepAbilityDialogOpen",
+          event.target.checked,
+        );
+      });
+
       // Activate first tab
       const firstTab = html.find(".tab-item").first();
       firstTab.addClass("active");
@@ -443,7 +459,6 @@ export async function combatAbilities() {
         const ability = abilities.find((a) => a.id === abilityId);
         if (!ability) return;
 
-        // If we're in multi-attack continuation mode
         if (
           lockedMultiAttackAbility &&
           ability.id !== lockedMultiAttackAbility.id
@@ -452,8 +467,9 @@ export async function combatAbilities() {
           return;
         }
 
-        await onAbilityChosen(ability, html[0], abilityDialog, actor);
+        await onAbilityChosen(ability, root, abilityDialog, actor);
       });
+
       html.find(".weapon-set-toggle").on("click", async () => {
         const next = actor.system.combat.activeWeaponSet === 1 ? 2 : 1;
 
@@ -462,7 +478,7 @@ export async function combatAbilities() {
         });
 
         abilityDialog.close();
-        combatAbilities(); // 🔁 reopen with updated preview
+        combatAbilities();
       });
     },
   });
