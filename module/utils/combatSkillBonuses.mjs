@@ -1298,7 +1298,8 @@ export function evaluateDmgVsArmor({
   baseDamage = Math.max(baseDamage - normalArmor, 0);
 
   /* 3. Penetration Floor */
-  baseDamage = Math.max(baseDamage, penetration ?? 0);
+  const effectivePenetration = Math.min(penetration ?? 0, damage);
+  baseDamage = Math.max(baseDamage, effectivePenetration);
 
   /* 4. Specialized Armor Reduction */
   let specializedReduction = 0;
