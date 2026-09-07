@@ -233,6 +233,25 @@ export function isImmuneToEffect(actor, effectId) {
   return immune === true || immune === 1 || immune === "true" || immune === "1";
 }
 
+/**
+ * Hemophylia — "for each Bleeding gained, gains one additional Bleeding":
+ * incoming Bleeding stacks are doubled for the receiving actor. The
+ * multiplication is performed in exactly one place at apply time
+ * (RedsteelActiveEffect.applyEffect); this helper exists so the Apply Damage
+ * preview can show the same number that apply will really hand out, instead of
+ * quietly predicting half of it.
+ *
+ * Only meaningful for Bleeding — callers gate on the effect id themselves.
+ */
+export function hemophiliaBleedStacks(actor, stacks) {
+  if (!actor?.system?.hemophilia) return stacks;
+  const n = Number(stacks);
+  // A Bleeding that never landed stays absent — only a real stack is doubled.
+  // Guarding here matters for the preview, which asks about rolls that failed.
+  if (!Number.isFinite(n) || n <= 0) return stacks;
+  return n * 2;
+}
+
 /* -------------------------------------------- */
 /*  CONFIG.statusEffects synchronization        */
 /* -------------------------------------------- */

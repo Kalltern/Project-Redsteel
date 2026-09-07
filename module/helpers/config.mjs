@@ -1140,6 +1140,22 @@ REDSTEEL.effectDefinitions = {
     changes: [],
   },
 
+  // "Přetížení štítu" — the shield arm is spent: the shield is still carried,
+  // but it stops helping. Every number it grants (defense, ranged defense,
+  // both crit-defense values, its armor, its health bonus) drops to 0, while
+  // everything it costs (a large shield's dodge malus, its initiative and
+  // speed penalty) stays. Carries no `changes`: the numbers being cancelled
+  // are the shield item's own, which no fixed Active Effect value could know,
+  // so the cancelling happens where the shield is read — prepareDerivedData in
+  // documents/actor.mjs, on both the weapon-set path and the equipped-gear one.
+  shield_strain: {
+    name: "REDSTEEL.Effect.Name.shield_strain",
+    img: "icons/svg/shield.svg",
+    statuses: ["shield_strain"],
+    stackBehavior: "ignore",
+    changes: [],
+  },
+
   // ==========================================================
   // Effects referenced by spells (Kniha kouzel) and the spell
   // sheet effectTypes vocabulary that previously had no

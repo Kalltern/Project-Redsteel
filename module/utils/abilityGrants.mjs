@@ -730,6 +730,87 @@ const GRANT_FLAG_SCOPE = "redsteel";
 const GRANTED_FLAG = "grantedAbility"; // boolean: this item was auto-granted
 const GRANT_SOURCE_FLAG = "grantSource"; // string: the compendium UUID it came from
 
+/* --------------------------------------------------------------------------
+ * Ability categories — the Abilities tab sub-tabs.
+ *
+ * `system.category` on the item is authoritative; every compendium ability
+ * carries one. The derivation below is the fallback for abilities that predate
+ * the field (copies already sitting on live actors) and for anything the GM
+ * builds by hand.
+ * ----------------------------------------------------------------------- */
+
+/** Valid category ids, in the order the sub-tabs are shown. */
+export const ABILITY_CATEGORY_IDS = ["basic", "command", "doctrine", "weapon"];
+
+/** Category used when nothing else identifies the ability. */
+const DEFAULT_ABILITY_CATEGORY = "basic";
+
+/**
+ * Category derived from a grant rule's trigger, most specific first.
+ * An ability is reachable from several sources (Feint comes from Swords 6 and
+ * Monk 2; Cleave from Swordsman/Reaver and the Cleaver Cleave feature) but a
+ * card lives in exactly one sub-tab, so the trigger kinds are ranked:
+ * weapon skill beats doctrine beats feature.
+ */
+const CATEGORY_BY_KIND_RANK = [
+  ["always", "basic"],
+  ["leadership", "command"],
+  ["weaponSkill", "weapon"],
+  ["doctrine", "doctrine"],
+  // A specialisation node is an advancement track like a doctrine (Blood Pact
+  // comes off the School of Blood tree), so it lands with the doctrine actions.
+  ["specNode", "doctrine"],
+  // Feature grants left over at this point are the weapon feats: Imbroccata,
+  // Fuscina Ictus, Leg Sweep, Flamberge Cleave.
+  ["item", "weapon"],
+];
+
+/** compendium ability UUID -> derived category. Built once, on first use. */
+let _categoryByUuid = null;
+
+function categoryByUuid() {
+  if (_categoryByUuid) return _categoryByUuid;
+  const kinds = new Map(); // uuid -> Set of ranking keys
+  for (const rule of ABILITY_GRANTS) {
+    // Leadership is the only skill trigger and it is what makes a Command.
+    const key =
+      rule.when.kind === "skill" && rule.when.key === "leadership"
+        ? "leadership"
+        : rule.when.kind;
+    for (const uuid of rule.grant) {
+      if (!kinds.has(uuid)) kinds.set(uuid, new Set());
+      kinds.get(uuid).add(key);
+    }
+  }
+  _categoryByUuid = new Map();
+  for (const [uuid, keys] of kinds) {
+    const hit = CATEGORY_BY_KIND_RANK.find(([kind]) => keys.has(kind));
+    if (hit) _categoryByUuid.set(uuid, hit[1]);
+  }
+  return _categoryByUuid;
+}
+
+/**
+ * Which Abilities sub-tab an ability belongs in.
+ * @param {Item} item  an ability item
+ * @returns {string}   one of ABILITY_CATEGORY_IDS
+ */
+export function getAbilityCategory(item) {
+  const stored = item?.system?.category;
+  if (ABILITY_CATEGORY_IDS.includes(stored)) return stored;
+
+  // Auto-granted copies remember the compendium entry they came from; a
+  // hand-dragged copy keeps the same uuid in _stats.compendiumSource.
+  const uuid =
+    item?.getFlag?.(GRANT_FLAG_SCOPE, GRANT_SOURCE_FLAG) ??
+    item?._stats?.compendiumSource;
+  const derived = uuid ? categoryByUuid().get(uuid) : null;
+  if (derived) return derived;
+
+  if (item?.system?.class === "command") return "command";
+  return DEFAULT_ABILITY_CATEGORY;
+}
+
 // Actor-level flags:
 //   suppressedGrants     string[]  grant UUIDs the player manually removed; never re-add
 //   disableAbilityGrants boolean   skip the whole grant system for this actor (PoC chars)

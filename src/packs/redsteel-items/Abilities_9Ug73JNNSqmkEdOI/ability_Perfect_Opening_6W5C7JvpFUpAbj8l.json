@@ -108,7 +108,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.PerfectOpening.name"
+    "localizationKey": "REDSTEEL.Items.PerfectOpening.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

@@ -108,7 +108,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.ImprovedAiming.name"
+    "localizationKey": "REDSTEEL.Items.ImprovedAiming.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "laOvi1sJV6MKCK7M",

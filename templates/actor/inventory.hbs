@@ -16,7 +16,8 @@
 <div class="loadout-group armor-group">
   <div class="loadout-group-label">{{localize "REDSTEEL.Actor.Inventory.Armor"}}</div>
   {{!-- Helmet on/off. Off drops the helmet's archery and perception
-        penalties; head-hit armor bypass is not wired yet. --}}
+        penalties, and leaves the head unarmored: a landed aimed strike there
+        ignores the worn kit (natural and magical armor still stand). --}}
   <a
     class="armor-helmet-toggle {{#if helmetOff}}off{{/if}} {{#unless hasHelmet}}absent{{/unless}}"
     data-action="toggleHelmet"

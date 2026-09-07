@@ -99,7 +99,8 @@
     "effectType2": "",
     "effectType3": "",
     "key": "defensive_stance",
-    "localizationKey": "REDSTEEL.Items.DefensiveStance.name"
+    "localizationKey": "REDSTEEL.Items.DefensiveStance.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

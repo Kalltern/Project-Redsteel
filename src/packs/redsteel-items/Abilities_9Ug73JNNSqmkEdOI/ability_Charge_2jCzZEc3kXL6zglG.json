@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.Charge.name"
+    "localizationKey": "REDSTEEL.Items.Charge.name",
+    "category": "weapon"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

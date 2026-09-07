@@ -26,6 +26,13 @@
     (e.g. <code>perception, archery</code>). One pool per skill that should be
     consumed separately.
   </p>
+  <p class="hint">
+    An attribute alone (<code>str</code>) covers only the raw Strength test;
+    <code>str-based</code> covers every non-combat roll governed by it
+    (Athletics, Smithing, …). Neither rerolls an attack or a defense — for that
+    the pool must be universal or list <code>attack</code>, <code>defense</code>
+    or a combat skill (<code>combat, archery, dodge</code>).
+  </p>
 
   {{#each rerollPoolEntries as |pool|}}
     <fieldset class="reroll-pool-row" style="margin-bottom: 8px;">
@@ -60,7 +67,7 @@
         type="text"
         name="system.reroll.pools.{{pool.index}}.skillsRaw"
         value="{{pool.skillsRaw}}"
-        placeholder="Skills (blank = universal), e.g. perception, archery"
+        placeholder="Skills (blank = universal), e.g. per-based, archery"
         style="margin-top: 4px;"
       />
       {{! Preserve spent state across sheet submits. }}

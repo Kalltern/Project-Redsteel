@@ -36,6 +36,21 @@
         />
       </div>
 
+      <div class="grid-span-1">
+        <label class="resource-label" title="{{localize
+            'REDSTEEL.Enchantment.FIELDS.mindReserve.hint'
+          }}">{{localize
+            "REDSTEEL.Enchantment.FIELDS.mindReserve.label"
+          }}</label>
+        <input
+          type="number"
+          name="system.mindReserve"
+          value="{{system.mindReserve}}"
+          data-dtype="Number"
+          min="0"
+        />
+      </div>
+
       {{#if (eq system.slot "weapon")}}
         <div class="grid-span-1">
           <label for="enchantment-required-class" title="{{localize
@@ -57,6 +72,284 @@
         </div>
       {{/if}}
     </div>
+
+    {{!-- =====================
+         ITEMISATION
+    ====================== --}}
+    <h3 class="enchantment-heading">{{localize
+        "REDSTEEL.Enchantment.Itemisation"
+      }}</h3>
+    <p class="hint">{{localize "REDSTEEL.Enchantment.ItemisationHint"}}</p>
+
+    <div class="grid grid-3col">
+      <div class="grid-span-1">
+        <label for="enchantment-group">{{localize
+            "REDSTEEL.Enchantment.FIELDS.group.label"
+          }}</label>
+        <select name="system.group" id="enchantment-group">
+          <option value="" {{#unless system.group}}selected{{/unless}}>
+            {{localize "REDSTEEL.Enchantment.Group.none"}}
+          </option>
+          {{#each system.groupOptions as |groupOption|}}
+            <option value="{{groupOption}}"
+              {{#if (eq ../system.group groupOption)}}selected{{/if}}>
+              {{localize (concat "REDSTEEL.Enchantment.Group." groupOption)}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="grid-span-1">
+        <label class="resource-label" title="{{localize
+            'REDSTEEL.Enchantment.FIELDS.requiredFaith.hint'
+          }}">{{localize
+            "REDSTEEL.Enchantment.FIELDS.requiredFaith.label"
+          }}</label>
+        <input
+          type="number"
+          name="system.requiredFaith"
+          value="{{system.requiredFaith}}"
+          data-dtype="Number"
+          min="0"
+        />
+      </div>
+
+      <div class="grid-span-1">
+        <label class="checkbox" title="{{localize
+            'REDSTEEL.Enchantment.FIELDS.bound.hint'
+          }}">
+          <input
+            type="checkbox"
+            name="system.bound"
+            {{checked system.bound}}
+          />
+          {{localize "REDSTEEL.Enchantment.FIELDS.bound.label"}}
+        </label>
+      </div>
+    </div>
+
+    {{!-- =====================
+         ACTIVATION
+    ====================== --}}
+    <h3 class="enchantment-heading">{{localize
+        "REDSTEEL.Enchantment.Activation"
+      }}</h3>
+
+    <div class="grid grid-3col">
+      <div class="grid-span-1">
+        <label class="checkbox" title="{{localize
+            'REDSTEEL.Enchantment.FIELDS.activationEnabled.hint'
+          }}">
+          <input
+            type="checkbox"
+            name="system.activation.enabled"
+            {{checked system.activation.enabled}}
+          />
+          {{localize "REDSTEEL.Enchantment.FIELDS.activationEnabled.label"}}
+        </label>
+      </div>
+    </div>
+
+    {{#if system.activation.enabled}}
+      <div class="grid grid-3col">
+        <div class="grid-span-1">
+          <label class="resource-label">{{localize
+              "REDSTEEL.Item.Spell.FIELDS.headerActions.label"
+            }}</label>
+          <input
+            type="text"
+            placeholder="e.g. 1"
+            name="system.activation.actionCost"
+            value="{{system.activation.actionCost}}"
+            data-dtype="String"
+          />
+        </div>
+
+        <div class="grid-span-1">
+          <label class="resource-label">{{localize
+              "REDSTEEL.Item.Spell.FIELDS.headerRange.label"
+            }}</label>
+          <input
+            type="text"
+            name="system.activation.range"
+            value="{{system.activation.range}}"
+            data-dtype="String"
+          />
+        </div>
+
+        <div class="grid-span-1">
+          <label class="resource-label" title="{{localize
+              'REDSTEEL.Enchantment.FIELDS.costResource.hint'
+            }}">{{localize
+              "REDSTEEL.Enchantment.FIELDS.costResource.label"
+            }}</label>
+          <select name="system.cost.resource">
+            <option value="" {{#unless system.cost.resource}}selected{{/unless}}>
+              {{localize "REDSTEEL.Enchantment.NoCost"}}
+            </option>
+            {{#each system.costResourceOptions as |resourceOption|}}
+              <option value="{{resourceOption}}"
+                {{#if (eq ../system.cost.resource resourceOption)}}selected{{/if}}>
+                {{resourceOption}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+
+        {{#if system.cost.resource}}
+          <div class="grid-span-1">
+            <label class="resource-label">{{localize
+                "REDSTEEL.Enchantment.FIELDS.costAmount.label"
+              }}</label>
+            <input
+              type="number"
+              name="system.cost.amount"
+              value="{{system.cost.amount}}"
+              data-dtype="Number"
+              min="0"
+            />
+          </div>
+        {{/if}}
+
+        <div class="grid-span-1">
+          <label class="resource-label" title="{{localize
+              'REDSTEEL.Enchantment.FIELDS.chargesMax.hint'
+            }}">{{localize
+              "REDSTEEL.Enchantment.FIELDS.chargesMax.label"
+            }}</label>
+          <input
+            type="number"
+            name="system.charges.max"
+            value="{{system.charges.max}}"
+            data-dtype="Number"
+            min="0"
+          />
+        </div>
+
+        {{#if system.charges.max}}
+          <div class="grid-span-1">
+            <label for="enchantment-recharge" title="{{localize
+                'REDSTEEL.Enchantment.FIELDS.recharge.hint'
+              }}">{{localize
+                "REDSTEEL.Enchantment.FIELDS.recharge.label"
+              }}</label>
+            <select name="system.charges.recharge" id="enchantment-recharge">
+              {{#each system.rechargeOptions as |rechargeOption|}}
+                <option value="{{rechargeOption}}"
+                  {{#if (eq ../system.charges.recharge rechargeOption)}}selected{{/if}}>
+                  {{#if rechargeOption}}
+                    {{localize (concat "REDSTEEL.Enchantment.Recharge." rechargeOption)}}
+                  {{else}}
+                    {{localize "REDSTEEL.Enchantment.Recharge.none"}}
+                  {{/if}}
+                </option>
+              {{/each}}
+            </select>
+          </div>
+        {{/if}}
+
+        <div class="grid-span-1">
+          <label for="enchantment-risk-test" title="{{localize
+              'REDSTEEL.Enchantment.FIELDS.riskTest.hint'
+            }}">{{localize
+              "REDSTEEL.Enchantment.FIELDS.riskTest.label"
+            }}</label>
+          <select name="system.risk.test" id="enchantment-risk-test">
+            {{#each system.riskTestOptions as |testOption|}}
+              <option value="{{testOption}}"
+                {{#if (eq ../system.risk.test testOption)}}selected{{/if}}>
+                {{#if testOption}}
+                  {{localize (concat "REDSTEEL.Enchantment.RiskTest." testOption)}}
+                {{else}}
+                  {{localize "REDSTEEL.Enchantment.RiskTest.none"}}
+                {{/if}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+
+        {{#if (eq system.risk.test "resolve")}}
+          <div class="grid-span-1">
+            <label class="resource-label" title="{{localize
+                'REDSTEEL.Enchantment.FIELDS.riskInsanity.hint'
+              }}">{{localize
+                "REDSTEEL.Enchantment.FIELDS.riskInsanity.label"
+              }}</label>
+            <input
+              type="number"
+              name="system.risk.insanity"
+              value="{{system.risk.insanity}}"
+              data-dtype="Number"
+              min="0"
+            />
+          </div>
+        {{/if}}
+
+        {{#if (eq system.group "mind_reserved")}}
+          <div class="grid-span-1">
+            <label class="resource-label" title="{{localize
+                'REDSTEEL.Enchantment.FIELDS.pursuitChance.hint'
+              }}">{{localize
+                "REDSTEEL.Enchantment.FIELDS.pursuitChance.label"
+              }}</label>
+            <input
+              type="number"
+              name="system.risk.pursuitChance"
+              value="{{system.risk.pursuitChance}}"
+              data-dtype="Number"
+              min="0"
+              max="100"
+            />
+          </div>
+        {{/if}}
+      </div>
+
+      <div class="form-group stacked">
+        <label>{{localize
+            "REDSTEEL.Enchantment.FIELDS.useEffects.label"
+          }}</label>
+        <input
+          type="text"
+          name="system.activation.useEffectsRaw"
+          value="{{system.activation.useEffectsRaw}}"
+          placeholder="e.g. ice_weapon, guard"
+        />
+        <p class="hint">{{localize
+            "REDSTEEL.Enchantment.FIELDS.useEffects.hint"
+          }}</p>
+      </div>
+
+      {{#if (eq system.group "insanity_risk")}}
+        <div class="form-group stacked">
+          <label>{{localize
+              "REDSTEEL.Enchantment.FIELDS.safeEffects.label"
+            }}</label>
+          <input
+            type="text"
+            name="system.activation.safeEffectsRaw"
+            value="{{system.activation.safeEffectsRaw}}"
+            placeholder="e.g. guard"
+          />
+          <p class="hint">{{localize
+              "REDSTEEL.Enchantment.FIELDS.safeEffects.hint"
+            }}</p>
+        </div>
+      {{/if}}
+
+      <div class="form-group stacked">
+        <label>{{localize
+            "REDSTEEL.Enchantment.FIELDS.activationSummary.label"
+          }}</label>
+        <input
+          type="text"
+          name="system.activation.summary"
+          value="{{system.activation.summary}}"
+          placeholder="{{localize
+            'REDSTEEL.Enchantment.FIELDS.activationSummary.hint'
+          }}"
+        />
+      </div>
+    {{/if}}
 
     {{!-- =====================
          WEAPON MODIFIERS

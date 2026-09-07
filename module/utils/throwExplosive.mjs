@@ -161,7 +161,10 @@ export async function throwExplosive(options = {}) {
     let effectResults = "";
 
     for (const [name, value] of Object.entries(chances)) {
-      const label = CONFIG.REDSTEEL.effectDefinitions?.[name]?.name ?? name;
+      // An effect definition's `name` may be a localization key (see
+      // helpers/config.mjs), so it is localized rather than printed raw.
+      const definitionName = CONFIG.REDSTEEL.effectDefinitions?.[name]?.name;
+      const label = definitionName ? game.i18n.localize(definitionName) : name;
 
       if (value === -1) {
         mechanicalEffects[name] = { chance: null, roll: null, auto: true };
@@ -277,7 +280,7 @@ ${damageLine}
           traitPills: getTraitPills(actor, "attack"),
           // Thrown explosive is a consumable, not a weapon-skill attack — generic
           // "attack" token only so attribute pools don't wrongly attach.
-          rerollTokens: getAttackRerollTokens(actor, null),
+          rerollTokens: getAttackRerollTokens(),
         },
 
         attack: {

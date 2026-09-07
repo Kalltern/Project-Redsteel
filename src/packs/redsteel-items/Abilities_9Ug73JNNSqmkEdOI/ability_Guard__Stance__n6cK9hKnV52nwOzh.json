@@ -109,7 +109,8 @@
     "bool3": "",
     "dmgType3": "",
     "key": "guard",
-    "localizationKey": "REDSTEEL.Items.GuardStance.name"
+    "localizationKey": "REDSTEEL.Items.GuardStance.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

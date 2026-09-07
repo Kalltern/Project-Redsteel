@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.BloodPact.name"
+    "localizationKey": "REDSTEEL.Items.BloodPact.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

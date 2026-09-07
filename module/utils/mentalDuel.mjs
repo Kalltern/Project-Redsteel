@@ -743,10 +743,10 @@ function unpackRoll(rollJson) {
 
 /**
  * The reroll tokens a Mental Duel test emits, so feature pools can match it:
- * the skill it was rolled with plus its governing attribute. Characters roll
- * Mind Bending (→ "mindbending" + "wil", so Adept/Expert: Mind Bending and any
- * Will-scoped or universal pool such as Iron Will apply); NPCs roll Will
- * directly (→ "wil").
+ * the skill it was rolled with plus its attribute-group token. Characters roll
+ * Mind Bending (→ "mindbending" + "wilbased", so Adept/Expert: Mind Bending and
+ * any Will-based or universal pool such as Iron Will apply); NPCs roll Will
+ * directly (→ "wil" + "wilbased").
  */
 function duelRerollTokens(actor) {
   return getRerollTokensForSkill(

@@ -15,6 +15,11 @@ import {
  *   archery"), normalized the same way as roll triggers. A pool whose skill list
  *   is empty — or that explicitly lists a universal keyword ("universal", "any",
  *   "all") — is **universal**: usable to reroll any test.
+ * - An attribute may be listed in two different scopes, and they are not the
+ *   same: `str` is the raw **Strength test** only (Muscular: "reroll a Strength
+ *   test"), while `str-based` is every non-combat roll governed by Strength —
+ *   the raw test plus Athletics, Smithing, … (Brawny: "reroll a strength based
+ *   skill"). Neither reaches combat: see {@link getEligibleRerolls}.
  * - A "critfail" keyword (also "crit fail" / "critical failure") in the list
  *   marks the pool as able to reroll **Critical Failures** (e.g. Lucky:
  *   "universal, critfail"). It is not a skill: "critfail" alone is still a
@@ -34,13 +39,44 @@ const CRITFAIL_KEYS = new Set(["critfail", "critfails", "criticalfailure"]);
 
 /**
  * Attribute short keys, in the order attributes are stored (Object.entries on
- * system.attributes). This index is what every skill / combat skill carries as
- * its `id` (its governing attribute), so `ATTR_BY_INDEX[skill.id]` is the
- * attribute a roll is "based on". Attribute-group pools (e.g. Brawny scoped to
- * "str") match any roll whose governing attribute is listed here.
+ * system.attributes). This index is what every skill carries as its `id` (its
+ * governing attribute), so `ATTR_BY_INDEX[skill.id]` is the attribute a skill
+ * roll is "based on".
  */
 const ATTR_BY_INDEX = ["str", "dex", "end", "int", "wil", "cha", "per"];
 const ATTR_SET = new Set(ATTR_BY_INDEX);
+
+/** Long attribute spellings accepted in a pool's skill list. */
+const ATTR_ALIASES = {
+  strength: "str",
+  dexterity: "dex",
+  endurance: "end",
+  intelligence: "int",
+  will: "wil",
+  willpower: "wil",
+  charisma: "cha",
+  perception: "per",
+};
+
+/**
+ * Suffix marking an **attribute group** scope: `str-based` (also written
+ * "strength based" or "strBased") covers every non-combat roll governed by
+ * Strength, where a bare `str` covers only the raw Strength test.
+ */
+const ATTR_GROUP_SUFFIX = "based";
+
+/** The group token for an attribute short key: "str" → "strbased". */
+function attrGroupToken(attr) {
+  return `${attr}${ATTR_GROUP_SUFFIX}`;
+}
+
+/** The attribute a group token stands for, or null when it isn't one. */
+function attrFromGroupToken(token) {
+  if (!token.endsWith(ATTR_GROUP_SUFFIX)) return null;
+  const stem = token.slice(0, -ATTR_GROUP_SUFFIX.length);
+  const attr = ATTR_ALIASES[stem] ?? stem;
+  return ATTR_SET.has(attr) ? attr : null;
+}
 
 /** Reroll tokens every combat roll emits, used to detect combat rolls for the cap. */
 const COMBAT_TOKENS = new Set(["attack", "defense"]);
@@ -57,11 +93,24 @@ function isPoolKeyword(token) {
   );
 }
 
+/**
+ * Normalize one entry of a pool's skill list. On top of the shared trigger
+ * normalization this resolves attribute spellings, so "strength", "str",
+ * "str-based", "strength based" and "strBased" all land on `str` / `strbased`.
+ */
+function normalizePoolToken(value) {
+  const token = normalizeTrigger(value);
+  if (!token) return "";
+  const groupAttr = attrFromGroupToken(token);
+  if (groupAttr) return attrGroupToken(groupAttr);
+  return ATTR_ALIASES[token] ?? token;
+}
+
 /** Parse a comma-separated skill string into normalized skill keys (keywords excluded). */
 function parseSkillList(raw) {
   return String(raw ?? "")
     .split(",")
-    .map((s) => normalizeTrigger(s))
+    .map((s) => normalizePoolToken(s))
     .filter((s) => s && !isPoolKeyword(s));
 }
 
@@ -86,47 +135,17 @@ function parseCombatMax(raw) {
   return Infinity;
 }
 
-/** Whether an actor owns the "Finesse" combat feature (enables dex-based melee). */
-function hasFinesseFeature(actor) {
-  return !!actor?.items?.some((i) => i.name?.toLowerCase() === "finesse");
-}
-
 /**
- * The attribute a combat skill's roll is governed by, mirroring the rating
- * logic in actor.mjs: finesse melee flips to dex, steelGrip melee defense to
- * str, predatorySenses melee defense to per.
- * @param {Actor} actor
- * @param {string} combatKey  A combat-skill key (combat/archery/…).
- * @param {Item|null} [weapon]  The weapon in hand, for the finesse check.
- */
-function combatGoverningAttr(actor, combatKey, weapon = null) {
-  switch (combatKey) {
-    case "archery":
-    case "throwing":
-    case "rangedDefense":
-      return "per";
-    case "dodge":
-      return "dex";
-    case "meleeDefense":
-      if (actor?.system?.steelGrip) return "str";
-      if (actor?.system?.predatorySenses) return "per";
-      return "dex";
-    case "combat": {
-      const str = Number(actor?.system?.attributes?.str?.total) || 0;
-      const dex = Number(actor?.system?.attributes?.dex?.total) || 0;
-      if (weapon?.system?.finesse && hasFinesseFeature(actor) && str <= dex) {
-        return "dex";
-      }
-      return "str";
-    }
-    default:
-      return null;
-  }
-}
-
-/**
- * The reroll tokens a plain skill/attribute/combat-skill test emits: the skill
- * key itself plus its governing attribute (so attribute-group pools match).
+ * The reroll tokens a plain skill / attribute / combat-skill test emits.
+ *
+ * - an **attribute** test emits the attribute and its group ("str",
+ *   "strbased"), so both Muscular and Brawny can reroll it;
+ * - a **skill** test emits the skill key and its governing attribute's *group*
+ *   ("smithing", "strbased") — never the bare attribute, so Muscular (scoped
+ *   "str") cannot reroll Smithing while Brawny ("str-based") can;
+ * - a **combat skill** test emits only its own key: attribute scopes never
+ *   reach combat (see {@link getEligibleRerolls}).
+ *
  * @param {Actor} actor
  * @param {string} skillKey
  * @returns {string[]}
@@ -134,40 +153,34 @@ function combatGoverningAttr(actor, combatKey, weapon = null) {
 export function getRerollTokensForSkill(actor, skillKey) {
   const key = String(skillKey ?? "");
   const norm = normalizeTrigger(key);
-  const tokens = norm ? [norm] : [];
-  if (!norm) return tokens;
+  if (!norm) return [];
 
-  // Direct attribute test — the attribute is already the token.
-  if (ATTR_SET.has(norm)) return tokens;
+  // Direct attribute test — reachable from the attribute and from its group.
+  if (ATTR_SET.has(norm)) return [norm, attrGroupToken(norm)];
 
-  let attr = null;
   const skill = actor?.system?.skills?.[key];
   if (skill && Number.isFinite(Number(skill.id))) {
-    attr = ATTR_BY_INDEX[Number(skill.id)] ?? null;
-  } else if (actor?.system?.combatSkills?.[key]) {
-    attr = combatGoverningAttr(actor, key);
+    const attr = ATTR_BY_INDEX[Number(skill.id)] ?? null;
+    if (attr) return [norm, attrGroupToken(attr)];
   }
-  if (attr && attr !== norm) tokens.push(attr);
-  return tokens;
+  return [norm];
 }
 
 /**
- * The reroll tokens a weapon attack card emits: "attack", the combat skill it
- * uses (combat/archery/throwing) and its governing attribute. With no weapon
- * (e.g. standalone abilities) only the generic "attack" token is emitted so
- * attribute-group pools don't match a non-weapon strike.
- * @param {Actor} actor
+ * The reroll tokens a weapon attack card emits: "attack" and the combat skill
+ * it uses (combat/archery/throwing). No attribute token is emitted — an
+ * attribute-scoped pool must never pay for an attack; the pool has to be
+ * universal or list "attack" / the combat skill itself.
  * @param {Item|null} weapon
  * @returns {string[]}
  */
-export function getAttackRerollTokens(actor, weapon = null) {
+export function getAttackRerollTokens(weapon = null) {
   if (!weapon) return ["attack"];
   const cls = weapon.system?.class;
   let combatKey = "combat";
   if (cls === "bow" || cls === "crossbow") combatKey = "archery";
   else if (weapon.system?.thrown === true) combatKey = "throwing";
-  const attr = combatGoverningAttr(actor, combatKey, weapon);
-  return attr ? ["attack", combatKey, attr] : ["attack", combatKey];
+  return ["attack", combatKey];
 }
 
 /**
@@ -179,16 +192,14 @@ const COMBAT_BASE_SKILL = { dodge: "acrobacy" };
 
 /**
  * The reroll tokens a defense card emits: "defense", the defense skill used
- * (dodge/meleeDefense/rangedDefense), its governing attribute, and — for dodge —
- * the Acrobatics skill it derives from.
- * @param {Actor} actor
+ * (dodge/meleeDefense/rangedDefense) and — for dodge — the Acrobatics skill it
+ * is rated from. As with attacks there is no attribute token: attribute-scoped
+ * pools never reroll a defense.
  * @param {string} defenseKey
  * @returns {string[]}
  */
-export function getDefenseRerollTokens(actor, defenseKey) {
+export function getDefenseRerollTokens(defenseKey) {
   const tokens = ["defense", defenseKey];
-  const attr = combatGoverningAttr(actor, defenseKey);
-  if (attr) tokens.push(attr);
   const baseSkill = COMBAT_BASE_SKILL[defenseKey];
   if (baseSkill) tokens.push(baseSkill);
   return tokens;
@@ -337,9 +348,11 @@ export function getActorRerollPools(actor) {
 /**
  * Pools that can be spent to reroll a test emitting the given tokens: any pool
  * with `remaining > 0` that is universal or lists one of the (normalized)
- * tokens. A roll emits its skill key plus its governing attribute (see
- * {@link getRerollTokensForSkill}); attacks and defenses also emit "attack" /
- * "defense" and their combat-skill key.
+ * tokens. A skill roll emits its key plus its governing attribute's *group*
+ * token (see {@link getRerollTokensForSkill}); attacks and defenses emit
+ * "attack" / "defense" and their combat-skill key and no attribute token at
+ * all — so rerolling combat takes a universal pool, or one that names "attack",
+ * "defense" or the combat skill.
  *
  * Rerolling a Critical Failure additionally requires the pool's `critFail`
  * capability. A combat roll (tokens include "attack"/"defense") additionally
@@ -457,6 +470,20 @@ export async function toggleRerollCharge(actor, itemId, poolIndex) {
 }
 
 /**
+ * Human-readable scope of a pool, for the picker: "Universal", or its skill
+ * list with group tokens spelled out ("str-based, archery").
+ */
+function formatPoolScope(pool) {
+  if (pool.universal) return "Universal";
+  return pool.skills
+    .map((s) => {
+      const attr = attrFromGroupToken(s);
+      return attr ? `${attr}-based` : s;
+    })
+    .join(", ");
+}
+
+/**
  * Prompt the user to choose one of several eligible reroll pools.
  *
  * Shared by every reroll entry point (chat cards, the Alchemy panel, the Mental
@@ -470,7 +497,7 @@ export async function pickRerollPool(eligible) {
     .map((pool, i) => {
       const remaining = `${pool.remaining}/${pool.max}`;
       const tag = [
-        pool.universal ? "Universal" : pool.skills.join(", "),
+        formatPoolScope(pool),
         pool.critFail ? "crit fail" : null,
       ]
         .filter(Boolean)

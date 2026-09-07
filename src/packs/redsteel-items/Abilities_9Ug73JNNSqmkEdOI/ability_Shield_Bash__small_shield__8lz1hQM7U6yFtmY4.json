@@ -109,7 +109,8 @@
     "effectType1": "custom",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.ShieldBashSmallShield.name"
+    "localizationKey": "REDSTEEL.Items.ShieldBashSmallShield.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

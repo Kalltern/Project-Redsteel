@@ -25,7 +25,7 @@
       "pools": [
         {
           "label": "Perception-based skill",
-          "skillsRaw": "per, combatcap1",
+          "skillsRaw": "per-based, archery, combatcap1",
           "max": 2,
           "used": 0
         }

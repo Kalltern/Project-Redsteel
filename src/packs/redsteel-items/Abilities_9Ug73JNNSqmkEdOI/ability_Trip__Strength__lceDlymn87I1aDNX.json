@@ -86,7 +86,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.TripStrength.name"
+    "localizationKey": "REDSTEEL.Items.TripStrength.name",
+    "category": "weapon"
   },
   "effects": [],
   "sort": 1000000,

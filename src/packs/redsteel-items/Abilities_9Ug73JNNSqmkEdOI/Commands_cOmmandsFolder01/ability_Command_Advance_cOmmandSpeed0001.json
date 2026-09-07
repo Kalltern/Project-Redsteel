@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.CommandAdvance.name"
+    "localizationKey": "REDSTEEL.Items.CommandAdvance.name",
+    "category": "command"
   },
   "effects": [],
   "folder": "cOmmandsFolder01",

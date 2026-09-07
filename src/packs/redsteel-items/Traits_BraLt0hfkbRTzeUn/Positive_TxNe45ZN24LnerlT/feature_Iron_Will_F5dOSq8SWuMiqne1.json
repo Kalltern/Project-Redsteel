@@ -22,7 +22,7 @@
       "pools": [
         {
           "label": "Will-based skill",
-          "skillsRaw": "universal",
+          "skillsRaw": "wil-based",
           "max": 1,
           "used": 0
         }

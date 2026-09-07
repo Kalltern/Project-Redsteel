@@ -5,52 +5,70 @@
   data-tab="abilities"
 >
   <div class="abilities-box">
-    {{! Same inset panel as the Features tab sections }}
-    <section class="npc-traits">
-    <header class="npc-traits-header">
-      <h3>{{localize "REDSTEEL.Actor.Tabs.Abilities"}}</h3>
-      {{#if @root.editable}}
-        <a
-          class="item-control item-create"
-          title="{{localize 'DOCUMENT.New' type='ability'}}"
-          data-action="createDoc"
-          data-document-class="Item"
-          data-type="ability"
-        >
-          <i class="fas fa-plus"></i>
-        </a>
-      {{/if}}
-    </header>
 
-    <ul class="spell-card-grid">
-      {{#each abilityCards as |card|}}
-        <li class="spell-card" data-item-id="{{card.id}}" data-card-kind="ability" data-tt-kind="spellCard" data-tt-id="{{card.id}}" data-drag="true" data-document-class="Item">
-          <a class="spell-card-icon rollable" data-action="roll" data-roll-type="item">
-            <img src="{{card.img}}" data-item-id="{{card.id}}" width="48" height="48" />
-          </a>
-          <div class="spell-card-main">
-            <div class="spell-card-top">
-              <span class="spell-card-name">{{card.name}}</span>
-              <span class="spell-card-controls">
-                <a class="item-control item-edit" data-action="viewDoc" title="{{localize 'DOCUMENT.Update' type='Ability'}}"><i class="fas fa-edit"></i></a>
-                {{#if @root.editable}}
-                  <a class="item-control item-delete" data-action="deleteDoc" title="{{localize 'DOCUMENT.Delete' type='Ability'}}"><i class="fas fa-trash"></i></a>
-                {{/if}}
-              </span>
-            </div>
-            <div class="spell-card-pills">
-              {{#each card.pills as |pill|}}
-                <span class="spell-pill" data-pill="{{pill.key}}" data-positive="{{pill.positive}}">
-                  <span class="spell-pill-label">{{pill.label}}</span>
-                  <span class="spell-pill-value">{{pill.value}}</span>
-                </span>
-              {{/each}}
-            </div>
-          </div>
-        </li>
+    {{! Sub-tabs replace what used to be a single "Abilities" header. The
+        active one is remembered per user (key "actor-abilities"). }}
+    <nav class="tabs abilities-subtabs" data-group="abilities-subtabs" data-action="tab">
+      {{#each abilityGroups as |group|}}
+        <a
+          class="item subtab-link {{#if group.active}}active{{/if}}"
+          data-group="abilities-subtabs"
+          data-tab="{{group.id}}"
+        >
+          {{group.label}}
+        </a>
       {{/each}}
-    </ul>
-    </section>
+    </nav>
+
+    {{#each abilityGroups as |group|}}
+      <section
+        class="tab abilities-subtab {{#if group.active}}active{{/if}}"
+        data-group="abilities-subtabs"
+        data-tab="{{group.id}}"
+      >
+        {{#if @root.editable}}
+          <a
+            class="item-control item-create abilities-create"
+            title="{{localize 'DOCUMENT.New' type='ability'}}"
+            data-action="createDoc"
+            data-document-class="Item"
+            data-type="ability"
+            data-system.category="{{group.id}}"
+          >
+            <i class="fas fa-plus"></i>
+          </a>
+        {{/if}}
+
+        <ul class="spell-card-grid">
+          {{#each group.cards as |card|}}
+            <li class="spell-card" data-item-id="{{card.id}}" data-card-kind="ability" data-tt-kind="spellCard" data-tt-id="{{card.id}}" data-drag="true" data-document-class="Item">
+              <a class="spell-card-icon rollable" data-action="roll" data-roll-type="item">
+                <img src="{{card.img}}" data-item-id="{{card.id}}" width="48" height="48" />
+              </a>
+              <div class="spell-card-main">
+                <div class="spell-card-top">
+                  <span class="spell-card-name">{{card.name}}</span>
+                  <span class="spell-card-controls">
+                    <a class="item-control item-edit" data-action="viewDoc" title="{{localize 'DOCUMENT.Update' type='Ability'}}"><i class="fas fa-edit"></i></a>
+                    {{#if @root.editable}}
+                      <a class="item-control item-delete" data-action="deleteDoc" title="{{localize 'DOCUMENT.Delete' type='Ability'}}"><i class="fas fa-trash"></i></a>
+                    {{/if}}
+                  </span>
+                </div>
+                <div class="spell-card-pills">
+                  {{#each card.pills as |pill|}}
+                    <span class="spell-pill" data-pill="{{pill.key}}" data-positive="{{pill.positive}}">
+                      <span class="spell-pill-label">{{pill.label}}</span>
+                      <span class="spell-pill-value">{{pill.value}}</span>
+                    </span>
+                  {{/each}}
+                </div>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/each}}
 
   </div>
 </section>

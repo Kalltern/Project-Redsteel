@@ -1,6 +1,7 @@
 import {
   resolveEffectDefinition,
   isImmuneToEffect,
+  hemophiliaBleedStacks,
 } from "../utils/customConditions.mjs";
 import { evaluateDmgVsArmor } from "../utils/combatSkillBonuses.mjs";
 import { getSpellPower } from "../utils/spellPower.mjs";
@@ -694,12 +695,12 @@ export class RedsteelActiveEffect extends ActiveEffect {
     let turnsDuration = turns ?? def.defaultTurns ?? 0;
     let roundsDuration = rounds ?? def.defaultRounds ?? 0;
 
-    // Hemophylia — "for each Bleeding gained, gains one additional Bleeding":
-    // incoming Bleeding stacks are doubled for the receiving actor (then clamped
-    // to maxStacks by the paths below, which both read `stacks`).
-    if (effectId === "bleed" && actor.system?.hemophilia) {
-      stacks = (Number(stacks) || 1) * 2;
-    }
+    // Hemophylia — "for each Bleeding gained, gains one additional Bleeding".
+    // This is the ONLY place the doubling happens, for every Bleeding source
+    // (attacks, spells, Skin Cracking...). Stacks are clamped to maxStacks by
+    // the paths below, which both read `stacks`. The Apply Damage preview calls
+    // the same helper purely to display the number this line will produce.
+    if (effectId === "bleed") stacks = hemophiliaBleedStacks(actor, stacks);
 
     // `let`, not `const`: a shield's pool is baked from the caster's Spell
     // Power in the dynamic block below and overrides the passed-in stacks.

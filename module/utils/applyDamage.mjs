@@ -6,8 +6,13 @@ import {
 import {
   resolveEffectDefinition,
   isImmuneToEffect,
+  hemophiliaBleedStacks,
 } from "./customConditions.mjs";
-import { AIMED_PARTS, getBodyPartOverrides } from "./aimedStrike.mjs";
+import {
+  AIMED_PARTS,
+  getBodyPartOverrides,
+  resolveAimedArmorBypass,
+} from "./aimedStrike.mjs";
 import { resolveBaneVariant } from "./baneCombat.mjs";
 import { BANE_TYPES } from "../helpers/banes.mjs";
 import {
@@ -104,6 +109,8 @@ export function getDurabilityItems(actor) {
  *  - durabilityReduction: damage removed by the sacrifice
  *  - durabilityPointsUsed: points actually consumed (never more than
  *    needed to zero the damage, so durability is not wasted on overkill)
+ *  - armorBypass: {part, baseArmor, bypassed} when this was an aimed strike
+ *    that landed on an unarmored location, else null
  */
 function evaluateAttackDamage({
   attack,
@@ -121,18 +128,20 @@ function evaluateAttackDamage({
   // when the one it has does not match this packet (checked downstream).
   const activeShield = getActiveShield(actor);
 
+  // Aimed strike that landed on a location this target has no armor over: the
+  // blow meets the body rather than the kit. Null in every ordinary case, which
+  // leaves the armor total in charge.
+  const armorBypass = resolveAimedArmorBypass(actor, attack.aimedStrike);
+
   const base = evaluateDmgVsArmor({
     damage: selectedAttack.damage,
     penetration: selectedAttack.penetration ?? 0,
     damageProfile,
-    // TODO(head damage): when the target has its helmet off
-    // (flags.redsteel.helmetOff, set from the Armor panel on the Inventory
-    // tab) and this attack is an aimed head hit that landed
-    // (attack.aimedStrike?.part === "head" && attack.aimedStrike.su >= 0),
-    // armor should be bypassed for this packet. Not implemented yet: the
-    // toggle currently only drops the helmet's own archery/perception
-    // penalties in documents/actor.mjs.
     armor: actor.system.armor,
+    // Only the base armor step is overridden. Typed armor and the
+    // resistance/vulnerability modifiers keep reading the full table, so a
+    // bare head is no help against a fire ward.
+    baseArmorOverride: armorBypass ? armorBypass.baseArmor : null,
     hp,
     tempHp,
     tempHpMagic,
@@ -166,12 +175,14 @@ function evaluateAttackDamage({
     return {
       ...base,
       activeShield,
+      armorBypass,
       durabilityReduction: 0,
       durabilityPointsUsed: 0,
     };
   }
 
   return {
+    armorBypass,
     shieldLoss: base.shieldLoss,
     shieldPoolSpent: base.shieldPoolSpent,
     shieldBroke: base.shieldBroke,
@@ -367,6 +378,51 @@ async function applyDamageToTargets(
   }
 }
 
+/* -------------------------------------------- */
+/*  system.effectMods.<id>.stackMod             */
+/* -------------------------------------------- */
+/**
+ * `stackMod` is the target-side flat modifier to the *number* of stacks an
+ * effect applies, the counterpart to `applyChance` which modifies the odds. It
+ * lives in template.json (which cannot carry comments, hence this block) on
+ * `stagger`, `bleed` and `poison`, and is read only here in applyDamage: the
+ * Apply Damage preview and the GM apply, so the two always agree.
+ *
+ * NOTHING WRITES IT TODAY. No Active Effect change key targets it, no
+ * specialisation node pushes it, no sheet field edits it. It is kept on
+ * purpose, not overlooked — a "you always bleed a little extra" trait or a
+ * Deep-Wounds-style perk is the obvious future customer. Audited 2026-09-05;
+ * do not delete it as dead code without checking the notes below first.
+ *
+ * What actually works, if you come to wire something up:
+ *
+ * - **Bleed works properly.** The path exists on both actor types via the
+ *   shared `base` template, `prepareDerivedData` never recomputes `effectMods`
+ *   so an AE value survives, and the arithmetic in resolveBleedStacks is sound.
+ *   Two quirks to design around: the add happens *after* the chance resolves,
+ *   so +1 grants a stack even on a failed bleed roll (it cannot invent bleed
+ *   from nothing — getEffectRolls only emits a bleed packet when the attack has
+ *   a bleed source at all); and it sits outside `targetMod`, so it ignores the
+ *   target's own bleed resistance, behaving like `bonusStacks` rather than like
+ *   a normal stack.
+ *
+ * - **Stagger and poison are inert.** The count flows through and lands, but
+ *   neither effect does anything with a stack: neither is in
+ *   RedsteelActiveEffect.STACK_SCALED_CHANGES, both carry a flat
+ *   `system.globalBonus` change (-10 / -5), and poison's triggers are a
+ *   hardcoded 2d6 rather than {stacks}d6. Extra stacks only bump the counter
+ *   badge. Bleed is the only one of the three whose triggers ({appliedStacks}d4
+ *   and {stacks}d4) are stack-driven.
+ *
+ * - **The non-bleed path is unclamped.** Below it is `let stacks = 1; stacks +=
+ *   stackMod`, so a -1 yields 0, trips the `stacks <= 0` guard and silently
+ *   drops the effect entirely, while the preview checkbox still reported it
+ *   succeeding. Clamp that before granting any negative value.
+ *
+ * A general "flat extra stacks" feature would also want the field on more than
+ * these three effects, so expect to widen the schema rather than reuse it as-is.
+ */
+
 /**
  * Resolve how many Bleeding stacks an attack applies, from the stored bleed
  * data (chance, the original attack roll, sharp-weapon extra stacks, crit
@@ -374,8 +430,10 @@ async function applyDamageToTargets(
  * Apply Damage preview and the GM apply so the count shown always matches the
  * count applied — previously the preview omitted the sharp-weapon extra stacks.
  */
-function resolveBleedStacks(effect, { targetMod = 0, stackMod = 0, mode } = {}) {
-  const crit = effect.critStacks ?? 0;
+function resolveBleedStacks(
+  effect,
+  { targetMod = 0, stackMod = 0, mode, criticalDegree = null } = {},
+) {
   const normalStacks = effect.normalStacks ?? 0;
 
   let stacks;
@@ -405,7 +463,24 @@ function resolveBleedStacks(effect, { targetMod = 0, stackMod = 0, mode } = {}) 
     stacks = resistedRegular + extraStacks;
   }
 
-  if (mode === "critical") stacks += crit;
+  // Crit-threshold bleeds follow the degree actually being applied, not the one
+  // that was rolled: the GM can move the degree in either direction in the
+  // Apply Damage dialog and the extra wounds must cross the threshold with it
+  // (degree > 1). `critPotential` is what a passing degree is worth: one for
+  // the critical, one more for a sharp weapon. Cards posted before that field
+  // existed have no potential to re-derive from, so they keep the stacks the
+  // roll earned.
+  if (mode === "critical") {
+    // `Number(null)` is 0, which would read as "degree 0" and silently drop
+    // every crit bleed on a card that carries no degree at all, so null and
+    // undefined are rejected before the numeric check.
+    const degree = criticalDegree === null ? NaN : Number(criticalDegree);
+    if (Number.isFinite(degree) && effect.critPotential !== undefined) {
+      stacks += degree > 1 ? effect.critPotential : 0;
+    } else {
+      stacks += effect.critStacks ?? 0;
+    }
+  }
   stacks += stackMod;
   // Guaranteed stacks from a Blood Strike charge (Krvavý úder): added after the
   // chance resolution and outside `targetMod`, so neither a failed roll nor the
@@ -664,7 +739,12 @@ export async function applyDamageAsGM(data) {
 
       if (name === "bleed") {
         const bleedMod = aimedHitForEffects ? npcOverrides.bleedMod : 0;
-        stacks = resolveBleedStacks(effect, { targetMod: targetMod + bleedMod, stackMod, mode });
+        stacks = resolveBleedStacks(effect, {
+          targetMod: targetMod + bleedMod,
+          stackMod,
+          mode,
+          criticalDegree: degreeForTarget,
+        });
       } else {
         stacks += stackMod;
       }
@@ -1056,13 +1136,26 @@ function openDamageSelectionDialog(message, targets) {
             let success = effect.roll <= modifiedChance;
 
             if (name === "bleed") {
-              const stackMod =
-                t.actor.system.effectMods?.[name]?.stackMod || 0;
               // No health damage (e.g. fully absorbed by temp HP) → no bleed.
               const bleedDenied = result.hpLoss <= 0;
-              const predicted = bleedDenied
+              const stackMod =
+                t.actor.system.effectMods?.[name]?.stackMod || 0;
+              const rolled = bleedDenied
                 ? 0
-                : resolveBleedStacks(effect, { targetMod: targetMod + npcBonus, stackMod, mode });
+                : resolveBleedStacks(effect, {
+                    targetMod: targetMod + npcBonus,
+                    stackMod,
+                    mode,
+                    criticalDegree: resolveDegreeForTarget(
+                      effAttack,
+                      criticalDegree,
+                      degreeTouched,
+                    ),
+                  });
+              // Hemophylia doubles what apply will actually hand out. Predict
+              // the doubled figure here or the preview promises half the
+              // Bleeding the target is about to take.
+              const predicted = hemophiliaBleedStacks(t.actor, rolled);
               success = predicted > 0;
               bleedLanded = success;
               const bleedNote = npcBonus
@@ -1071,9 +1164,13 @@ function openDamageSelectionDialog(message, targets) {
               const bonusNote = effect.bonusStacks
                 ? ` <em style="color:#a01818;">(+${effect.bonusStacks} Blood Strike)</em>`
                 : "";
+              const hemoNote =
+                predicted > rolled
+                  ? ` <em style="color:#a01818;">(×2 Hemophilia)</em>`
+                  : "";
               extraInfo = bleedDenied
                 ? " — no health damage, no bleed"
-                : ` → ${predicted} stack(s)${bleedNote}${bonusNote}`;
+                : ` → ${predicted} stack(s)${bleedNote}${bonusNote}${hemoNote}`;
             }
 
             // An auto effect, or a bleed packet carried purely by a Blood
@@ -1182,7 +1279,16 @@ function openDamageSelectionDialog(message, targets) {
           const hitLabel = as.su >= 0
             ? `<b style="color:#8e8;">Hit — ${partDef.label}</b>`
             : `<span style="color:#e88;">Torso (SU &lt; 0)</span>`;
-          return `<div style="margin-left:15px; font-size:12px; color:#c8a84b;">⚔️ Aimed Attack: ${hitLabel}</div>`;
+          // Says out loud that this target's armor was skipped, and by how
+          // much, so a GM reading the preview can tell an unarmored location
+          // from a lucky roll.
+          const bypass = result.armorBypass
+            ? ` <span style="color:#e0894b;">— ${game.i18n.format(
+                "REDSTEEL.Actor.BodyParts.ArmorBypassed",
+                { amount: result.armorBypass.bypassed },
+              )}</span>`
+            : "";
+          return `<div style="margin-left:15px; font-size:12px; color:#c8a84b;">⚔️ Aimed Attack: ${hitLabel}${bypass}</div>`;
         })();
 
         return `

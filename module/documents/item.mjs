@@ -22,19 +22,22 @@ export const IMPROVISED_SHIELD_STATS = {
  *   shield  → gear flagged as shield (Štít)
  *   armor   → all other gear         (Zbroje)
  * Stat keys map to: attack/defense/critChance/critDefense/critDodge/rangedDefense/
- * rangedCritDefense (weapon system fields), precision (an attack extra effect),
+ * rangedCritDefense (weapon system fields), damage (a flat addend on the damage
+ * formula), penetration (Průbojnost), precision (an attack extra effect),
  * deflect (Odklonění, a defender effect) and ini (initiative, via iniPenalty).
  */
 export const QUALITY_MODS = {
   weapon: {
-    bad: { attack: -5, defense: -5 },
+    bad: { attack: -5, defense: -5, damage: -2, penetration: -1 },
     normal: {},
     expert: { attack: 3, defense: 3 },
     master: { attack: 5, defense: 5, precision: 5 },
     legendary: { attack: 8, defense: 8, precision: 10, critChance: 3 },
   },
   offhand: {
-    bad: { defense: -3, rangedDefense: -5 },
+    // The Druhá ruka column has no ranged entry — only the shield column below
+    // does. `damage` rides on the main damage formula, like offhandProperties.
+    bad: { defense: -3, damage: -1 },
     normal: {},
     expert: { critDefense: 1 },
     master: { critDefense: 2, critDodge: 1 },
@@ -57,6 +60,56 @@ export const QUALITY_MODS = {
 };
 
 const QUALITY_KEYS = ["bad", "normal", "expert", "master", "legendary"];
+
+/**
+ * The itemisation groups an enchantment can belong to. Every magic item trades
+ * something from the character for its benefit, and the group says *what* is
+ * traded and *when*. See ITEMISATION_SPEC.md.
+ *
+ * A blank group is the plain enchantment that predates all of this: a passive
+ * stat block with no cost, no charges and no use button.
+ */
+export const ENCHANTMENT_GROUPS = [
+  // Reserves Mind for as long as it is worn, and using it may draw a pursuit.
+  "mind_reserved",
+  // Spends a point of one resource per use.
+  "resource_spend",
+  // Finite charges, refilled with a gem.
+  "mana_charged",
+  // Finite charges, refilled by killing.
+  "soul_charged",
+  // Safe weak effect, or gamble a Resolve test for the strong one.
+  "insanity_risk",
+  // Simultaneous bonuses and penalties, no pool interaction at all.
+  "mixed",
+  // Equip gate on the Faith rating, sometimes a Faith test on use.
+  "faith_gated",
+];
+
+/**
+ * Keep a comma-separated authoring field and its parsed array in step.
+ *
+ * The sheet edits `<key>Raw` as plain text because a repeating widget for two
+ * or three effect ids is not worth the complexity; everything downstream reads
+ * `<key>` as an array. Mirrors the rollTriggers / statusEffects pairs further
+ * down this file, including preserving case, because effect ids are
+ * case-sensitive ("iceStrike").
+ *
+ * @param {object} target   The block holding both fields (mutated in place).
+ * @param {string} key      The array field's name; the text field is `<key>Raw`.
+ */
+function syncEffectIdList(target, key) {
+  if (!target) return;
+  const raw = target[`${key}Raw`] ?? "";
+  if (raw) {
+    target[key] = String(raw)
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  } else if (Array.isArray(target[key])) {
+    target[`${key}Raw`] = target[key].join(", ");
+  }
+}
 
 /**
  * Resolve the quality modifiers for an item slot, falling back to the empty
@@ -95,6 +148,57 @@ export function readEnchantments(item) {
  * can still be resolved against the effectType1..3 of the source they came from.
  * @param {object[]} entries
  */
+/**
+ * The itemisation facts that are the same whether the host is a weapon or a
+ * piece of gear: what the enchantments cost to wear, what they gate on, and
+ * which of them can be *used* rather than merely worn.
+ *
+ * Summed into both modifier blocks so every consumer reads one shape. Read
+ * sites that only care about combat maths can keep ignoring all of it.
+ *
+ * @param {object[]} entries   Enchantment snapshots.
+ * @returns {{mindReserve: number, requiredFaith: number, bound: boolean,
+ *            activations: object[]}}
+ */
+function itemisationMods(entries) {
+  const out = {
+    mindReserve: 0,
+    // The gate is the *highest* demand among the applied enchantments, not the
+    // sum: two items each needing Faith 4 do not together need Faith 8.
+    requiredFaith: 0,
+    // One bound enchantment binds the whole item.
+    bound: false,
+    activations: [],
+  };
+
+  for (const entry of entries) {
+    out.mindReserve += Number(entry?.mindReserve) || 0;
+    out.requiredFaith = Math.max(
+      out.requiredFaith,
+      Number(entry?.requiredFaith) || 0,
+    );
+    if (entry?.bound) out.bound = true;
+
+    // An enchantment is usable when it says so. Everything the use resolver
+    // needs travels together, so Phase 4 reads one array instead of digging
+    // back through the raw snapshots.
+    if (entry?.activation?.enabled) {
+      out.activations.push({
+        id: entry.id ?? "",
+        name: entry.name ?? "",
+        img: entry.img ?? "",
+        group: entry.group ?? "",
+        activation: entry.activation ?? {},
+        cost: entry.cost ?? {},
+        risk: entry.risk ?? {},
+        charges: entry.charges ?? {},
+      });
+    }
+  }
+
+  return out;
+}
+
 function weaponEnchantMods(entries) {
   const mods = {
     attack: 0,
@@ -157,7 +261,7 @@ function weaponEnchantMods(entries) {
     });
   }
 
-  return mods;
+  return Object.assign(mods, itemisationMods(entries));
 }
 
 /**
@@ -199,7 +303,7 @@ function gearEnchantMods(entries) {
     }
   }
 
-  return mods;
+  return Object.assign(mods, itemisationMods(entries));
 }
 
 /**
@@ -389,6 +493,46 @@ export class RedsteelItem extends Item {
         "crossbow",
         "firearm",
       ];
+
+      // Itemisation groups and the option lists that hang off them. Rebuilt
+      // for the same reason as classOptions above: an enchantment authored
+      // before these lists existed carries its own copy in source data.
+      this.system.groupOptions = [...ENCHANTMENT_GROUPS];
+      this.system.costResourceOptions = [
+        "mana",
+        "stamina",
+        "health",
+        "fatigue",
+        "mind",
+        "holy energy",
+        "blood",
+      ];
+      this.system.rechargeOptions = ["", "gem", "soul", "rest", "never"];
+      this.system.riskTestOptions = ["", "resolve", "faith"];
+
+      // Enchantments authored before these blocks existed have none of them in
+      // their own source data, so default here rather than trusting
+      // template.json to backfill an existing document.
+      this.system.activation ??= {};
+      this.system.cost ??= {};
+      this.system.risk ??= {};
+      this.system.charges ??= {};
+
+      // Effect ids applied when the item is used, authored as a comma-separated
+      // string and mirrored into an array. Same contract as the feature sheet's
+      // statusEffectsRaw, and the ids are the same effect-definition keys that
+      // `game.redsteel.applyEffect` resolves, so a potion buff and an
+      // enchantment buff are authored identically. Ids are case-sensitive
+      // ("iceStrike"), so case is preserved.
+      syncEffectIdList(this.system.activation, "useEffects");
+      syncEffectIdList(this.system.activation, "safeEffects");
+
+      // Charges never go below zero, and an item with no ceiling is simply not
+      // a charged item — leaving `max` at 0 is how "not charged" is authored.
+      this.system.charges.max = Math.max(
+        0,
+        Math.floor(Number(this.system.charges.max) || 0),
+      );
     }
 
     if (this.type === "ammunition") {
@@ -532,6 +676,31 @@ export class RedsteelItem extends Item {
           // Velení — see module/utils/commands.mjs. Rebuilt here every
           // prepare, so template.json alone would never reach the sheet.
           "command",
+        ];
+        // Ability sub-tab grouping on the actor sheet. Rebuilt here every
+        // prepare for the same reason as the lists above: an ability authored
+        // before this field existed carries no list of its own, so
+        // template.json alone would never reach its sheet.
+        this.system.categoryOptions = [
+          "basic",
+          "command",
+          "doctrine",
+          "weapon",
+        ];
+        // Resource costs. Rebuilt for the same reason as the lists above: an
+        // ability created before this list changed still carries the old array
+        // in its own source data, so template.json would never reach its sheet.
+        // "mental", "inspiration" and "holy energy" used to sit here and named
+        // stats that do not exist; utils/itemResources.mjs still maps the two
+        // salvageable spellings onto real pools.
+        this.system.costOptions = [
+          "stamina",
+          "mana",
+          "health",
+          "mind",
+          "fatigue",
+          "holy energy",
+          "blood",
         ];
       }
     }

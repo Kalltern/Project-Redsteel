@@ -95,7 +95,8 @@
     "critRange": 0,
     "critChance": 0,
     "critFail": 0,
-    "localizationKey": "REDSTEEL.Items.AimingRanged.name"
+    "localizationKey": "REDSTEEL.Items.AimingRanged.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "laOvi1sJV6MKCK7M",

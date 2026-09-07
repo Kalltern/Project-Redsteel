@@ -19,6 +19,12 @@ import {
   renderSpeedTestLine,
 } from "./speedTest.mjs";
 import { mindBurnUpdates } from "./mindPoints.mjs";
+import {
+  canSpendResource,
+  normalizeResourceKey,
+  resourceDirection,
+  resourceLabel,
+} from "./itemResources.mjs";
 import { captureAttackTargets } from "./autoDefense.mjs";
 import { resolveTestRating } from "./testRating.mjs";
 import {
@@ -1294,7 +1300,7 @@ ${
           // Reroll tokens for the chat reroll picker: "attack" + combat skill +
           // governing attribute (finesse-aware), so e.g. Brawny (str) can reroll
           // a strength melee attack and Nimble (dex) a finesse attack.
-          rerollTokens: getAttackRerollTokens(actor, weapon),
+          rerollTokens: getAttackRerollTokens(weapon),
         },
         attack: {
           type: "attack",
@@ -1551,13 +1557,23 @@ ${
     // The arrowhead's own penetration, on top of the bow's (see the ammo check
     // above — a weapon that needs ammo never gets here without it).
     const ammoPen = Number(ammo?.system?.penetration) || 0;
-    const penetration =
+    // Item quality (Zbraň column). Only the main hand carries a Průbojnost
+    // entry — the Druhá ruka column has none.
+    const qualityPen = weapon
+      ? Number(weapon.system.qualityMods?.penetration) || 0
+      : 0;
+    // Floored at 0: Penetration is what gets through armor, so a bad weapon can
+    // lose all of it but never turn into extra protection for the target.
+    const penetration = Math.max(
+      0,
       mainPen +
-      offPen +
-      ammoPen +
-      abilityPenetration +
-      actorMods.penetrationBonus +
-      improvedAimPen;
+        offPen +
+        ammoPen +
+        abilityPenetration +
+        actorMods.penetrationBonus +
+        qualityPen +
+        improvedAimPen,
+    );
     // S2: fold passive weapon crit-range bonuses (spec nodes) into the crit-range
     // input that getCriticalRolls buckets into critScore.
     doctrineCritRangeBonus += actorMods.critRangeBonus;
@@ -1832,30 +1848,59 @@ ${renderSpeedTestLine({
   }
 }
 
+/**
+ * Pay the resource costs of one or more abilities, all or nothing.
+ *
+ * Two authoring routes feed in here and both are honoured: the single
+ * `costType` + `cost` pair on the ability sheet, and the richer
+ * `resources[{mode, amount, type}]` array that spells use. Totals from both are
+ * merged per pool, so an ability that names Mind in one and "mental" in the
+ * other pays once, not twice.
+ *
+ * Direction comes from `itemResources.mjs`: draining a *down* pool subtracts
+ * and is blocked at 0, while draining fatigue ADDS and is blocked at the
+ * ceiling. Down-pool adds keep their original behaviour of clamping only at 0,
+ * because several pools carry an unauthored `max` on NPCs and clamping to it
+ * would quietly empty them.
+ *
+ * @param {Actor} actor
+ * @param {Item|Item[]} abilities
+ * @returns {Promise<boolean>}  False when the actor cannot afford the total,
+ *                              having changed nothing.
+ */
 export async function deductAbilityCost(actor, abilities = []) {
   if (!Array.isArray(abilities)) abilities = [abilities];
 
   const drainTotals = {};
   const addTotals = {};
   const updates = {};
-  function resolveStatKey(stat) {
-    if (stat === "temporaryhealth") return "temporaryHealth";
-    if (stat === "temporaryhealthmagic") return "temporaryHealthMagic";
-    return stat;
+
+  /** Raw authored spellings seen per pool, so a warning can name what failed. */
+  const spelling = {};
+
+  function tally(bucket, rawType, amount) {
+    const value = Number(amount) || 0;
+    if (!rawType || value <= 0) return;
+    const key = normalizeResourceKey(rawType);
+    if (!key) {
+      // An unrecognised pool used to be charged against a stat that did not
+      // exist, which blocked the ability with a confusing warning. Say what is
+      // actually wrong instead, and keep the refusal.
+      console.warn(
+        `Redsteel | Unknown resource "${rawType}" on an ability cost; ignoring.`,
+      );
+      return;
+    }
+    spelling[key] ??= String(rawType);
+    bucket[key] = (bucket[key] || 0) + value;
   }
+
   // ---------------------------------
   // 1. Collect all drains and adds
   // ---------------------------------
   for (const ability of abilities) {
     // Simple costType system
-    const costType = ability.system.costType;
-    const normalizedType = costType?.toLowerCase();
-    const costValue = Number(ability.system.cost) || 0;
-
-    if (normalizedType && costValue > 0) {
-      drainTotals[normalizedType] =
-        (drainTotals[normalizedType] || 0) + costValue;
-    }
+    tally(drainTotals, ability.system.costType, ability.system.cost);
 
     const resources = Array.isArray(ability.system.resources)
       ? ability.system.resources
@@ -1864,29 +1909,21 @@ export async function deductAbilityCost(actor, abilities = []) {
     for (const res of resources) {
       const { type, mode, amount } = res;
       if (!type || !mode) continue;
-      const stat = type.toLowerCase();
-
-      const value = Number(amount) || 0;
-
-      if (mode === "drain") {
-        drainTotals[stat] = (drainTotals[stat] || 0) + value;
-      }
-
-      if (mode === "add") {
-        addTotals[stat] = (addTotals[stat] || 0) + value;
-      }
+      if (mode === "drain") tally(drainTotals, type, amount);
+      if (mode === "add") tally(addTotals, type, amount);
     }
   }
 
   // ---------------------------------
   // 2. Validate drains
   // ---------------------------------
-  for (const [stat, totalDrain] of Object.entries(drainTotals)) {
-    const actorStat = resolveStatKey(stat);
-    const currentValue = actor.system.stats[actorStat]?.value ?? 0;
-
-    if (currentValue < totalDrain) {
-      ui.notifications.warn(`Not enough ${stat.replace(/([A-Z])/g, " $1")}`);
+  for (const [key, totalDrain] of Object.entries(drainTotals)) {
+    if (!canSpendResource(actor, key, totalDrain)) {
+      ui.notifications.warn(
+        game.i18n.format("REDSTEEL.Resource.NotEnough", {
+          resource: resourceLabel(spelling[key] ?? key),
+        }),
+      );
       return false;
     }
   }
@@ -1899,17 +1936,25 @@ export async function deductAbilityCost(actor, abilities = []) {
     ...Object.keys(addTotals),
   ]);
 
-  for (const stat of affectedStats) {
-    const actorStat = resolveStatKey(stat);
+  for (const key of affectedStats) {
+    const stat = actor.system.stats[key];
+    const currentValue = Number(stat?.value) || 0;
+    const drain = drainTotals[key] || 0;
+    const add = addTotals[key] || 0;
 
-    const currentValue = actor.system.stats[actorStat]?.value ?? 0;
-    const drain = drainTotals[stat] || 0;
-    const add = addTotals[stat] || 0;
-
-    updates[`system.stats.${actorStat}.value`] = Math.max(
-      currentValue - drain + add,
-      0,
-    );
+    if (resourceDirection(key) === "up") {
+      // Fatigue: spending piles it on, "add" is rest that takes it off again.
+      const ceiling = Number(stat?.max) || 0;
+      updates[`system.stats.${key}.value`] = Math.min(
+        ceiling,
+        Math.max(0, currentValue + drain - add),
+      );
+    } else {
+      updates[`system.stats.${key}.value`] = Math.max(
+        currentValue - drain + add,
+        0,
+      );
+    }
   }
 
   if (Object.keys(updates).length) {

@@ -87,7 +87,8 @@
     "effectType1": "corrosion",
     "effectType2": "shield_break",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.SplinteringStrike.name"
+    "localizationKey": "REDSTEEL.Items.SplinteringStrike.name",
+    "category": "weapon"
   },
   "effects": [],
   "sort": 850000,

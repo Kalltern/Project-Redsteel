@@ -95,7 +95,8 @@
     "critRange": 0,
     "critChance": 0,
     "critFail": 0,
-    "localizationKey": "REDSTEEL.Items.CripplingShot.name"
+    "localizationKey": "REDSTEEL.Items.CripplingShot.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

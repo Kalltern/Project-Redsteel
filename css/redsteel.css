@@ -3351,6 +3351,60 @@ body.theme-dark input:not([readonly]):not([type="checkbox"]) {
   opacity: 0.4;
 }
 
+/* NPC armor coverage strip (sheet header). Three glyphs saying which locations
+   this creature has armor over; an aimed strike landing on an exposed one
+   ignores its base armor. Lit = armored, which is also the default, so a fresh
+   NPC reads as fully protected. */
+.npc-bodyparts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 2px;
+}
+
+.npc-bodyparts-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(214, 207, 194, 0.55);
+  margin-right: 2px;
+}
+
+.bodypart-toggle {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(181, 151, 80, 0.45);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.bodypart-toggle i {
+  font-size: 14px;
+  line-height: 1;
+  color: #e6c878;
+}
+
+.bodypart-toggle:hover {
+  border-color: #d9a13b;
+  box-shadow: 0 0 6px rgba(217, 161, 59, 0.45);
+}
+
+/* Exposed reads the same way the doffed helmet does on the PC sheet: the glyph
+   dims and the frame goes dashed, so on/off is one glance and one icon. */
+.bodypart-toggle.exposed {
+  border-style: dashed;
+  border-color: rgba(181, 151, 80, 0.3);
+}
+
+.bodypart-toggle.exposed i {
+  color: rgba(214, 207, 194, 0.35);
+}
+
 /* Slots take the leftover height under the header and sit at the bottom of it.
    The weapon stack reserves headroom for the mini inactive set, so bottom
    alignment is what puts armor, the active set, and ammo on one baseline. */
@@ -11493,6 +11547,58 @@ body.redsteel-bg3-hotbar .rs-bg3-skill-picker .rs-bg3-pick-rating {
   flex: 1 1 auto;
 }
 
+/* Abilities tab sub-tabs (Basic / Command / Doctrinal / Weapon) */
+/* Kept separate from the Features rules above on purpose. Selector carries
+   enough weight to beat core's nav.tabs flex rules, which otherwise size each
+   label to its own text and push the dividers off-centre. */
+.abilities-box nav.tabs.abilities-subtabs {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.abilities-box nav.tabs.abilities-subtabs .item {
+  /* Equal shares whatever the label lengths: same basis for every item, and
+     no content-based minimum to spoil it. */
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.abilities-box nav.tabs.abilities-subtabs .item + .item {
+  border-left: 1px solid #514226;
+}
+
+.abilities-box nav.tabs.abilities-subtabs .item:hover,
+.abilities-box nav.tabs.abilities-subtabs .item.active {
+  color: #f0d7aa;
+}
+
+/* The active sub-tab body is the inset panel the old .npc-traits section on
+   this tab used to be. Hiding the inactive ones is core's .tab rule, same as
+   the Features and Spells sub-tabs. */
+.abilities-box .abilities-subtab.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(181, 151, 80, 0.35);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
+}
+
+/* The create button sits at the top-right of the panel, where the section
+   header's + used to be. */
+.abilities-box .abilities-subtab .abilities-create {
+  align-self: flex-end;
+  flex: 0 0 auto;
+}
+
 /* -------------------------------------------- */
 /*  Sheet field                                  */
 /*  Fills what used to be Foundry's transparent  */
@@ -11622,4 +11728,195 @@ body.redsteel-bg3-hotbar .rs-bg3-skill-picker .rs-bg3-pick-rating {
     rgba(81, 66, 38, 0.06)
   );
   box-shadow: inset 0 -2px 0 rgba(214, 188, 140, 0.55);
+}
+
+
+/* ============================= */
+/* MONSTER BUILDER (GM)          */
+/* ============================= */
+
+.rs-monster-builder .rs-mb-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 14px;
+  padding: 10px 12px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.rs-monster-builder .rs-mb-fields .form-group {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.rs-monster-builder .rs-mb-fields label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+/* The Impossible toggle: a checkbox reads as a switch, not a labelled field,
+   so it drops the uppercase field-label treatment the selects use. */
+.rs-monster-builder .rs-mb-fields .rs-mb-check label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.rs-monster-builder .rs-mb-fields .rs-mb-check input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.rs-monster-builder .rs-mb-hint {
+  margin: 2px 0 0;
+  font-size: 10px;
+  line-height: 1.3;
+  opacity: 0.55;
+}
+
+/* Appearance & kit. A ruled group keeps Power Level / Archetype / Role reading
+   as the primary controls once the column gets long. */
+.rs-monster-builder .rs-mb-section {
+  margin: 10px 0 0;
+  padding: 6px 8px 8px;
+  border: 1px solid rgba(217, 161, 59, 0.28);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rs-monster-builder .rs-mb-section legend {
+  padding: 0 5px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #d9a13b;
+  opacity: 0.8;
+}
+
+/* A field with a trailing button: select/input takes the room, button does not
+   stretch (Foundry's default button width would eat the row). */
+.rs-monster-builder .rs-mb-picker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rs-monster-builder .rs-mb-picker > select,
+.rs-monster-builder .rs-mb-picker > input[type="text"] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rs-monster-builder .rs-mb-picker > button {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 8px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.rs-monster-builder .rs-mb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.rs-monster-builder .rs-mb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 5px;
+  border: 1px solid rgba(217, 161, 59, 0.35);
+  border-radius: 9px;
+  background: rgba(217, 161, 59, 0.08);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.rs-monster-builder .rs-mb-chip a {
+  color: #9a9388;
+  cursor: pointer;
+}
+
+.rs-monster-builder .rs-mb-chip a:hover {
+  color: #e2706e;
+}
+
+.rs-monster-builder .rs-mb-picker > input[type="text"]:disabled,
+.rs-monster-builder .rs-mb-picker > button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rs-monster-builder .rs-mb-preview h3 {
+  margin: 0 0 6px;
+  border-bottom: 1px solid rgba(217, 161, 59, 0.35);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.rs-monster-builder .rs-mb-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rs-monster-builder .rs-mb-stats li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 8px;
+  padding: 1px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(217, 161, 59, 0.08);
+}
+
+.rs-monster-builder .rs-mb-stats li > span:first-child {
+  opacity: 0.6;
+}
+
+.rs-monster-builder .rs-mb-stats li > span:last-child {
+  color: #e6c878;
+}
+
+/* The weapon already beats the curve and the damage bonus hit its floor. */
+.rs-monster-builder .rs-mb-stats li.rs-mb-over > span:last-child {
+  color: #e0b070;
+  font-weight: bold;
+}
+
+.rs-monster-builder .rs-mb-warn {
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  border: 1px solid #8b5a2b;
+  border-radius: 4px;
+  background: rgba(179, 74, 74, 0.12);
+  font-size: 11px;
+  color: #e0b070;
+}
+
+.rs-monster-builder .rs-mb-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid rgba(217, 161, 59, 0.35);
+}
+
+.rs-monster-builder .rs-mb-footer button {
+  width: auto;
+  flex: 0 0 auto;
 }

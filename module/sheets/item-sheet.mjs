@@ -12,6 +12,7 @@ import {
   undoItemResync,
 } from "../utils/itemResync.mjs";
 import { readEnchantments } from "../documents/item.mjs";
+import { resourceLabel } from "../utils/itemResources.mjs";
 
 const { api, sheets } = foundry.applications;
 
@@ -954,6 +955,41 @@ export class RedsteelItemSheet extends api.HandlebarsApplicationMixin(
       if (value) parts.push(`${signed(value)} ${game.i18n.localize(labelKey)}`);
     };
 
+    // The costs lead. An item that eats Mind, gates on Faith or spends a
+    // resource should say so before it lists everything it gives back.
+    const reserve = Number(entry?.mindReserve) || 0;
+    if (reserve) {
+      parts.push(
+        `-${reserve} ${game.i18n.localize(
+          "REDSTEEL.Enchantment.FIELDS.mindReserve.label",
+        )}`,
+      );
+    }
+    const faithGate = Number(entry?.requiredFaith) || 0;
+    if (faithGate) {
+      parts.push(
+        `${game.i18n.localize(
+          "REDSTEEL.Enchantment.FIELDS.requiredFaith.label",
+        )} ${faithGate}`,
+      );
+    }
+    const costAmount = Number(entry?.cost?.amount) || 0;
+    if (entry?.cost?.resource && costAmount) {
+      parts.push(`${costAmount} ${resourceLabel(entry.cost.resource)}`);
+    }
+    const chargeMax = Number(entry?.charges?.max) || 0;
+    if (chargeMax) {
+      const held = Number(entry?.charges?.value) || 0;
+      parts.push(
+        `${game.i18n.localize(
+          "REDSTEEL.Enchantment.FIELDS.chargesMax.label",
+        )} ${held}/${chargeMax}`,
+      );
+    }
+    if (entry?.bound) {
+      parts.push(game.i18n.localize("REDSTEEL.Enchantment.FIELDS.bound.label"));
+    }
+
     // Weapon side
     numeric("attack", "REDSTEEL.Item.Weapon.FIELDS.attack.label");
     numeric("damageBonus", "REDSTEEL.Enchantment.FIELDS.damageBonus.label");
@@ -1307,6 +1343,30 @@ export class RedsteelItemSheet extends api.HandlebarsApplicationMixin(
         img: dropped.img,
         uuid: dropped.uuid,
         tier: Number(dropped.system.tier) || 0,
+        // Mind points this enchantment locks away while its host item is
+        // equipped. Snapshotted like everything else here, so re-costing the
+        // source enchantment never silently re-costs swords already made.
+        mindReserve: Number(dropped.system.mindReserve) || 0,
+
+        // Itemisation group and everything that hangs off it. All snapshotted,
+        // so editing the source enchantment later never changes a sword that
+        // was already forged with it.
+        group: dropped.system.group ?? "",
+        bound: !!dropped.system.bound,
+        requiredFaith: Number(dropped.system.requiredFaith) || 0,
+        activation: foundry.utils.deepClone(dropped.system.activation ?? {}),
+        cost: foundry.utils.deepClone(dropped.system.cost ?? {}),
+        risk: foundry.utils.deepClone(dropped.system.risk ?? {}),
+        // The ceiling and the refill rule are authored on the enchantment, but
+        // the charges *remaining* belong to this host item: two amulets made
+        // from the same enchantment are spent independently. A fresh item
+        // arrives full.
+        charges: {
+          max: Math.max(0, Number(dropped.system.charges?.max) || 0),
+          value: Math.max(0, Number(dropped.system.charges?.max) || 0),
+          recharge: dropped.system.charges?.recharge ?? "",
+        },
+
         mods: foundry.utils.deepClone(
           (slot === "gear"
             ? dropped.system.gearMods

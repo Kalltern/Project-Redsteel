@@ -44,6 +44,7 @@ import { registerCombatAutoSelect } from "./utils/combatAutoSelect.mjs";
 import { registerTempHealthGrant } from "./utils/tempHealthGrant.mjs";
 import { registerAdvantageousManeuver } from "./utils/advantageousManeuver.mjs";
 import { registerRedsteelHotbar } from "./utils/redsteelHotbar.mjs";
+import { monsterBuilder } from "./utils/monsterBuilder.mjs";
 import { applyTraitStatusEffects } from "./utils/traitStatusEffects.mjs";
 import { applyActorLight } from "./utils/itemLight.mjs";
 import {
@@ -324,6 +325,7 @@ Hooks.once("init", function () {
   game.redsteel.helpOverlay = HelpOverlay;
   game.redsteel.selectToken = selectToken;
   game.redsteel.statusEffectManager = statusEffectManager;
+  game.redsteel.monsterBuilder = monsterBuilder;
   game.redsteel.getActorCombatModifiers = getActorCombatModifiers;
   game.redsteel.getWeaponSpecBonuses = getWeaponSpecBonuses;
   game.redsteel.applyEffect =
@@ -1000,6 +1002,12 @@ const SYSTEM_MACROS = [
     name: "Effect manager",
     command: `await game.redsteel.statusEffectManager();`,
     img: "icons/sundries/documents/document-sealed-signatures-red.webp",
+    shared: false,
+  },
+  {
+    name: "Monster builder",
+    command: `game.redsteel.monsterBuilder();`,
+    img: "icons/creatures/abilities/mouth-teeth-long-red.webp",
     shared: false,
   },
 ];
@@ -1763,9 +1771,9 @@ async function handleRerollClick(message) {
   }
 
   // Roll tokens this card can be rerolled against. Attack/defense cards carry a
-  // precomputed `rerollTokens` array (combat skill + governing attribute, worked
-  // out when the weapon/finesse state was known). Skill cards carry a `skill`
-  // flag, from which the skill key + its governing attribute are derived.
+  // precomputed `rerollTokens` array ("attack"/"defense" + the combat skill,
+  // worked out when the weapon was known). Skill cards carry a `skill` flag,
+  // from which the skill key + its attribute-group token are derived.
   const stored = message.getFlag("redsteel", "rerollTokens");
   const skillKey =
     message.getFlag("redsteel", "skill") ??

@@ -390,6 +390,14 @@
       }
     },
     "Actor": {
+      "Abilities": {
+        "Category": {
+          "basic": "Basic",
+          "command": "Command",
+          "doctrine": "Doctrinal",
+          "weapon": "Weapon"
+        }
+      },
       "Tabs": {
         "Biography": "Biography",
         "Skills": "Skills",
@@ -4086,6 +4094,10 @@
           },
           "bloodMage": {
             "label": "Blood Mage"
+          },
+          "sneakDice": {
+            "label": "Sneak d6",
+            "hint": "How many d6 this creature adds on a Sneak Attack. Leave blank for the default single die. The weapon's own sneak damage is added on top."
           }
         },
         "xp": {
@@ -4096,6 +4108,15 @@
         "partyMember": {
           "label": "Party member"
         }
+      },
+      "BodyParts": {
+        "Coverage": "Armor coverage",
+        "Armored": "armored. Click to expose this location.",
+        "Exposed": "exposed — a landed aimed strike here ignores this creature's armor. Click to armor it.",
+        "ArmorBypassed": "unarmored, {amount} armor ignored",
+        "head": "Head",
+        "hands": "Hands",
+        "legs": "Legs"
       }
     },
     "Item": {
@@ -4378,6 +4399,9 @@
       },
       "Ability": {
         "FIELDS": {
+          "category": {
+            "label": "Category"
+          },
           "modifier": {
             "label": "Modifier"
           },
@@ -4556,7 +4580,36 @@
         "DropDuplicate": "{name} is already granted by this race."
       }
     },
+    "Resource": {
+      "NotEnough": "Not enough {resource}."
+    },
     "Enchantment": {
+      "Itemisation": "Itemisation",
+      "ItemisationHint": "Every magic item trades something from the character for its benefit. The group says what is traded and when.",
+      "Activation": "Activation",
+      "NoCost": "No cost",
+      "Group": {
+        "none": "Plain enchantment",
+        "mind_reserved": "Mind-Reserved",
+        "resource_spend": "Resource-Spend",
+        "mana_charged": "Mana-Charged",
+        "soul_charged": "Soul-Charged",
+        "insanity_risk": "Insanity-Risk",
+        "mixed": "Mixed Bonus / Penalty",
+        "faith_gated": "Faith-Gated"
+      },
+      "Recharge": {
+        "none": "Not specified",
+        "gem": "Consumes a gem",
+        "soul": "On a killing blow",
+        "rest": "On a Long Rest",
+        "never": "Never"
+      },
+      "RiskTest": {
+        "none": "No test",
+        "resolve": "Resolve",
+        "faith": "Faith"
+      },
       "AppliedHeading": "Applied enchantments",
       "TotalHeading": "Total",
       "DropHint": "Drag an Enchantment Item here. Its bonuses are added to this item permanently.",
@@ -4587,6 +4640,62 @@
         },
         "tier": {
           "label": "Tier"
+        },
+        "mindReserve": {
+          "label": "Mind reserve",
+          "hint": "Mind points locked away while the enchanted item is equipped. The ceiling returns the moment the item comes off, unlike burned Mind."
+        },
+        "group": {
+          "label": "Group"
+        },
+        "requiredFaith": {
+          "label": "Required Faith",
+          "hint": "Minimum Faith rating needed to equip the item. 0 means no gate."
+        },
+        "bound": {
+          "label": "Bound",
+          "hint": "The item refuses to come off without the GM. Breaking the binding is a table ruling."
+        },
+        "activationEnabled": {
+          "label": "Can be used",
+          "hint": "Gives the item a use button. Leave off for an item that only works while worn."
+        },
+        "costResource": {
+          "label": "Cost",
+          "hint": "Resource spent per use. Fatigue and Mind are the most expensive, so they should buy the most."
+        },
+        "costAmount": {
+          "label": "Amount"
+        },
+        "chargesMax": {
+          "label": "Charges",
+          "hint": "How many uses the item holds. 0 means it is not a charged item."
+        },
+        "recharge": {
+          "label": "Recharge"
+        },
+        "riskTest": {
+          "label": "Test on use"
+        },
+        "riskInsanity": {
+          "label": "Insanity on failure",
+          "hint": "A failed Resolve test still grants the effect. This is what it costs."
+        },
+        "pursuitChance": {
+          "label": "Pursuit chance %",
+          "hint": "Chance per use that the item's keepers pick up the trail. Archivists first, Warriors of Hades if they are ignored."
+        },
+        "useEffects": {
+          "label": "Effects on use",
+          "hint": "Comma-separated effect ids, the same ids potions use. Ids are case-sensitive."
+        },
+        "safeEffects": {
+          "label": "Safe effects",
+          "hint": "The weaker effect taken instead of rolling. Comma-separated effect ids."
+        },
+        "activationSummary": {
+          "label": "Use summary",
+          "hint": "One line shown on the chat card"
         },
         "requiredClass": {
           "label": "Required weapon class",
@@ -4811,6 +4920,7 @@
         "rank": "Rank {rank}",
         "base": "Base",
         "bonus": "Bonus",
+        "attrSkill": "{attribute} (skills)",
         "global": "Global modifier",
         "other": "Other",
         "total": "Total",
@@ -4995,7 +5105,10 @@
       },
       "type1": "Extra Effect Type 1",
       "type2": "Extra Effect Type 2",
-      "type3": "Extra Effect Type 3"
+      "type3": "Extra Effect Type 3",
+      "Name": {
+        "shield_strain": "Shield Strain"
+      }
     },
     "Resync": {
       "Action": "Resync with ruleset",
@@ -6529,9 +6642,6 @@
       "ExpertCraft": {
         "name": "Expert: Craft"
       },
-      "AdeptRiding": {
-        "name": "Adept: Riding"
-      },
       "ExpertRiding": {
         "name": "Expert: Riding"
       },
@@ -6595,14 +6705,8 @@
       "ExpertActing": {
         "name": "Expert: Acting"
       },
-      "AdeptDeception": {
-        "name": "Adept: Deception"
-      },
       "ExpertDeception": {
         "name": "Expert: Deception"
-      },
-      "AdeptIntimidation": {
-        "name": "Adept: Intimidation"
       },
       "ExpertIntimidation": {
         "name": "Expert: Intimidation"
@@ -6619,38 +6723,20 @@
       "ExpertPainting": {
         "name": "Expert: Painting"
       },
-      "AdeptPersuasion": {
-        "name": "Adept: Persuasion"
-      },
       "ExpertPersuasion": {
         "name": "Expert: Persuasion"
-      },
-      "AdeptTemptation": {
-        "name": "Adept: Temptation"
       },
       "ExpertTemptation": {
         "name": "Expert: Temptation"
       },
-      "AdeptBlend": {
-        "name": "Adept: Blend"
-      },
       "ExpertBlend": {
         "name": "Expert: Blend"
-      },
-      "AdeptHerbalism": {
-        "name": "Adept: Herbalism"
       },
       "ExpertHerbalism": {
         "name": "Expert: Herbalism"
       },
-      "AdeptInsight": {
-        "name": "Adept: Insight"
-      },
       "ExpertInsight": {
         "name": "Expert: Insight"
-      },
-      "AdeptSurvival": {
-        "name": "Adept: Survival"
       },
       "ExpertSurvival": {
         "name": "Expert: Survival"
@@ -6938,6 +7024,92 @@
       "Rations": {
         "name": "Rations",
         "description": "<p>A day's worth of trail food: hard bread, dried meat, whatever the pot gave up. One unit feeds one mouth for a third of a day. A normal character eats 3 units per Long Rest.</p>"
+      }
+    },
+    "MonsterBuilder": {
+      "title": "Monster Builder",
+      "gmOnly": "Only the GM can open the Monster Builder.",
+      "powerLevel": "Power Level",
+      "archetype": "Archetype",
+      "role": "Role",
+      "count": "Count",
+      "baseName": "Name",
+      "baseNameHint": "Blank = \"Striker PL3\"",
+      "folder": "Folder",
+      "noFolder": "(none)",
+      "create": "Create",
+      "created": "Monster Builder: created {count} actor(s).",
+      "createFailed": "Monster Builder: creation failed. See the console for details.",
+      "preview": "Preview",
+      "commandsDrawn": "{n} drawn at random from {pool}",
+      "notEnoughCommands": "Only {found} command abilities were found, {wanted} were wanted. Attaching what exists.",
+      "race": "Race",
+      "raceNone": "(none)",
+      "profileImage": "Portrait",
+      "tokenImage": "Token image",
+      "sameAsProfile": "Same as portrait",
+      "imageHint": "Leave blank for the default",
+      "browse": "Browse",
+      "traits": "Traits",
+      "addTrait": "Add",
+      "removeTrait": "Remove",
+      "customWeapon": "Weapon",
+      "weaponAuto": "Automatic (by archetype)",
+      "weaponWorld": "World",
+      "customWeaponUnusable": "The chosen weapon could not be used (missing, or its damage cannot be scored). Falling back to automatic selection.",
+      "chosen": "chosen",
+      "sectionKit": "Appearance & kit",
+      "impossible": "Impossible",
+      "impossibleHint": "Forces Strength, Dexterity and Will to 300. Beyond anything a character can reach, even with Desperate Effort.",
+      "avgDamage": "Average damage",
+      "noWeapon": "No matching weapon found",
+      "none": "None",
+      "curve": "curve",
+      "example": "example",
+      "pool": "{n} to choose from",
+      "target": "target",
+      "withKit": "with kit",
+      "aboveCurve": "Damage above curve: {weapon} averages {actual} against a target of {target}. {count} of the allowed weapons overshoot. Quality takes the compensation in attack instead.",
+      "Archetype": {
+        "tank": "Tank",
+        "striker": "Striker",
+        "brute": "Brute",
+        "skirmisher": "Skirmisher",
+        "archer": "Archer",
+        "heavyArcher": "Heavy Archer",
+        "assassin": "Assassin",
+        "caster": "Caster",
+        "support": "Support"
+      },
+      "Role": {
+        "minion": "Minion",
+        "standard": "Standard",
+        "elite": "Elite",
+        "boss": "Boss"
+      },
+      "Row": {
+        "commands": "Commands",
+        "race": "Race",
+        "traits": "Traits",
+        "stamina": "Stamina",
+        "attrMain": "Str / Dex / Wil",
+        "attrSecondary": "Other attributes",
+        "health": "Health",
+        "combat": "Combat",
+        "archery": "Archery",
+        "throwing": "Throwing",
+        "defense": "Defense / Ranged defense",
+        "dodge": "Dodge",
+        "dodgeLimit": "limit",
+        "armor": "Natural armor",
+        "spd": "Speed",
+        "ini": "Initiative",
+        "mind": "Mind",
+        "quality": "Quality",
+        "weapon": "Weapon",
+        "shield": "Shield",
+        "penetration": "Penetration",
+        "damageBonus": "Damage bonus"
       }
     },
     "Currency": {

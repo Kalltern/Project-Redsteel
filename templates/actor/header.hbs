@@ -734,6 +734,25 @@
 
       </div>
 
+      {{!-- Armor coverage per body location. A landed aimed strike
+            (utils/aimedStrike.mjs) on a location marked exposed ignores this
+            NPC's base armor for that hit. Absent flag = armored, so NPCs made
+            before the toggles existed are unchanged. A beast whose hide covers
+            its skull is expressed by leaving Head armored. --}}
+      <div class="npc-bodyparts">
+        <span class="npc-bodyparts-label">{{localize "REDSTEEL.Actor.BodyParts.Coverage"}}</span>
+        {{#each bodyPartArmor as |part|}}
+          <a
+            class="bodypart-toggle {{#unless part.armored}}exposed{{/unless}}"
+            data-action="toggleBodyPartArmor"
+            data-part="{{part.key}}"
+            data-tooltip="{{part.label}} — {{#if part.armored}}{{localize "REDSTEEL.Actor.BodyParts.Armored"}}{{else}}{{localize "REDSTEEL.Actor.BodyParts.Exposed"}}{{/if}}"
+          >
+            <i class="{{part.icon}}"></i>
+          </a>
+        {{/each}}
+      </div>
+
       <hr>
 
       <div class="npc-combat-grid">
@@ -814,6 +833,16 @@
         <div class="attribute-armor">
           <label class="resource-label" data-tt-kind="secondaryAttribute" data-tt-id="ini">{{localize "REDSTEEL.Actor.Character.SecondaryAttribute.Ini.long"}}</label>
           <input type="text" name="system.secondaryAttributes.ini.value" value="{{system.secondaryAttributes.ini.value}}" class="attribute-score" data-dtype="Number" />
+        </div>
+
+        {{!-- How many d6 this creature adds on a Sneak Attack. Blank means the
+              default single die; the weapon's own sneak damage is added to it. --}}
+        <div class="attribute-armor">
+          <label
+            class="resource-label"
+            data-tooltip="{{localize 'REDSTEEL.Actor.NPC.FIELDS.sneakDice.hint'}}"
+          >{{localize "REDSTEEL.Actor.NPC.FIELDS.sneakDice.label"}}</label>
+          <input type="text" name="system.sneakDice" value="{{system.sneakDice}}" class="attribute-score" data-dtype="Number" placeholder="1" />
         </div>
       </div>
 

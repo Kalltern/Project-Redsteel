@@ -85,7 +85,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.FeintPerception.name"
+    "localizationKey": "REDSTEEL.Items.FeintPerception.name",
+    "category": "weapon"
   },
   "effects": [],
   "sort": 825000,

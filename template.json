@@ -7,6 +7,7 @@
         "biography": "",
         "armor": {
           "total": 0,
+          "worn": 0,
           "natural": {
             "value": 0,
             "bonus": 0,
@@ -289,7 +290,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "dex": {
           "value": 1,
@@ -298,7 +300,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "end": {
           "value": 1,
@@ -308,7 +311,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "int": {
           "value": 1,
@@ -317,7 +321,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "wil": {
           "value": 1,
@@ -326,7 +331,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "cha": {
           "value": 1,
@@ -335,7 +341,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "per": {
           "value": 1,
@@ -344,7 +351,8 @@
           "critbonus": 0,
           "critfailpenalty": 0,
           "bonus": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         }
       },
       "secondaryAttributes": {
@@ -1030,6 +1038,7 @@
       "critRangeMelee": 0,
       "critRangeRanged": 0,
       "critRangeCast": 0,
+      "sneakDice": 1,
       "sneakDamageBonus": 0,
       "stats": {
         "health": {
@@ -1101,43 +1110,50 @@
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "dex": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "end": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "int": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "wil": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "cha": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         },
         "per": {
           "value": 50,
           "critbonus": 0,
           "critfailpenalty": 0,
-          "modBonus": 0
+          "modBonus": 0,
+          "skillBonus": 0
         }
       },
       "secondaryAttributes": {
@@ -1484,6 +1500,53 @@
       "slotOptions": ["weapon", "gear"],
       "tier": 1,
       "requiredClass": "",
+      "mindReserve": 0,
+      "group": "",
+      "groupOptions": [
+        "mind_reserved",
+        "resource_spend",
+        "mana_charged",
+        "soul_charged",
+        "insanity_risk",
+        "mixed",
+        "faith_gated"
+      ],
+      "bound": false,
+      "requiredFaith": 0,
+      "activation": {
+        "enabled": false,
+        "actionCost": "",
+        "range": "",
+        "summary": "",
+        "useEffects": [],
+        "useEffectsRaw": "",
+        "safeEffects": [],
+        "safeEffectsRaw": ""
+      },
+      "cost": {
+        "resource": "",
+        "amount": 1
+      },
+      "costResourceOptions": [
+        "mana",
+        "stamina",
+        "health",
+        "fatigue",
+        "mind",
+        "holy energy",
+        "blood"
+      ],
+      "charges": {
+        "max": 0,
+        "recharge": ""
+      },
+      "rechargeOptions": ["", "gem", "soul", "rest", "never"],
+      "risk": {
+        "test": "",
+        "insanity": 1,
+        "pursuitChance": 0
+      },
+      "riskTestOptions": ["", "resolve", "faith"],
       "weaponMods": {
         "attack": 0,
         "defense": 0,
@@ -1676,6 +1739,8 @@
       "effectOptions": ["and", "or"],
       "effectTypes": [],
       "classOptions": ["movement", "attack", "defense", "stance", "command"],
+      "category": "",
+      "categoryOptions": ["basic", "command", "doctrine", "weapon"],
       "resources": [
         {
           "mode": "",
@@ -1695,10 +1760,10 @@
         "stamina",
         "mana",
         "health",
-        "mental",
+        "mind",
         "fatigue",
-        "inspiration",
-        "holy energy"
+        "holy energy",
+        "blood"
       ],
       "costType": "",
       "cost": 0,

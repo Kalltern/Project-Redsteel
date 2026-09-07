@@ -16,6 +16,7 @@
  *                             the rank came from when it is not the skill's own
  *                             (Channeling reading the Combat rank, and so on)
  *   attr   {key, mult}   a primary attribute times its multiplier
+ *   attrSkill {key}      the attribute-wide skill bonus (`attributes.X.skillBonus`)
  *   sec    {key, mult}   a secondary attribute (Visage, Sinfulness)
  *   flat   {labelKey}    a named one-off term
  *   base                 a stored starting number (sub-skills)
@@ -78,6 +79,11 @@ export function partBuilder({
       key: attrKeys[index],
       mult,
       value: attrTotal(index) * mult,
+    }),
+    attrSkill: (index, value) => ({
+      type: "attrSkill",
+      key: attrKeys[index],
+      value: Number(value) || 0,
     }),
     sec: (key, mult = 1) => ({
       type: "sec",
@@ -147,6 +153,15 @@ function partLabel(part) {
           `REDSTEEL.Actor.Character.Attribute.${capitalize(part.key)}.long`,
         ) ?? part.key;
       return part.mult === 1 ? name : `${name} ×${part.mult}`;
+    }
+    case "attrSkill": {
+      const name =
+        localizeOrNull(
+          `REDSTEEL.Actor.Character.Attribute.${capitalize(part.key)}.long`,
+        ) ?? part.key;
+      return game.i18n.format("REDSTEEL.Tooltip.Part.attrSkill", {
+        attribute: name,
+      });
     }
     case "sec": {
       const name =

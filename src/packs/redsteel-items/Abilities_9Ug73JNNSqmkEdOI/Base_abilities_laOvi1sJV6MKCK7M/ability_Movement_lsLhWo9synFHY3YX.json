@@ -95,7 +95,8 @@
     "critRange": 0,
     "critChance": 0,
     "critFail": 0,
-    "localizationKey": "REDSTEEL.Items.Movement.name"
+    "localizationKey": "REDSTEEL.Items.Movement.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "laOvi1sJV6MKCK7M",

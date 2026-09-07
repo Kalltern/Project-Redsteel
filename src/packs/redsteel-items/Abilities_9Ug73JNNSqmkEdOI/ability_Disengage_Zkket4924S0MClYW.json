@@ -108,7 +108,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.Disengage.name"
+    "localizationKey": "REDSTEEL.Items.Disengage.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

@@ -15,7 +15,15 @@ const ODD_NEIGHBORS = [
   [-1, 1],
   [0, 1],
 ];
-// Planning movement with CTRL is supported by Foundry's built-in pathing and this code does interfere with it and make it crash.
+// Foundry's drag callbacks are SYNCHRONOUS and their return value is part of
+// the contract: `_onDragLeftDrop` returning false keeps the drag alive (that is
+// how core turns a CTRL+Click into a ruler waypoint instead of a drop), and
+// `_onDragLeftCancel` returning false prevents the cancellation (right-click
+// removing the last waypoint). Declaring these overrides `async` wraps every
+// return value in a Promise, which is never `=== false`, so core ended the drag
+// on the first CTRL+Click and waypoint planning stopped working. Keep them
+// sync, return super's value verbatim, and run our own side effects
+// fire-and-forget.
 // Track mutation observers per token to avoid leaks across interrupted drags.
 const _labelObservers = new Map();
 
@@ -41,18 +49,40 @@ function getHexDistance(a, b) {
 export class RedsteelToken extends Token {
   // Runtime-only: observers are tracked in `_labelObservers` map above.
 
-  async _onDragLeftMove(event) {
-    await super._onDragLeftMove(event);
+  _onDragLeftMove(event) {
+    const result = super._onDragLeftMove(event);
 
     // Let Foundry handle CTRL path planning normally
-    if (this.#isPlanningMovement(event)) return;
+    if (this.#isPlanningMovement(event)) return result;
 
     // No movement overlay outside of combat
-    if (!this.#isInCombat()) return;
+    if (!this.#isInCombat()) return result;
 
-    this.#ensureMovementLabel();
-    this.#updateMovementLabel();
+    // Core writes the waypoint label during its own refresh, so touching the
+    // DOM in this same tick finds nothing (or gets overwritten straight after).
+    // Defer by one microtask - the exact timing the old `await super(...)`
+    // gave us, minus the Promise-wrapped return value that broke waypoints.
+    this.#afterCore(result, () => {
+      this.#ensureMovementLabel();
+      this.#updateMovementLabel();
+    });
+
+    return result;
   }
+
+  /**
+   * Run our own DOM / side-effect work one microtask after core's handler has
+   * finished, without making the handler async. These callbacks return a value
+   * core reads (`false` keeps a drag alive), so they must stay synchronous.
+   */
+  #afterCore(result, fn) {
+    Promise.resolve(result)
+      .then(fn)
+      .catch((err) =>
+        console.error("REDSTEEL: token drag side effect failed", err),
+      );
+  }
+
   #isPlanningMovement(event) {
     return event?.interactionData?.originalEvent?.ctrlKey === true;
   }
@@ -62,8 +92,13 @@ export class RedsteelToken extends Token {
     return game.combat?.started === true;
   }
 
-  async _onDragLeftDrop(event) {
-    const result = await super._onDragLeftDrop(event);
+  _onDragLeftDrop(event) {
+    const result = super._onDragLeftDrop(event);
+
+    // `false` means core is NOT ending the drag: a CTRL+Click just placed a
+    // ruler waypoint and the path is still being planned. Nothing to commit,
+    // and the overlay must stay up.
+    if (result === false) return result;
 
     // CTRL drag is only measurement/planning
     if (this.#isPlanningMovement(event)) return result;
@@ -74,6 +109,17 @@ export class RedsteelToken extends Token {
       return result;
     }
 
+    this.#afterCore(result, () => this.#commitMovement());
+
+    return result;
+  }
+
+  /**
+   * Read the hex distance off the ruler's own waypoint label and charge it to
+   * this token's movement budget. Runs one microtask after core's drop so the
+   * label still carries the final cumulative distance.
+   */
+  #commitMovement() {
     try {
       const label = document.querySelector(
         "#measurement .token-ruler-labels .waypoint-label",
@@ -93,32 +139,39 @@ export class RedsteelToken extends Token {
         const spent =
           (this.document.getFlag("redsteel", "movementSpent") ?? 0) || 0;
 
-        await this.document.setFlag(
-          "redsteel",
-          "movementSpent",
-          spent + hexMoved,
-        );
+        this.document
+          .setFlag("redsteel", "movementSpent", spent + hexMoved)
+          .catch((err) =>
+            console.error("REDSTEEL: Failed to commit movement on drop", err),
+          );
       }
     } catch (err) {
       console.error("REDSTEEL: Failed to commit movement on drop", err);
     }
 
     this.#clearMovementRange();
-
-    return result;
   }
 
-  async _onDragLeftCancel(event) {
-    const result = await super._onDragLeftCancel(event);
-    try {
-      const obs = _labelObservers.get(this.document?.id);
-      if (obs) {
-        obs.disconnect();
-        _labelObservers.delete(this.document.id);
-      }
-    } catch (err) {}
+  _onDragLeftCancel(event) {
+    const result = super._onDragLeftCancel(event);
 
-    this.#clearMovementRange();
+    // `false` means core is keeping the drag alive (the last waypoint was
+    // removed rather than the whole drag cancelled), so leave our overlay and
+    // label observer in place.
+    if (result === false) return result;
+
+    this.#afterCore(result, () => {
+      try {
+        const obs = _labelObservers.get(this.document?.id);
+        if (obs) {
+          obs.disconnect();
+          _labelObservers.delete(this.document.id);
+        }
+      } catch (err) {}
+
+      this.#clearMovementRange();
+    });
+
     return result;
   }
 
@@ -126,14 +179,14 @@ export class RedsteelToken extends Token {
   #movementLayerId = "redsteel-movement";
   #sprintLayerId = "redsteel-sprint";
 
-  async _onDragLeftStart(event) {
-    await super._onDragLeftStart(event);
+  _onDragLeftStart(event) {
+    const result = super._onDragLeftStart(event);
 
     // Don't interfere with Foundry ruler planning
-    if (this.#isPlanningMovement(event)) return;
+    if (this.#isPlanningMovement(event)) return result;
 
     // No movement overlay outside of combat
-    if (!this.#isInCombat()) return;
+    if (!this.#isInCombat()) return result;
 
     this.#clearMovementRange();
 
@@ -160,7 +213,9 @@ export class RedsteelToken extends Token {
       alpha: 0.15,
     });
 
-    this.#ensureMovementLabel();
+    this.#afterCore(result, () => this.#ensureMovementLabel());
+
+    return result;
   }
 
   #getReachableHexes(maxDistance) {

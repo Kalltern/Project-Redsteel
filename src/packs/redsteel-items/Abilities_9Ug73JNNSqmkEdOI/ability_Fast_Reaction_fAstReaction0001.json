@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.FastReaction.name"
+    "localizationKey": "REDSTEEL.Items.FastReaction.name",
+    "category": "basic"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

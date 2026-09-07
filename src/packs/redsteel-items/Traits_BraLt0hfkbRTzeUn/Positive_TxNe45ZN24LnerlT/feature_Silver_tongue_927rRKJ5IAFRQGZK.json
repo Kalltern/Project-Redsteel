@@ -30,7 +30,7 @@
       "pools": [
         {
           "label": "Charisma-based skill",
-          "skillsRaw": "universal",
+          "skillsRaw": "cha-based",
           "max": 1,
           "used": 0
         }

@@ -276,7 +276,7 @@ export async function getNonWeaponAbility(actor, ability) {
         traitPills: getTraitPills(actor, "attack"),
         attackTags,
         // Non-weapon ability attack — generic "attack" token only.
-        rerollTokens: getAttackRerollTokens(actor, null),
+        rerollTokens: getAttackRerollTokens(),
       },
       attack: {
         type: "attack",
@@ -954,6 +954,17 @@ export async function getDamageRolls(
   if (offProps?.diceBonus) {
     damageFormula += ` + ${offProps.diceBonus}`;
   }
+  // Item quality (Kvalita): a bad blade hits softer. The main hand takes the
+  // Zbraň column, the off-hand its own Druhá ruka column, and both land on this
+  // one formula the same way offhandProperties.diceBonus just did. Emitted as
+  // "- 2" rather than "+ -2" so the dice tooltip stays readable.
+  const qualityDamage =
+    (Number(ws.qualityMods?.damage) || 0) +
+    (Number(getOffhandQualityMods(weaponContext).damage) || 0);
+  if (qualityDamage) {
+    damageFormula +=
+      qualityDamage > 0 ? ` + ${qualityDamage}` : ` - ${Math.abs(qualityDamage)}`;
+  }
   if (sneakDamage) damageFormula += `+ ${sneakDamage}`;
   if (abilityDamage) damageFormula += `+ ${abilityDamage}`;
   if (actorMods) damageFormula += `+ ${actorMods.damageBonus}`;
@@ -1119,6 +1130,14 @@ export async function getCriticalRolls(
 
   // Crit Damage Calculation:
   // Mapping crit scores to bonus damage: 0 → 0, 1 → 5, 2 → 5, 3 → 10, 4 → 20
+  // NPC LANDMINE — do not "fix" without a design decision.
+  // `perBonus` feeds BOTH crit damage and crit penetration below. NPC primary
+  // attributes never receive `.total` (it is assigned only in
+  // _prepareCharacterData), so for every NPC this silently evaluates to 0 —
+  // which is the behaviour the bestiary curve is balanced against. NPC
+  // attributes default to 50 (flat percentages, not the 1-7 character scale),
+  // so the day anyone adds `.total` to NPC attributes, every NPC in the world
+  // instantly gains +50 crit damage and +50 crit penetration.
   const perBonus = Number(actor.system.attributes.per.total) || 0;
   const critDamageMapping = [0, 5, 5, 10, 20];
   const critPenetrationMapping = [5, 5, 10, 10, 15];
@@ -1314,6 +1333,13 @@ export async function getEffectRolls(
   let totalBleeds = 0;
   let regularBleedRolls = [];
   let sharpBleedRolls = [];
+  // What a critical *past the threshold* (degree > 1) is worth in extra
+  // wounds, independent of the degree this roll actually scored. `critBleeds`
+  // only records what was earned here; the Apply Damage dialog lets the GM
+  // move the degree across the threshold in either direction, so it needs the
+  // potential to re-derive the stacks. One for the critical itself, one more
+  // for a sharp weapon (added in the sharp block below).
+  let critPotential = 1;
   if (critScore > 1) {
     critBleeds += 1;
   }
@@ -1574,6 +1600,7 @@ export async function getEffectRolls(
       (coatingEffects.bleed || 0) > 0 ||
       ammoBleed > 0)
   ) {
+    critPotential += 1;
     if (critScore > 1) {
       critBleeds += 1;
     }
@@ -1686,6 +1713,7 @@ export async function getEffectRolls(
     const rolledBleed = !bleedIsAuto && bleedBaseValue > 0;
     mechanicalEffects["bleed"] = {
       critStacks: critBleeds,
+      critPotential,
       normalStacks: normalBleeds,
       bonusStacks: bloodStrikeBonus,
       chance: rolledBleed ? totalBleedChance : null,
@@ -1906,6 +1934,18 @@ function getOffhandProps(weaponContext) {
     return null;
   }
   return weaponContext.offWeapon.system.offhandProperties ?? null;
+}
+
+/**
+ * Quality modifiers (Druhá ruka column) of the off-hand weapon, when dual
+ * wielding. Returns an empty object otherwise so callers can read keys safely.
+ * Same helper defense.mjs keeps for its own defense math.
+ */
+function getOffhandQualityMods(weaponContext) {
+  if (!weaponContext?.isDualWield || !weaponContext.offWeapon) {
+    return {};
+  }
+  return weaponContext.offWeapon.system.offhandQualityMods ?? {};
 }
 
 function collectExtrasFromSource(systemMap, effectMap, collector) {
@@ -2135,6 +2175,7 @@ export function evaluateDmgVsArmor({
   shield = 0,
   penCap = false,
   ignoreBaseArmor = false,
+  baseArmorOverride = null,
 }) {
   const { expression } = damageProfile;
   const armorTable = armor ?? {};
@@ -2167,7 +2208,17 @@ export function evaluateDmgVsArmor({
   /* 2. Normal Armor (skipped e.g. for condition damage ticks, which are
      only mitigated by specialized armor / resistances / vulnerabilities) */
   if (!ignoreBaseArmor) {
-    const normalArmor = armorTable?.total ?? 0;
+    // `baseArmorOverride` replaces the armor total for this packet alone; the
+    // armor table itself is left intact so the typed reductions and the
+    // resistance/vulnerability modifiers below still read the real numbers.
+    // Set by an aimed strike that landed on an unarmored location — see
+    // resolveAimedArmorBypass in utils/aimedStrike.mjs. Null (the ordinary
+    // case) means "use the total"; 0 is a real override, so this must test for
+    // null rather than falsiness.
+    const normalArmor =
+      baseArmorOverride === null || baseArmorOverride === undefined
+        ? (armorTable?.total ?? 0)
+        : baseArmorOverride;
     baseDamage = Math.max(baseDamage - normalArmor, 0);
   }
 

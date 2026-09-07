@@ -390,6 +390,14 @@
       }
     },
     "Actor": {
+      "Abilities": {
+        "Category": {
+          "basic": "Základní",
+          "command": "Velení",
+          "doctrine": "Doktrinální",
+          "weapon": "Zbraňové"
+        }
+      },
       "Tabs": {
         "Biography": "Životopis",
         "Skills": "Dovednosti",
@@ -4083,6 +4091,10 @@
           },
           "bloodMage": {
             "label": "Krvavý mág"
+          },
+          "sneakDice": {
+            "label": "Zákeřná k6",
+            "hint": "Kolik k6 tento tvor přidává při Zákeřném útoku. Prázdné pole znamená výchozí jednu kostku. Zákeřné zranění samotné zbraně se přičítá navíc."
           }
         },
         "xp": {
@@ -4093,6 +4105,15 @@
         "partyMember": {
           "label": "Člen družiny"
         }
+      },
+      "BodyParts": {
+        "Coverage": "Krytí zbrojí",
+        "Armored": "chráněno zbrojí. Kliknutím místo odkryješ.",
+        "Exposed": "odkryto — mířený zásah sem ignoruje zbroj tohoto tvora. Kliknutím místo zakryješ.",
+        "ArmorBypassed": "bez zbroje, ignorováno {amount} zbroje",
+        "head": "Hlava",
+        "hands": "Ruce",
+        "legs": "Nohy"
       }
     },
     "Item": {
@@ -4375,6 +4396,9 @@
       },
       "Ability": {
         "FIELDS": {
+          "category": {
+            "label": "Kategorie"
+          },
           "modifier": {
             "label": "Úprava"
           },
@@ -4553,7 +4577,36 @@
         "DropDuplicate": "{name} už tato rasa uděluje."
       }
     },
+    "Resource": {
+      "NotEnough": "Nedostatek: {resource}."
+    },
     "Enchantment": {
+      "Itemisation": "Kategorie předmětu",
+      "ItemisationHint": "Každý magický předmět si za svůj přínos něco bere z postavy. Kategorie určuje co a kdy.",
+      "Activation": "Aktivace",
+      "NoCost": "Bez ceny",
+      "Group": {
+        "none": "Obyčejné očarování",
+        "mind_reserved": "Vázané na Mysl",
+        "resource_spend": "Platí se zdrojem",
+        "mana_charged": "Nabité manou",
+        "soul_charged": "Nabité dušemi",
+        "insanity_risk": "Riziko Šílenství",
+        "mixed": "Klady i zápory",
+        "faith_gated": "Vyžaduje Víru"
+      },
+      "Recharge": {
+        "none": "Neurčeno",
+        "gem": "Spotřebuje drahokam",
+        "soul": "Za smrtící úder",
+        "rest": "Při Dlouhém odpočinku",
+        "never": "Nikdy"
+      },
+      "RiskTest": {
+        "none": "Bez testu",
+        "resolve": "Odhodlání",
+        "faith": "Víra"
+      },
       "AppliedHeading": "Použitá očarování",
       "TotalHeading": "Celkem",
       "DropHint": "Sem přetáhni předmět typu Očarování. Jeho bonusy se k tomuto předmětu připočtou natrvalo.",
@@ -4584,6 +4637,62 @@
         },
         "tier": {
           "label": "Stupeň"
+        },
+        "mindReserve": {
+          "label": "Rezervace Mysli",
+          "hint": "Mentální životy zablokované po dobu, kdy je očarovaný předmět nasazen. Na rozdíl od spálené Mysli se strop vrátí, jakmile předmět sundáš."
+        },
+        "group": {
+          "label": "Kategorie"
+        },
+        "requiredFaith": {
+          "label": "Potřebná Víra",
+          "hint": "Minimální hodnota Víry pro nasazení předmětu. 0 znamená bez omezení."
+        },
+        "bound": {
+          "label": "Připoutaný",
+          "hint": "Předmět nejde sundat bez svolení PJ. Zlomení pouta se řeší u stolu."
+        },
+        "activationEnabled": {
+          "label": "Lze použít",
+          "hint": "Přidá předmětu tlačítko použití. Nech vypnuté u předmětu, který funguje jen nasazený."
+        },
+        "costResource": {
+          "label": "Cena",
+          "hint": "Zdroj spotřebovaný za jedno použití. Únava a Mysl jsou nejdražší, takže by měly kupovat nejvíc."
+        },
+        "costAmount": {
+          "label": "Množství"
+        },
+        "chargesMax": {
+          "label": "Nábojů",
+          "hint": "Kolik použití předmět pojme. 0 znamená, že nejde o nabíjený předmět."
+        },
+        "recharge": {
+          "label": "Dobíjení"
+        },
+        "riskTest": {
+          "label": "Test při použití"
+        },
+        "riskInsanity": {
+          "label": "Šílenství při selhání",
+          "hint": "Neúspěšný test Odhodlání efekt stejně udělí. Tohle je jeho cena."
+        },
+        "pursuitChance": {
+          "label": "Šance na pronásledování %",
+          "hint": "Šance na jedno použití, že strážci předmětu naberou stopu. Nejprve Archiváři, pak Válečníci Hádu, pokud se jim nevěnuješ."
+        },
+        "useEffects": {
+          "label": "Efekty při použití",
+          "hint": "Seznam id efektů oddělený čárkami, stejná id jako u lektvarů. Záleží na velikosti písmen."
+        },
+        "safeEffects": {
+          "label": "Bezpečné efekty",
+          "hint": "Slabší efekt, který si vezmeš místo hodu. Seznam id efektů oddělený čárkami."
+        },
+        "activationSummary": {
+          "label": "Popis použití",
+          "hint": "Jeden řádek zobrazený na kartě v chatu"
         },
         "requiredClass": {
           "label": "Vyžadovaná třída zbraně",
@@ -4808,6 +4917,7 @@
         "rank": "Stupeň {rank}",
         "base": "Základ",
         "bonus": "Bonus",
+        "attrSkill": "{attribute} (dovednosti)",
         "global": "Globální modifikátor",
         "other": "Ostatní",
         "total": "Celkem",
@@ -4992,7 +5102,10 @@
       },
       "type1": "Extra Efekt typ 1",
       "type2": "Extra Efekt typ 2",
-      "type3": "Extra Efekt typ 3"
+      "type3": "Extra Efekt typ 3",
+      "Name": {
+        "shield_strain": "Přetížení štítu"
+      }
     },
     "Resync": {
       "Action": "Sesynchronizovat s pravidly",
@@ -6526,9 +6639,6 @@
       "ExpertCraft": {
         "name": "Expert: Řemeslo"
       },
-      "AdeptRiding": {
-        "name": "Adept: Jezdectví"
-      },
       "ExpertRiding": {
         "name": "Expert: Jezdectví"
       },
@@ -6592,14 +6702,8 @@
       "ExpertActing": {
         "name": "Expert: Herectví"
       },
-      "AdeptDeception": {
-        "name": "Adept: Klamání"
-      },
       "ExpertDeception": {
         "name": "Expert: Klamání"
-      },
-      "AdeptIntimidation": {
-        "name": "Adept: Zastrašování"
       },
       "ExpertIntimidation": {
         "name": "Expert: Zastrašování"
@@ -6616,38 +6720,20 @@
       "ExpertPainting": {
         "name": "Expert: Malování"
       },
-      "AdeptPersuasion": {
-        "name": "Adept: Přesvědčování"
-      },
       "ExpertPersuasion": {
         "name": "Expert: Přesvědčování"
-      },
-      "AdeptTemptation": {
-        "name": "Adept: Pokoušení"
       },
       "ExpertTemptation": {
         "name": "Expert: Pokoušení"
       },
-      "AdeptBlend": {
-        "name": "Adept: Splývání v davu"
-      },
       "ExpertBlend": {
         "name": "Expert: Splývání v davu"
-      },
-      "AdeptHerbalism": {
-        "name": "Adept: Bylinkářství"
       },
       "ExpertHerbalism": {
         "name": "Expert: Bylinkářství"
       },
-      "AdeptInsight": {
-        "name": "Adept: Vhled"
-      },
       "ExpertInsight": {
         "name": "Expert: Vhled"
-      },
-      "AdeptSurvival": {
-        "name": "Adept: Přežití"
       },
       "ExpertSurvival": {
         "name": "Expert: Přežití"
@@ -6935,6 +7021,92 @@
       "Rations": {
         "name": "Zásoby jídla",
         "description": "<p>Jídlo na cesty: tvrdý chléb, sušené maso, co zbylo v kotlíku. Jedna jednotka nasytí jedny ústa na třetinu dne. Normální jedinec spotřebuje 3 jednotky za Dlouhý odpočinek.</p>"
+      }
+    },
+    "MonsterBuilder": {
+      "title": "Generátor nestvůr",
+      "gmOnly": "Generátor nestvůr může otevřít pouze PJ.",
+      "powerLevel": "Úroveň síly",
+      "archetype": "Archetyp",
+      "role": "Role",
+      "count": "Počet",
+      "baseName": "Jméno",
+      "baseNameHint": "Prázdné = \"Striker PL3\"",
+      "folder": "Složka",
+      "noFolder": "(žádná)",
+      "create": "Vytvořit",
+      "created": "Generátor nestvůr: vytvořeno postav: {count}.",
+      "createFailed": "Generátor nestvůr: vytvoření selhalo. Podrobnosti v konzoli.",
+      "preview": "Náhled",
+      "commandsDrawn": "{n} náhodně z {pool}",
+      "notEnoughCommands": "Nalezeno pouze {found} schopností Velení, požadováno {wanted}. Přiřazeny budou existující.",
+      "race": "Rasa",
+      "raceNone": "(žádná)",
+      "profileImage": "Portrét",
+      "tokenImage": "Obrázek tokenu",
+      "sameAsProfile": "Stejný jako portrét",
+      "imageHint": "Prázdné = výchozí",
+      "browse": "Procházet",
+      "traits": "Rysy",
+      "addTrait": "Přidat",
+      "removeTrait": "Odebrat",
+      "customWeapon": "Zbraň",
+      "weaponAuto": "Automaticky (podle archetypu)",
+      "weaponWorld": "Svět",
+      "customWeaponUnusable": "Zvolenou zbraň nelze použít (chybí, nebo nelze spočítat její zranění). Použije se automatický výběr.",
+      "chosen": "zvoleno",
+      "sectionKit": "Vzhled a výbava",
+      "impossible": "Nepřekonatelný",
+      "impossibleHint": "Nastaví Sílu, Obratnost a Vůli na 300. Mimo dosah jakékoli postavy, i se Zoufalým úsilím.",
+      "avgDamage": "Průměrné zranění",
+      "noWeapon": "Nenalezena odpovídající zbraň",
+      "none": "Žádný",
+      "curve": "křivka",
+      "example": "příklad",
+      "pool": "na výběr: {n}",
+      "target": "cíl",
+      "withKit": "s výbavou",
+      "aboveCurve": "Zranění nad křivkou: {weapon} má průměr {actual} oproti cíli {target}. Cíl překračuje {count} z povolených zbraní. Vyrovnání se místo toho bere na útoku přes kvalitu.",
+      "Archetype": {
+        "tank": "Obránce",
+        "striker": "Útočník",
+        "brute": "Surovec",
+        "skirmisher": "Harcovník",
+        "archer": "Střelec",
+        "heavyArcher": "Těžký střelec",
+        "assassin": "Vrah",
+        "caster": "Kouzelník",
+        "support": "Podpora"
+      },
+      "Role": {
+        "minion": "Přisluhovač",
+        "standard": "Běžný",
+        "elite": "Elita",
+        "boss": "Vůdce"
+      },
+      "Row": {
+        "commands": "Velení",
+        "race": "Rasa",
+        "traits": "Rysy",
+        "stamina": "Výdrž",
+        "attrMain": "Síla / Obratnost / Vůle",
+        "attrSecondary": "Ostatní vlastnosti",
+        "health": "Životy",
+        "combat": "Souboj",
+        "archery": "Střelba",
+        "throwing": "Vrh",
+        "defense": "Obrana / Kryt",
+        "dodge": "Úhyb",
+        "dodgeLimit": "limit",
+        "armor": "Přirozená zbroj",
+        "spd": "Rychlost",
+        "ini": "Iniciativa",
+        "mind": "Mentální životy",
+        "quality": "Kvalita",
+        "weapon": "Zbraň",
+        "shield": "Štít",
+        "penetration": "Průbojnost",
+        "damageBonus": "Bonus do zranění"
       }
     },
     "Currency": {

@@ -327,14 +327,22 @@ export async function universalAttackLogic({
     const enchantMods = weapon.system.enchantMods ?? {};
     const enchantPen = Number(enchantMods.penetration) || 0;
     const enchantCritRange = Number(enchantMods.critRange) || 0;
-    const penetration =
+    // Item quality (Zbraň column). Only the main hand carries a Průbojnost
+    // entry — the Druhá ruka column has none.
+    const qualityPen = Number(weapon.system.qualityMods?.penetration) || 0;
+    // Floored at 0: Penetration is what gets through armor, so a bad weapon can
+    // lose all of it but never turn into extra protection for the target.
+    const penetration = Math.max(
+      0,
       mainPen +
-      offPen +
-      ammoPen +
-      customPenetration +
-      actorMods.penetrationBonus +
-      enchantPen +
-      improvedAimPen;
+        offPen +
+        ammoPen +
+        customPenetration +
+        actorMods.penetrationBonus +
+        enchantPen +
+        qualityPen +
+        improvedAimPen,
+    );
     const totalDoctrineBonus = doctrine.doctrineBonus;
     const totalDoctrineCritBonus =
       doctrine.doctrineCritBonus + customCritChance;
@@ -548,7 +556,7 @@ ${
           criticalFailureThreshold,
           traitPills: getTraitPills(actor, "attack"),
           attackTags,
-          rerollTokens: getAttackRerollTokens(actor, weapon),
+          rerollTokens: getAttackRerollTokens(weapon),
         },
         attack: {
           type: "attack",

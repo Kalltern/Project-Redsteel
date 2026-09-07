@@ -99,7 +99,8 @@
     "effectType2": "",
     "effectType3": "",
     "key": "defensive_stance",
-    "localizationKey": "REDSTEEL.Items.ShieldbearerDefensiveStance.name"
+    "localizationKey": "REDSTEEL.Items.ShieldbearerDefensiveStance.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

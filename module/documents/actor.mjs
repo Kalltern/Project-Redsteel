@@ -6,6 +6,23 @@ import {
 import { partBuilder, reconcileParts } from "../utils/ratingBreakdown.mjs";
 
 /**
+ * Shield Strain (`shield_strain`) — the shield arm is spent, so the shield
+ * stops helping without being dropped: everything it grants is cancelled and
+ * everything it costs is kept. On every field a shield touches (defense,
+ * ranged defense, both crit defenses, armor, health, and the dodge /
+ * initiative / speed penalties a heavy shield carries) a positive number is a
+ * bonus and a negative one a penalty, so the whole rule is `Math.min(0, v)`.
+ *
+ * @param {number|undefined} value    the shield's contribution
+ * @param {boolean} strained          whether the wearer has the status
+ * @returns {number}
+ */
+function shieldContribution(value, strained) {
+  const number = Number(value) || 0;
+  return strained ? Math.min(0, number) : number;
+}
+
+/**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
@@ -45,6 +62,37 @@ export class RedsteelActor extends Actor {
       if (i.system?.equipped) equipped.add(i.id);
     }
     return equipped;
+  }
+
+  /**
+   * Mind points currently locked away by equipped enchantments.
+   *
+   * Reserving is not burning. A burn spends the point and shrinks the ceiling
+   * until a ritual or potion gives it back (`stats.mind.burned`,
+   * utils/mindPoints.mjs). A reserve only holds the ceiling down for as long as
+   * the item is worn, and releases the moment it comes off. That is why this is
+   * derived from the equipped items on every prepare rather than stored: there
+   * is no counter to drift, and deleting the item cannot strand a reservation.
+   *
+   * Because `mind.max` is derived while `mind.value` is stored, an unspent
+   * reserved point comes straight back on unequip, while one that was actually
+   * spent while the item was worn does not. That is the behaviour we want, and
+   * it falls out of the data model rather than needing bookkeeping.
+   *
+   * Note this counts weapons in *either* weapon set, not just the active one,
+   * following `getEquippedItemIds`. A bound item is bound whether or not you
+   * happen to be holding it this round.
+   *
+   * @returns {number}
+   */
+  getMindReserve() {
+    const equipped = this.getEquippedItemIds();
+    let reserved = 0;
+    for (const item of this.items.contents) {
+      if (!equipped.has(item.id)) continue;
+      reserved += Number(item.system?.enchantMods?.mindReserve) || 0;
+    }
+    return Math.max(0, reserved);
   }
 
   /** @override */
@@ -200,37 +248,54 @@ export class RedsteelActor extends Actor {
       channelPenaltyMitigation += 5;
     }
 
+    // Shield Strain cancels what a shield grants wherever that shield is read.
+    // Resolved once here rather than per item: `statuses` is filled by
+    // applyActiveEffects(), which has already run by the time derived data is
+    // prepared.
+    const shieldStrain = this.statuses?.has("shield_strain") ?? false;
+
     // possibly to return here in case armor bonuses stack inapropriately
     let totalArmor = 0;
     for (const item of this.items) {
       if (item.type === "gear" && item.system.equipped) {
-        // Armor quality (Zbroje column). Shields live in weapon-set slots, not
-        // here, so this only ever applies the armor column.
+        // Armor quality (Zbroje column). A PC's shield lives in a weapon-set
+        // slot and is handled further down, but an NPC's is flagged equipped
+        // and comes through here, so this loop applies the Štít column too.
         const q = item.system.qualityMods ?? {};
         // Enchantments applied to this piece (see documents/item.mjs). Read
         // alongside quality, never folded into the base fields.
         const ench = item.system.enchantMods ?? {};
+        // Strained shields contribute only their penalties; every other piece
+        // of gear passes through untouched.
+        const strained = shieldStrain && item.system.shield === true;
+        const contribution = (value) => shieldContribution(value, strained);
         for (const type of elementalTypes) {
-          systemData.armor[type].bonus +=
+          systemData.armor[type].bonus += contribution(
             (item.system?.armor?.[type].value ?? 0) +
-            (Number(ench.resist?.[type]) || 0);
+              (Number(ench.resist?.[type]) || 0),
+          );
         }
         if (actorData.type === "character") {
           skill.acrobacy.bonus += item.system.acroPenalty ?? 0;
           skill.athletics.swimming += item.system.swimPenalty ?? 0;
           skill.stealth.bonus += item.system.stealthPenalty ?? 0;
-          secondaryAttribute.ini.bonus +=
-            (item.system.iniPenalty ?? 0) + (q.ini ?? 0);
-          secondaryAttribute.spd.max += item.system.maxSpeed ?? 0;
+          secondaryAttribute.ini.bonus += contribution(
+            (item.system.iniPenalty ?? 0) + (q.ini ?? 0),
+          );
+          secondaryAttribute.spd.max += contribution(item.system.maxSpeed ?? 0);
         } else {
-          secondaryAttribute.ini.bonus += q.ini ?? 0;
+          secondaryAttribute.ini.bonus += contribution(q.ini ?? 0);
         }
-        totalArmor += (item.system.armor.value ?? 0) + (ench.armorValue ?? 0);
-        combatSkill.meleeDefense.critbonus +=
-          (item.system.critDefense ?? 0) + (ench.critDefense ?? 0);
-        combatSkill.rangedDefense.critbonus +=
-          (item.system.rangedCritDefense ?? 0) + (ench.rangedCritDefense ?? 0);
-        combatSkill.dodge.bonus += item.system.dodgePenalty ?? 0;
+        totalArmor += contribution(
+          (item.system.armor.value ?? 0) + (ench.armorValue ?? 0),
+        );
+        combatSkill.meleeDefense.critbonus += contribution(
+          (item.system.critDefense ?? 0) + (ench.critDefense ?? 0),
+        );
+        combatSkill.rangedDefense.critbonus += contribution(
+          (item.system.rangedCritDefense ?? 0) + (ench.rangedCritDefense ?? 0),
+        );
+        combatSkill.dodge.bonus += contribution(item.system.dodgePenalty ?? 0);
         // Channeling (cast) penalty from this armor piece, reduced by the
         // stacked Veneficus mitigation — never beyond removing it, so it
         // can't turn into a bonus. Blood Manipulation is unaffected (it is not
@@ -240,19 +305,22 @@ export class RedsteelActor extends Actor {
           castPenalty = Math.min(0, castPenalty + channelPenaltyMitigation);
         }
         combatSkill.channeling.bonus += castPenalty;
-        combatSkill.rangedDefense.bonus +=
+        combatSkill.rangedDefense.bonus += contribution(
           (item.system.rangedDefense ?? 0) +
-          (q.rangedDefense ?? 0) +
-          (ench.rangedDefense ?? 0);
-        combatSkill.meleeDefense.bonus +=
-          (item.system.defense ?? 0) + (q.defense ?? 0) + (ench.defense ?? 0);
+            (q.rangedDefense ?? 0) +
+            (ench.rangedDefense ?? 0),
+        );
+        combatSkill.meleeDefense.bonus += contribution(
+          (item.system.defense ?? 0) + (q.defense ?? 0) + (ench.defense ?? 0),
+        );
 
         // Odklonění from armor quality applies to both melee defense and dodge.
-        systemData.defenseDeflect += q.deflect ?? 0;
-        systemData.dodgeDeflect += q.deflect ?? 0;
+        systemData.defenseDeflect += contribution(q.deflect ?? 0);
+        systemData.dodgeDeflect += contribution(q.deflect ?? 0);
 
-        systemData.stats.health.bonus +=
-          (item.system.healthBonus ?? 0) + (ench.healthBonus ?? 0);
+        systemData.stats.health.bonus += contribution(
+          (item.system.healthBonus ?? 0) + (ench.healthBonus ?? 0),
+        );
       }
     }
 
@@ -265,6 +333,13 @@ export class RedsteelActor extends Actor {
 
     const naturalArmor = armor.natural;
     naturalArmor.total = naturalArmor.value + naturalArmor.bonus;
+    // What equipped gear contributes, kept apart from the total rather than
+    // folded straight into it: an aimed strike on a location this actor has no
+    // armor over drops the worn kit and leaves natural armor and anything an
+    // Active Effect granted standing. Reading `total - worn` at damage time is
+    // what makes that possible, since AE armor lands on the total afterwards.
+    // See resolveAimedArmorBypass in utils/aimedStrike.mjs.
+    armor.worn = Math.max(0, totalArmor);
     armor.total = totalArmor + naturalArmor.total;
     armor.total = Math.max(0, armor.total);
     // Iterate through gear (only helmets).
@@ -273,9 +348,10 @@ export class RedsteelActor extends Actor {
     // flags.redsteel.helmetOff, toggled from the Armor panel on the Inventory
     // tab. Absent means worn, so existing actors keep their helmets on. With it
     // off the archery and perception penalties simply do not apply.
-    // TODO(head damage): while helmetOff is set, a hit aimed at the head should
-    // also bypass this actor's armor — see evaluateAttackDamage() in
-    // utils/applyDamage.mjs, where armor enters the damage calculation.
+    // While helmetOff is set the head also counts as unarmored, so a landed
+    // aimed strike there ignores the worn kit — see isLocationArmored in
+    // utils/aimedStrike.mjs, read by evaluateAttackDamage in
+    // utils/applyDamage.mjs.
     const helmetOff = this.flags?.redsteel?.helmetOff === true;
     for (const item of this.items) {
       let combatSkill = systemData.combatSkills;
@@ -586,7 +662,18 @@ export class RedsteelActor extends Actor {
 
         if (offHand?.system?.shield) {
           // Broken shields (0 durability) grant improvised shield stats instead
-          const shield = offHand.getShieldStats();
+          const rawShield = offHand.getShieldStats();
+          // Shield Strain: the shield is still in hand, but everything it
+          // grants is cancelled while everything it costs is kept. Zeroed
+          // bonuses are skipped by addBonus, so a strained shield also drops
+          // out of the rating tooltip instead of showing a false +0 line.
+          const strained = this.statuses?.has("shield_strain") ?? false;
+          const shield = Object.fromEntries(
+            Object.entries(rawShield).map(([key, value]) => [
+              key,
+              shieldContribution(value, strained),
+            ]),
+          );
           const shieldLabel = `${game.i18n.localize(
             "REDSTEEL.Tooltip.Part.shield",
           )} (${offHand.localizedName ?? offHand.name})`;
@@ -877,6 +964,35 @@ export class RedsteelActor extends Actor {
           P.bonus(skill.bonus),
           P.global(),
         ];
+      }
+    }
+
+    // Flat bonus to every skill an attribute governs, so a trait can be one
+    // Active Effect row instead of one per skill. Deliberately reaches
+    // `skills` only and never `combatSkills`: that wall is what keeps
+    // Channeling off the Intelligence bonus without a special case.
+    // Indexed positionally to match `skill.id`, the same way `attributeScore`
+    // above is.
+    const attrSkillBonus = Object.values(systemData.attributes).map(
+      (a) => Number(a.skillBonus) || 0,
+    );
+
+    for (const skill of Object.values(systemData.skills)) {
+      // Type 2 (Muscles, Nimbleness) derives purely from its rank and takes
+      // no bonus or global modifier, so it takes none of this either.
+      if (skill.type === 2) continue;
+      const mod = attrSkillBonus[skill.id] ?? 0;
+      if (!mod) continue;
+      skill.rating += mod;
+      skill.ratingParts?.push(P.attrSkill(skill.id, mod));
+      // Sub-skills are the same skill under a variant, so they move with it.
+      if (skill.swimmingParts) {
+        skill.swimming += mod;
+        skill.swimmingParts.push(P.attrSkill(skill.id, mod));
+      }
+      if (skill.blendParts) {
+        skill.blend += mod;
+        skill.blendParts.push(P.attrSkill(skill.id, mod));
       }
     }
     // Calculate the attribute rating using redsteel rules. Rework calculations for stun effects
@@ -1408,10 +1524,22 @@ export class RedsteelActor extends Actor {
     // burn spends the point AND shrinks the ceiling (2/5 → 1/4). Only a ritual
     // or a potion puts one back, which is done by lowering `burned` by hand on
     // the Config tab — hence the subtraction here rather than a write to `base`.
+    //
+    // Reserved Mind is the temporary sibling: equipped enchantments hold the
+    // ceiling down for as long as they are worn. See Actor#getMindReserve.
+    stat.mind.reserved = this.getMindReserve();
     stat.mind.max = Math.max(
       0,
-      wil + stat.mind.bonus + stat.mind.base - (Number(stat.mind.burned) || 0),
+      wil +
+        stat.mind.bonus +
+        stat.mind.base -
+        (Number(stat.mind.burned) || 0) -
+        stat.mind.reserved,
     );
+    // The stored value has to be shown inside the reduced ceiling. This clamp
+    // is display-only (nothing is persisted), which is exactly what makes an
+    // unspent reserved point reappear when the item comes off.
+    stat.mind.value = Math.min(Number(stat.mind.value) || 0, stat.mind.max);
     stat.insanity.max = wil + stat.insanity.bonus + stat.insanity.base;
 
     // Calculate trap detection skill
@@ -1778,6 +1906,18 @@ export class RedsteelActor extends Actor {
     }
     const initiative = systemData.secondaryAttributes.ini;
     initiative.total = initiative.value + initiative.bonus;
+    // Sneak Attack dice. An NPC has no rogue doctrine to read a dice count off,
+    // so the count is authored on its sheet and defaults to one d6 — the value
+    // combatSkillBonuses used to fall back to for every NPC alike. Grants and
+    // Active Effects still add through `sneakDamageBonus`, exactly as they do
+    // for a character, and the weapon's own sneak damage is added on top at
+    // roll time. Clearing the box stores null and means "the default one die";
+    // a deliberate 0 is kept, for a creature that cannot sneak at all.
+    systemData.sneakDamage = Math.max(
+      0,
+      (Number(systemData.sneakDice ?? 1) || 0) +
+        (Number(systemData.sneakDamageBonus) || 0),
+    );
     // Same Speed as a character: movement allowance and the d12 speed test both
     // read spd.total, so Slow/Root/Haste/Flight land on NPCs unchanged.
     const speed = systemData.secondaryAttributes.spd;
@@ -1827,7 +1967,13 @@ export class RedsteelActor extends Actor {
     // named `system.stats.mind.max` would persist it and burn the ceiling down
     // again on the next prepare.
     mind.sourceMax = mindBase;
-    mind.max = Math.max(0, mindBase - (Number(mind.burned) || 0));
+    // Equipped enchantments reserve Mind on NPCs exactly as they do on
+    // characters. See Actor#getMindReserve.
+    mind.reserved = this.getMindReserve();
+    mind.max = Math.max(
+      0,
+      mindBase - (Number(mind.burned) || 0) - mind.reserved,
+    );
     mind.value = Math.min(Number(mind.value) || 0, mind.max);
 
     systemData.xp = systemData.cr * systemData.cr * 100;

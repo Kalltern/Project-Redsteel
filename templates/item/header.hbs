@@ -245,6 +245,17 @@
           </div>
 
           <div class="grid-span-1">
+            <label for="ability-category">{{localize "REDSTEEL.Item.Ability.FIELDS.category.label"}}:</label>
+            <select name="system.category" id="ability-category">
+              {{#each system.categoryOptions as |categoryOption|}}
+                <option value="{{categoryOption}}" {{#if (eq ../system.category categoryOption)}}selected{{/if}}>
+                  {{localize (concat "REDSTEEL.Actor.Abilities.Category." categoryOption)}}
+                </option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="grid-span-1">
             <label for="ability-type">{{localize "REDSTEEL.UI.abilityType"}}:</label>
             <select name="system.type" id="ability-type">
               <option value="">{{localize "REDSTEEL.UI.selectType"}}</option>

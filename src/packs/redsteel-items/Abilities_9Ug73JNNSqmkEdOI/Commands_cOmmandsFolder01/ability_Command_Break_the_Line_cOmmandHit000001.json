@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.CommandBreakTheLine.name"
+    "localizationKey": "REDSTEEL.Items.CommandBreakTheLine.name",
+    "category": "command"
   },
   "effects": [],
   "folder": "cOmmandsFolder01",

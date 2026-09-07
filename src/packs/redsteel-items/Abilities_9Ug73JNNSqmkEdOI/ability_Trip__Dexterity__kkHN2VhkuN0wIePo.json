@@ -85,7 +85,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.TripDexterity.name"
+    "localizationKey": "REDSTEEL.Items.TripDexterity.name",
+    "category": "weapon"
   },
   "effects": [],
   "sort": 750000,

@@ -1408,7 +1408,7 @@ export async function defenseRoll({
           // Reroll tokens for the chat reroll picker: "defense" + the defense
           // skill + its governing attribute (dodge→dex, ranged→per, melee→dex
           // unless steelGrip/predatorySenses flips it).
-          rerollTokens: getDefenseRerollTokens(actor, defenseKey),
+          rerollTokens: getDefenseRerollTokens(defenseKey),
           // The attack this card answered, kept whole rather than only as the
           // resolved `versus` below: a reroll of this defense has to contest
           // the same attack again from a different die, and the crit flags and

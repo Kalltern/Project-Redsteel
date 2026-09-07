@@ -88,7 +88,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.AntiLarge.name"
+    "localizationKey": "REDSTEEL.Items.AntiLarge.name",
+    "category": "doctrine"
   },
   "effects": [],
   "sort": 0,

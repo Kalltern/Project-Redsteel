@@ -22,7 +22,7 @@
       "pools": [
         {
           "label": "Intelligence-based skill",
-          "skillsRaw": "int",
+          "skillsRaw": "int-based",
           "max": 1,
           "used": 0
         }
@@ -40,43 +40,7 @@
       "system": {
         "changes": [
           {
-            "key": "system.skills.alchemy.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.arcana.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.art.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.engineering.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.firstAid.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.logic.bonus",
-            "value": 5,
-            "priority": null,
-            "type": "add"
-          },
-          {
-            "key": "system.skills.tactics.bonus",
+            "key": "system.attributes.int.skillBonus",
             "value": 5,
             "priority": null,
             "type": "add"

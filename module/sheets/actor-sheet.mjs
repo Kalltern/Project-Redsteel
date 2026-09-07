@@ -4,12 +4,14 @@ import {
   syncSpecialisationPassive,
 } from "../helpers/specialisations.mjs";
 import { getTraitPills } from "../utils/traitPills.mjs";
+import { AIMED_PARTS } from "../utils/aimedStrike.mjs";
 import { gatherHerbs, promptHerbMode } from "../utils/gatherHerbs.mjs";
 import { tagRollSkill, applyDesperateCrit } from "../utils/rollAdvantage.mjs";
 import {
   getActorRerollPools,
   toggleRerollCharge,
   getEligibleRerolls,
+  getRerollTokensForSkill,
   consumeReroll,
   setActorRerollOrder,
 } from "../utils/rerolls.mjs";
@@ -57,6 +59,10 @@ import {
   getRememberedTab,
   rememberTab,
 } from "../utils/dialogTabMemory.mjs";
+import {
+  ABILITY_CATEGORY_IDS,
+  getAbilityCategory,
+} from "../utils/abilityGrants.mjs";
 
 const { api, sheets } = foundry.applications;
 
@@ -68,8 +74,23 @@ const FEATURES_TAB_MEMORY_KEY = "actor-features";
 const FEATURES_TAB_IDS = ["featureList", "traitList", "rerolls"];
 const FEATURES_TAB_DEFAULT = "rerolls";
 
+// Abilities tab sub-tabs. Same per-user memory as the Features tab; the id
+// list rejects a value left over from an earlier layout, which would
+// otherwise leave every sub-tab hidden.
+const ABILITIES_TAB_GROUP = "abilities-subtabs";
+const ABILITIES_TAB_MEMORY_KEY = "actor-abilities";
+const ABILITIES_TAB_DEFAULT = "basic";
+
 // Maps the gear "layer" select values to armor slot keys on the actor
 const ARMOR_LAYER_SLOTS = { Bottom: "bottom", Middle: "middle", Top: "top" };
+
+// Glyphs for the NPC armor-coverage strip. Keyed by AIMED_PARTS, so a new
+// aimed location needs an icon here or it renders blank.
+const BODY_PART_ICONS = {
+  head: "fa-sharp fa-light fa-helmet-battle",
+  hands: "fa-sharp fa-light fa-hand-fist",
+  legs: "fa-sharp fa-light fa-boot",
+};
 
 // Accessory slots are generic and interchangeable: any gear whose layer marks
 // it as an accessory fits any of the ten slots.
@@ -171,6 +192,7 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
       toggleSchool: this._toggleSchool,
       setActiveWeaponSet: this._setActiveWeaponSet,
       toggleHelmet: this._toggleHelmet,
+      toggleBodyPartArmor: this._toggleBodyPartArmor,
       toggleTwoHandGrip: this._toggleTwoHandGrip,
       toggleNpcOffhand: this._toggleNpcOffhand,
       toggleAmmoEquipped: this._toggleAmmoEquipped,
@@ -450,6 +472,29 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
   static async _toggleHelmet(event, target) {
     const off = this.actor.flags?.redsteel?.helmetOff === true;
     await this.actor.setFlag("redsteel", "helmetOff", !off);
+  }
+
+  /**
+   * NPC armor coverage per body location (head / hands / legs), toggled from
+   * the strip on the sheet header. Stored as
+   * flags.redsteel.bodyParts.<part>.armored — absent means armored, so every
+   * NPC that predates the toggles keeps the protection it had. Read at
+   * apply-damage time by resolveAimedArmorBypass in utils/aimedStrike.mjs: a
+   * landed aimed strike on an exposed location ignores this NPC's base armor.
+   *
+   * The whole bodyParts flag is rewritten rather than the one key, so the
+   * stagger/bleed/precision modifiers stored alongside survive the toggle.
+   */
+  static async _toggleBodyPartArmor(event, target) {
+    const part = target.dataset.part;
+    if (!AIMED_PARTS[part]) return;
+
+    const parts = foundry.utils.deepClone(
+      this.actor.flags?.redsteel?.bodyParts ?? {},
+    );
+    const armored = parts[part]?.armored !== false;
+    parts[part] = { ...(parts[part] ?? {}), armored: !armored };
+    await this.actor.setFlag("redsteel", "bodyParts", parts);
   }
 
   _assignWeaponDirect(itemId, set, slot) {
@@ -1329,7 +1374,10 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
     const recipe = this.actor.items.get(last.recipeId);
     if (!recipe) return;
 
-    const eligible = getEligibleRerolls(this.actor, "alchemy");
+    const eligible = getEligibleRerolls(
+      this.actor,
+      getRerollTokensForSkill(this.actor, "alchemy"),
+    );
     if (!eligible.length) {
       ui.notifications.info(
         game.i18n.localize("REDSTEEL.Alchemy.Warn.NoRerolls"),
@@ -1708,6 +1756,20 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
   /** @override */
   async _preparePartContext(partId, context) {
     switch (partId) {
+      case "header": {
+        // Armor-coverage strip, NPCs only: characters derive head coverage
+        // from the helmet they have equipped (see the Armor panel on the
+        // Inventory tab) and have no per-limb gear to read.
+        if (this.actor.type !== "npc") break;
+        const parts = this.actor.flags?.redsteel?.bodyParts ?? {};
+        context.bodyPartArmor = Object.keys(AIMED_PARTS).map((key) => ({
+          key,
+          icon: BODY_PART_ICONS[key],
+          armored: parts[key]?.armored !== false,
+          label: game.i18n.localize(`REDSTEEL.Actor.BodyParts.${key}`),
+        }));
+        break;
+      }
       case "features": {
         // Features / Traits / Rerolls sub-tabs. Reopen on whichever the user
         // last used; new users land on Rerolls, the panel wanted mid-session.
@@ -1886,7 +1948,10 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
           !!last?.ok &&
           !last.success &&
           !last.isSubstance &&
-          getEligibleRerolls(this.actor, "alchemy").length > 0;
+          getEligibleRerolls(
+            this.actor,
+            getRerollTokensForSkill(this.actor, "alchemy"),
+          ).length > 0;
         if (last?.ok) {
           context.alchAnnouncement = {
             success: last.success,
@@ -1907,12 +1972,53 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
         }
         break;
       }
-      case "abilities":
+      case "abilities": {
         context.tab = context.tabs[partId];
-        context.abilityCards = context.ability.map((i) =>
-          buildSpellCard(i, "ability"),
+
+        // One bucket per sub-tab.
+        const byCategory = Object.fromEntries(
+          ABILITY_CATEGORY_IDS.map((id) => [id, []]),
         );
+        for (const item of context.ability) {
+          byCategory[getAbilityCategory(item)].push(item);
+        }
+
+        // Only sub-tabs that actually hold something are shown: a fighter with
+        // no Commands should not be offered an empty Velení tab. An actor with
+        // no abilities at all still keeps Basic, otherwise the tab renders with
+        // no nav and no create button, leaving no way to add the first one.
+        const shownAbilityTabs = ABILITY_CATEGORY_IDS.filter(
+          (id) => byCategory[id].length > 0,
+        );
+        if (!shownAbilityTabs.length)
+          shownAbilityTabs.push(ABILITIES_TAB_DEFAULT);
+
+        // Sub-tab choice is remembered per user between sessions
+        // (flags.redsteel.lastDialogTabs, key "actor-abilities"). A remembered
+        // tab that is empty on this actor falls back to the first shown one,
+        // but is left in the stored flag: it becomes reachable again the
+        // moment the actor gains an ability of that kind.
+        const storedAbilityTab =
+          this.tabGroups[ABILITIES_TAB_GROUP] ??
+          getRememberedTab(ABILITIES_TAB_MEMORY_KEY);
+        this.tabGroups[ABILITIES_TAB_GROUP] = shownAbilityTabs.includes(
+          storedAbilityTab,
+        )
+          ? storedAbilityTab
+          : shownAbilityTabs[0];
+        context.activeAbilitiesSubtab = this.tabGroups[ABILITIES_TAB_GROUP];
+
+        // Every shown group is rendered (ApplicationV2's changeTab only
+        // toggles DOM classes, it does not re-render), so each one needs its
+        // section in the markup even while hidden.
+        context.abilityGroups = shownAbilityTabs.map((id) => ({
+          id,
+          label: game.i18n.localize(`REDSTEEL.Actor.Abilities.Category.${id}`),
+          active: id === context.activeAbilitiesSubtab,
+          cards: byCategory[id].map((i) => buildSpellCard(i, "ability")),
+        }));
         break;
+      }
       case "spells": {
         context.tab = context.tabs[partId];
         context.activeSpellSubtab = this.tabGroups["spells-subtabs"] ?? null;
@@ -2309,6 +2415,8 @@ export class RedsteelActorSheet extends api.HandlebarsApplicationMixin(
     super.changeTab(tab, group, options);
     if (group === "primary") this.#syncPrimaryTabHeight(tab);
     if (group === FEATURES_TAB_GROUP) rememberTab(FEATURES_TAB_MEMORY_KEY, tab);
+    if (group === ABILITIES_TAB_GROUP)
+      rememberTab(ABILITIES_TAB_MEMORY_KEY, tab);
   }
 
   /**

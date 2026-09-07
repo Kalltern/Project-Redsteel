@@ -1,0 +1,183 @@
+{{!-- Monster Builder (GM only). Inputs on the left, live preview on the right.
+
+     ApplicationV2 requires each template part to render exactly ONE root
+     element, so the body and the footer live inside this wrapper. Splitting
+     them back out to siblings throws "must render a single HTML element". --}}
+<div class="rs-mb-root">
+<div class="rs-mb-body">
+
+  <div class="rs-mb-fields">
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.powerLevel"}}</label>
+      <div class="form-fields">
+        <select name="pl">
+          {{#each plOptions}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.archetype"}}</label>
+      <div class="form-fields">
+        <select name="archetype">
+          {{#each archetypeOptions}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.role"}}</label>
+      <div class="form-fields">
+        <select name="role">
+          {{#each roleOptions}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.count"}}</label>
+      <div class="form-fields">
+        <input type="number" name="count" value="{{state.count}}" min="1" max="20" step="1">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.baseName"}}</label>
+      <div class="form-fields">
+        <input type="text" name="baseName" value="{{state.baseName}}"
+               placeholder="{{localize "REDSTEEL.MonsterBuilder.baseNameHint"}}">
+      </div>
+    </div>
+
+    <div class="form-group rs-mb-check">
+      <label>
+        <input type="checkbox" name="impossible" {{#if state.impossible}}checked{{/if}}>
+        {{localize "REDSTEEL.MonsterBuilder.impossible"}}
+      </label>
+      <p class="rs-mb-hint">{{localize "REDSTEEL.MonsterBuilder.impossibleHint"}}</p>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "REDSTEEL.MonsterBuilder.folder"}}</label>
+      <div class="form-fields">
+        <select name="folderId">
+          {{#each folderOptions}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="rs-mb-section">
+      <legend>{{localize "REDSTEEL.MonsterBuilder.sectionKit"}}</legend>
+
+      <div class="form-group">
+        <label>{{localize "REDSTEEL.MonsterBuilder.race"}}</label>
+        <div class="form-fields">
+          <select name="race">
+            {{#each raceOptions}}
+            <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "REDSTEEL.MonsterBuilder.customWeapon"}}</label>
+        <div class="form-fields">
+          <select name="customWeapon">
+            <option value="" {{#if weaponAutoSelected}}selected{{/if}}>{{localize "REDSTEEL.MonsterBuilder.weaponAuto"}}</option>
+            <optgroup label="Redsteel">
+              {{#each weaponPackOptions}}
+              <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+              {{/each}}
+            </optgroup>
+            {{#if weaponWorldOptions.length}}
+            <optgroup label="{{localize "REDSTEEL.MonsterBuilder.weaponWorld"}}">
+              {{#each weaponWorldOptions}}
+              <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+              {{/each}}
+            </optgroup>
+            {{/if}}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "REDSTEEL.MonsterBuilder.traits"}}</label>
+        <div class="form-fields rs-mb-picker">
+          <select name="traitPick">
+            {{#each traitOptions}}
+            <option value="{{this.value}}">{{this.label}}</option>
+            {{/each}}
+          </select>
+          <button type="button" data-action="addTrait">{{localize "REDSTEEL.MonsterBuilder.addTrait"}}</button>
+        </div>
+        {{#if chosenTraits.length}}
+        <ul class="rs-mb-chips">
+          {{#each chosenTraits}}
+          <li class="rs-mb-chip">{{this.name}}<a data-action="removeTrait" data-trait-id="{{this.id}}" title="{{localize "REDSTEEL.MonsterBuilder.removeTrait"}}"><i class="fa-solid fa-xmark"></i></a></li>
+          {{/each}}
+        </ul>
+        {{/if}}
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "REDSTEEL.MonsterBuilder.profileImage"}}</label>
+        <div class="form-fields rs-mb-picker">
+          <input type="text" name="img" value="{{state.img}}" placeholder="{{localize "REDSTEEL.MonsterBuilder.imageHint"}}">
+          <button type="button" data-action="browseImage" data-target="img" title="{{localize "REDSTEEL.MonsterBuilder.browse"}}">
+            <i class="fa-solid fa-file-import"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group rs-mb-check">
+        <label>
+          <input type="checkbox" name="tokenSameAsProfile" {{#if state.tokenSameAsProfile}}checked{{/if}}>
+          {{localize "REDSTEEL.MonsterBuilder.sameAsProfile"}}
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "REDSTEEL.MonsterBuilder.tokenImage"}}</label>
+        <div class="form-fields rs-mb-picker">
+          <input type="text" name="tokenImg" value="{{state.tokenImg}}"
+                 placeholder="{{localize "REDSTEEL.MonsterBuilder.imageHint"}}"
+                 {{#if state.tokenSameAsProfile}}disabled{{/if}}>
+          <button type="button" data-action="browseImage" data-target="tokenImg"
+                  title="{{localize "REDSTEEL.MonsterBuilder.browse"}}"
+                  {{#if state.tokenSameAsProfile}}disabled{{/if}}>
+            <i class="fa-solid fa-file-import"></i>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="rs-mb-preview">
+    <h3>{{localize "REDSTEEL.MonsterBuilder.preview"}}</h3>
+    <ul class="rs-mb-stats">
+      {{#each preview.rows}}
+      <li class="{{this.cssClass}}"><span>{{this.label}}</span><span>{{this.value}}</span></li>
+      {{/each}}
+    </ul>
+    {{#if preview.warn}}
+    <p class="rs-mb-warn"><i class="fa-solid fa-triangle-exclamation"></i> {{preview.warn}}</p>
+    {{/if}}
+  </div>
+
+</div>
+
+<footer class="rs-mb-footer">
+  <button type="button" data-action="createMonsters" class="default">
+    <i class="fa-solid fa-dragon"></i> {{localize "REDSTEEL.MonsterBuilder.create"}}
+  </button>
+</footer>
+</div>

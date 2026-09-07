@@ -109,7 +109,8 @@
     "effectType1": "root",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.Impale.name"
+    "localizationKey": "REDSTEEL.Items.Impale.name",
+    "category": "doctrine"
   },
   "effects": [],
   "folder": "9Ug73JNNSqmkEdOI",

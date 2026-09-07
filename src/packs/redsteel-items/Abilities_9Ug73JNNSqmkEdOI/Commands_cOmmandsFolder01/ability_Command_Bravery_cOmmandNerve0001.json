@@ -109,7 +109,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.CommandBravery.name"
+    "localizationKey": "REDSTEEL.Items.CommandBravery.name",
+    "category": "command"
   },
   "effects": [],
   "folder": "cOmmandsFolder01",

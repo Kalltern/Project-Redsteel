@@ -86,7 +86,8 @@
     "effectType1": "",
     "effectType2": "",
     "effectType3": "",
-    "localizationKey": "REDSTEEL.Items.FeintDexterity.name"
+    "localizationKey": "REDSTEEL.Items.FeintDexterity.name",
+    "category": "weapon"
   },
   "effects": [],
   "sort": 650000,
